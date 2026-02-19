@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>איור — יונתן אלפרין</title>
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link href="https://api.fontshare.com/v2/css?f[]=sentient@400,500,700,400i&display=swap" rel="stylesheet" />
+    <style>
+        @font-face {
+            font-family: 'NarkissYair';
+            src: url('fonts/NarkissYair-Light-TRIAL.otf') format('opentype');
+            font-weight: 300;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'NarkissYair';
+            src: url('fonts/NarkissYair-Regular-TRIAL.otf') format('opentype');
+            font-weight: 400;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'NarkissYair';
+            src: url('fonts/NarkissYair-Bold-TRIAL.otf') format('opentype');
+            font-weight: 700;
+            font-display: swap;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #100C01;
+            --fg: #E9B8B8;
+            --muted: rgba(233, 184, 184, .2);
+            --ease: cubic-bezier(.16, 1, .3, 1);
+            --font: 'NarkissYair', 'Sentient', Georgia, serif
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--font);
+            cursor: none;
+            -webkit-font-smoothing: antialiased
+        }
+
+        #cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--fg);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width .25s var(--ease), height .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease)
+        }
+
+        #cursor.big {
+            width: 52px;
+            height: 52px;
+            background: transparent;
+            border: 1.5px solid var(--fg)
+        }
+
+        #thread {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 0%;
+            background: var(--fg);
+            z-index: 50;
+            transition: height .05s linear
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 4rem)
+        }
+
+        .nav-back {
+            font-size: clamp(.8rem, 1vw, .95rem);
+            color: var(--fg);
+            text-decoration: none;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            opacity: .5;
+            transition: opacity .3s;
+            display: flex;
+            align-items: center;
+            gap: .5rem
+        }
+
+        .nav-back::before {
+            content: '←';
+            font-size: 1.1em
+        }
+
+        .nav-back:hover {
+            opacity: 1
+        }
+
+        .nav-logo {
+            font-size: clamp(1rem, 1.4vw, 1.25rem);
+            font-weight: 500;
+            letter-spacing: -.02em;
+            color: var(--fg);
+            text-decoration: none;
+            opacity: .6;
+            transition: opacity .3s
+        }
+
+        .nav-logo:hover {
+            opacity: 1
+        }
+
+        .proj-hero {
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: clamp(1.5rem, 4vw, 4rem);
+            padding-top: 8rem;
+            border-bottom: 1px solid var(--muted)
+        }
+
+        .proj-number {
+            font-size: clamp(.7rem, .9vw, .85rem);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            opacity: .35;
+            margin-bottom: 1rem
+        }
+
+        .proj-title {
+            font-size: clamp(4rem, 12vw, 14rem);
+            font-weight: 700;
+            line-height: .9;
+            letter-spacing: -.04em;
+            margin-bottom: clamp(2rem, 5vw, 5rem)
+        }
+
+        .proj-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--muted);
+            flex-wrap: wrap;
+            gap: 1rem
+        }
+
+        .proj-meta-label {
+            font-size: .7rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .35;
+            margin-bottom: .3rem
+        }
+
+        .proj-meta-value {
+            font-size: clamp(.9rem, 1.2vw, 1.05rem)
+        }
+
+        /* Masonry-style grid for sketchbook */
+        .sketch-grid {
+            padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+            columns: 2;
+            column-gap: clamp(1rem, 2vw, 2rem)
+        }
+
+        @media(max-width:600px) {
+            .sketch-grid {
+                columns: 1
+            }
+        }
+
+        .sketch-item {
+            break-inside: avoid;
+            margin-bottom: clamp(1rem, 2vw, 2rem);
+            border-radius: 4px;
+            overflow: hidden;
+            background: rgba(233, 184, 184, .06)
+        }
+
+        .sketch-item img {
+            width: 100%;
+            display: block;
+            object-fit: cover
+        }
+
+        .sketch-item .placeholder {
+            padding: 4rem 2rem;
+            text-align: center;
+            font-size: .75rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .2
+        }
+
+        .proj-description {
+            padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: clamp(2rem, 6vw, 8rem);
+            border-top: 1px solid var(--muted)
+        }
+
+        @media(max-width:700px) {
+            .proj-description {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .proj-desc-label {
+            font-size: .75rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .35;
+            padding-top: .2rem
+        }
+
+        .proj-desc-text {
+            font-size: clamp(1rem, 1.8vw, 1.5rem);
+            line-height: 1.55;
+            opacity: .85
+        }
+
+        .proj-next {
+            padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+            border-top: 1px solid var(--muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .proj-next-label {
+            font-size: .75rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .35
+        }
+
+        .proj-next-link {
+            font-size: clamp(2rem, 6vw, 7rem);
+            font-weight: 700;
+            letter-spacing: -.04em;
+            color: var(--fg);
+            text-decoration: none;
+            line-height: 1;
+            opacity: .4;
+            transition: opacity .3s var(--ease)
+        }
+
+        .proj-next-link:hover {
+            opacity: 1
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .9s var(--ease), transform .9s var(--ease)
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: none
+        }
+
+        footer {
+            padding: 2rem clamp(1.5rem, 4vw, 4rem);
+            border-top: 1px solid var(--muted);
+            display: flex;
+            justify-content: space-between;
+            font-size: .75rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            opacity: .3
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cursor"></div>
+    <div id="thread"></div>
+
+    <nav>
+        <a href="index.html" class="nav-back">חזרה</a>
+        <a href="index.html" class="nav-logo">יונתן</a>
+    </nav>
+
+    <section class="proj-hero">
+        <p class="proj-number reveal">04 / 04</p>
+        <h1 class="proj-title reveal" style="transition-delay:.1s">איור</h1>
+        <div class="proj-meta reveal" style="transition-delay:.2s">
+            <div class="proj-meta-item">
+                <div class="proj-meta-label">קטגוריה</div>
+                <div class="proj-meta-value">סקצ'בוק ואיור</div>
+            </div>
+            <div class="proj-meta-item">
+                <div class="proj-meta-label">תיאור</div>
+                <div class="proj-meta-value">Some random stuff I like!</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="proj-description">
+        <div class="proj-desc-label reveal">על הסקצ'בוק</div>
+        <div class="proj-desc-text reveal" style="transition-delay:.1s">
+            <p>אוסף של איורים, סקיצות ויצירות שנוצרו מתוך סקרנות ואהבה. כאן אני מאפשר לעצמי לשחק, לנסות ולטעות.</p>
+        </div>
+    </div>
+
+    <!-- Masonry grid - add images to projects/sketchbook/ -->
+    <div class="sketch-grid reveal">
+        <div class="sketch-item">
+            <img src="projects/sketchbook/01.jpg" alt=""
+                onerror="this.parentElement.innerHTML='<div class=placeholder>הוסף תמונות לתיקייה:<br>projects/sketchbook/</div>'">
+        </div>
+        <div class="sketch-item">
+            <img src="projects/sketchbook/02.jpg" alt=""
+                onerror="this.parentElement.innerHTML='<div class=placeholder>02.jpg</div>'">
+        </div>
+        <div class="sketch-item">
+            <img src="projects/sketchbook/03.jpg" alt=""
+                onerror="this.parentElement.innerHTML='<div class=placeholder>03.jpg</div>'">
+        </div>
+        <div class="sketch-item">
+            <img src="projects/sketchbook/04.jpg" alt=""
+                onerror="this.parentElement.innerHTML='<div class=placeholder>04.jpg</div>'">
+        </div>
+        <div class="sketch-item">
+            <img src="projects/sketchbook/05.jpg" alt=""
+                onerror="this.parentElement.innerHTML='<div class=placeholder>05.jpg</div>'">
+        </div>
+        <div class="sketch-item">
+            <img src="projects/sketchbook/06.jpg" alt=""
+                onerror="this.parentElement.innerHTML='<div class=placeholder>06.jpg</div>'">
+        </div>
+        <div class="sketch-item">
+            <img src="projects/sketchbook/07.jpg" alt=""
+                onerror="this.parentElement.innerHTML='<div class=placeholder>07.jpg</div>'">
+        </div>
+        <div class="sketch-item">
+            <img src="projects/sketchbook/08.jpg" alt=""
+                onerror="this.parentElement.innerHTML='<div class=placeholder>08.jpg</div>'">
+        </div>
+    </div>
+
+    <div class="proj-next">
+        <span class="proj-next-label">חזרה לתחילה</span>
+        <a href="web.html" class="proj-next-link">ווב →</a>
+    </div>
+
+    <footer>
+        <span>© 2025 יונתן אלפרין</span>
+        <span>04 / 04</span>
+    </footer>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        let cx = -100, cy = -100, tx = -100, ty = -100;
+        document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY });
+        (function loop() { cx += (tx - cx) * .18; cy += (ty - cy) * .18; cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px'; requestAnimationFrame(loop) })();
+        document.querySelectorAll('a').forEach(el => { el.addEventListener('mouseenter', () => cursor.classList.add('big')); el.addEventListener('mouseleave', () => cursor.classList.remove('big')) });
+        const thread = document.getElementById('thread');
+        window.addEventListener('scroll', () => { const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight); thread.style.height = (p * 100) + '%' }, { passive: true });
+        const io = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in') }), { threshold: .08 });
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
+</body>
+
+</html>
