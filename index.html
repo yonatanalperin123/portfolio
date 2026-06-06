@@ -4,9 +4,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>יונתן — מעצב ומפתח</title>
+    <title>יונתן אלפרין</title>
     <link rel="preconnect" href="https://api.fontshare.com" />
     <link href="https://api.fontshare.com/v2/css?f[]=sentient@400,500,700,400i&display=swap" rel="stylesheet" />
+    <link rel="preload" href="webcover.jpg" as="image" />
+    <link rel="preload" href="brandingcover.jpg" as="image" />
+    <link rel="preload" href="fontcover.jpg" as="image" />
+    <link rel="preload" href="illustrationcover.jpg" as="image" />
+    <link rel="preload" href="bookcover.jpg" as="image" />
+    <link rel="stylesheet" href="proj.css" />
 
     <style>
         /* ─── NarkissYair Local Font ──────────────────────────── */
@@ -17,7 +23,6 @@
             font-style: normal;
             font-display: swap;
         }
-
         @font-face {
             font-family: 'NarkissYair';
             src: url('fonts/NarkissYair-Regular-TRIAL.otf') format('opentype');
@@ -25,7 +30,6 @@
             font-style: normal;
             font-display: swap;
         }
-
         @font-face {
             font-family: 'NarkissYair';
             src: url('fonts/NarkissYair-Bold-TRIAL.otf') format('opentype');
@@ -35,80 +39,94 @@
         }
 
         /* ─── Reset & Base ─────────────────────────────────────── */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
             --bg: #100C01;
             --fg: #E9B8B8;
             --accent: #E9B8B8;
-            /* dusty rose thread / hover */
             --muted: rgba(233, 184, 184, .2);
             --font: 'NarkissYair', 'Sentient', Georgia, serif;
             --ease: cubic-bezier(.16, 1, .3, 1);
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; height: 100svh; overflow: hidden; }
 
         body {
-            background: var(--bg);
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse 80% 60% at 15% 10%,  rgba(100, 35, 35, .22) 0%, transparent 60%),
+                radial-gradient(ellipse 55% 70% at 88% 20%,  rgba(60, 25, 50, .18)  0%, transparent 55%),
+                radial-gradient(ellipse 70% 50% at 75% 85%,  rgba(120, 55, 30, .16) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 80% at 10% 80%,  rgba(40, 20, 55, .14)  0%, transparent 50%),
+                radial-gradient(ellipse 90% 40% at 50% 50%,  rgba(80, 30, 30, .10)  0%, transparent 70%);
             color: var(--fg);
             font-family: var(--font);
             cursor: none;
-            overflow-x: hidden;
+            height: 100svh;
+            overflow: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ─── Custom Cursor ────────────────────────────────────── */
+        /* ─── Grain overlay ────────────────────────────────────── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: .05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-size: 180px 180px;
+        }
+
+        /* ─── Spotlight ─────────────────────────────────────────── */
+        #spotlight {
+            position: fixed;
+            inset: -50%;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(
+                ellipse 55vw 55vh at center,
+                rgba(185, 80, 40, .09) 0%,
+                rgba(120, 40, 80, .05) 35%,
+                transparent 70%
+            );
+            transition: none;
+            will-change: transform;
+        }
+
+        /* ─── Cursor ─────────────────────────────────────────────── */
         #cursor {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 10px;
-            height: 10px;
+            top: 0; left: 0;
+            width: 10px; height: 10px;
             border-radius: 50%;
             background: var(--fg);
             pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width .25s var(--ease),
-                height .25s var(--ease),
-                background .25s var(--ease),
-                border-color .25s var(--ease),
-                opacity .25s;
+            z-index: 10000;
+            will-change: transform;
+            transform: translate(-200px, -200px);
+            transition: width .25s var(--ease), height .25s var(--ease),
+                        background .25s var(--ease), border-color .25s var(--ease), opacity .25s;
         }
-
         #cursor.big {
-            width: 52px;
-            height: 52px;
+            width: 52px; height: 52px;
             background: transparent;
             border: 1.5px solid var(--fg);
         }
+        #cursor.hidden { opacity: 0; }
 
-        #cursor.hidden {
+        /* ─── Scroll thread — override proj.css for SPA ─────────── */
+        #thread {
             opacity: 0;
+            z-index: 450;
+            transition: height .05s linear, opacity .3s var(--ease);
         }
+        #thread.active { opacity: 1; }
 
-        /* ─── Nav ──────────────────────────────────────────────── */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 4rem);
-            mix-blend-mode: difference;
-        }
+        /* ─── Nav (hidden on index) ─────────────────────────────── */
+        nav { display: none; }
 
         .nav-logo {
             font-size: clamp(1rem, 1.4vw, 1.25rem);
@@ -117,13 +135,7 @@
             color: var(--fg);
             text-decoration: none;
         }
-
-        .nav-links {
-            display: flex;
-            gap: clamp(1.5rem, 3vw, 3rem);
-            list-style: none;
-        }
-
+        .nav-links { display: flex; gap: clamp(1.5rem, 3vw, 3rem); list-style: none; }
         .nav-links a {
             font-size: clamp(.8rem, 1vw, .95rem);
             color: var(--fg);
@@ -133,12 +145,8 @@
             opacity: .6;
             transition: opacity .3s;
         }
+        .nav-links a:hover { opacity: 1; }
 
-        .nav-links a:hover {
-            opacity: 1;
-        }
-
-        /* Lang toggle */
         #lang-btn {
             font-size: clamp(.8rem, 1vw, .95rem);
             color: var(--fg);
@@ -150,120 +158,57 @@
             transition: opacity .3s;
             cursor: none;
         }
-
-        #lang-btn:hover {
-            opacity: 1;
-        }
-
-        /* ─── Thread Line ──────────────────────────────────────── */
-        #thread {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 2px;
-            height: 0%;
-            background: var(--accent);
-            z-index: 50;
-            transition: height .05s linear;
-            transform-origin: top;
-        }
+        #lang-btn:hover { opacity: 1; }
 
         /* ─── Hero ─────────────────────────────────────────────── */
         #hero {
-            min-height: 100svh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: clamp(1.5rem, 4vw, 4rem);
-            padding-top: 8rem;
+            height: 100svh;
             position: relative;
             overflow: hidden;
+            isolation: isolate;
+            transition: opacity .5s var(--ease);
         }
+        #hero.proj-open { opacity: 0; pointer-events: none; }
 
-        .hero-eyebrow {
-            font-size: clamp(.75rem, 1vw, .9rem);
-            letter-spacing: .12em;
-            text-transform: uppercase;
-            opacity: .45;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-headline {
-            font-size: clamp(3.5rem, 11vw, 13rem);
-            font-weight: 700;
-            line-height: .92;
-            letter-spacing: -.04em;
-            margin-bottom: clamp(2rem, 5vw, 5rem);
-        }
-
-        .hero-headline em {
-            font-style: italic;
-            font-weight: 400;
-        }
-
-        /* Portrait + eye-tracking */
-        .hero-portrait-wrap {
+        /* ─── Eye grid ─────────────────────────────────────────── */
+        #eye-grid {
             position: absolute;
-            top: 50%;
-            left: clamp(2rem, 8vw, 10rem);
-            transform: translateY(-50%);
-            width: clamp(200px, 26vw, 400px);
-            aspect-ratio: 4/5;
+            inset: 0;
+            display: grid;
+            gap: 14px;
+            padding: 24px;
             overflow: hidden;
-            border-radius: 4px;
         }
+        /* cells hidden while loader is active */
+        #eye-grid[data-loading] .eye-unit { opacity: 0; }
 
-        #face-layer {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
+        .eye-unit {
+            position: relative;
+            overflow: hidden;
+            transform: rotate(var(--rot, 0deg));
+        }
+        .eye-unit.wave-in {
+            animation: eyeReveal .6s var(--ease) forwards;
+        }
+        @keyframes eyeReveal {
+            from { opacity: 0; transform: rotate(var(--rot, 0deg)); }
+            to   { opacity: 1; transform: rotate(var(--rot, 0deg)); }
+        }
+        .eu-face, .eu-eye {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
             object-fit: cover;
-            object-position: center top;
+            object-position: center 20%;
+            user-select: none;
         }
-
-        #eye-layer {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center top;
-            transition: transform .07s var(--ease);
-            will-change: transform;
-        }
-
-        .hero-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            border-top: 1px solid var(--muted);
-            padding-top: 1.5rem;
-        }
-
-        .hero-meta-left {
-            font-size: clamp(.8rem, 1.1vw, 1rem);
-            opacity: .5;
-            line-height: 1.6;
-        }
-
-        .hero-scroll-hint {
-            font-size: clamp(.75rem, .9vw, .85rem);
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            opacity: .35;
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-        }
-
-        .hero-scroll-hint::before {
-            content: '';
-            display: block;
-            width: 24px;
-            height: 1px;
-            background: currentColor;
-        }
+        .eu-closed { opacity: 1; transition: opacity .35s var(--ease); filter: invert(1); }
+        .eu-open   { opacity: 0; transition: opacity .35s var(--ease); }
+        .eu-eye    { opacity: 0; transition: opacity .35s var(--ease); will-change: transform; }
+        .eye-unit.is-open .eu-closed { opacity: 0; }
+        .eye-unit.is-open .eu-open   { opacity: 1; }
+        .eye-unit.is-open .eu-eye    { opacity: 1; }
+        .proj-eye { cursor: pointer; }
+        .proj-eye:hover { opacity: .85; }
 
         /* ─── Section Label ────────────────────────────────────── */
         .section-label {
@@ -274,503 +219,915 @@
             margin-bottom: clamp(2rem, 4vw, 4rem);
         }
 
-        /* ─── Projects ─────────────────────────────────────────── */
-        #projects {
-            padding: clamp(5rem, 10vw, 12rem) clamp(1.5rem, 4vw, 4rem);
-        }
-
-        .projects-list {
-            list-style: none;
-        }
-
-        .project-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            padding: clamp(1.2rem, 2.5vw, 2rem) 0;
-            border-top: 1px solid var(--muted);
-            cursor: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-row:last-child {
-            border-bottom: 1px solid var(--muted);
-        }
-
-        .project-row::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--fg);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .5s var(--ease);
-            z-index: -1;
-        }
-
-        .project-row:hover::after {
-            transform: scaleX(1);
-        }
-
-        .project-row:hover .proj-name,
-        .project-row:hover .proj-cat,
-        .project-row:hover .proj-year {
-            color: var(--bg);
-        }
-
-        .proj-name {
-            font-size: clamp(1.8rem, 4.5vw, 5.5rem);
-            font-weight: 700;
-            letter-spacing: -.03em;
-            line-height: 1;
-            transition: color .3s;
-        }
-
-        .proj-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: .25rem;
-        }
-
-        .proj-cat {
-            font-size: clamp(.7rem, 1vw, .9rem);
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            opacity: .5;
-            transition: color .3s, opacity .3s;
-        }
-
-        .proj-year {
-            font-size: clamp(.7rem, 1vw, .9rem);
-            opacity: .3;
-            transition: color .3s, opacity .3s;
-        }
-
-        .project-row:hover .proj-cat {
-            opacity: 1;
-        }
-
-        .project-row:hover .proj-year {
-            opacity: .7;
-        }
-
-        /* Floating preview image */
-        #preview-img {
+        /* ─── Floating preview container ────────────────────────────── */
+        #preview-container {
             position: fixed;
+            top: 0; left: 0;
             pointer-events: none;
             z-index: 200;
-            width: clamp(280px, 30vw, 520px);
-            aspect-ratio: 16/10;
+            width: clamp(196px, 21vw, 364px);
+            aspect-ratio: 1/1;
+            /* Container moves instantly and smoothly with JS */
+            transform: translate(-9999px, -9999px);
+            will-change: transform;
+        }
+
+        .preview-item {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             border-radius: 3px;
             opacity: 0;
-            transform: scale(.94) rotate(-1deg);
-            transition: opacity .35s var(--ease),
-                transform .35s var(--ease);
-            will-change: transform, opacity;
+            transition: opacity .35s var(--ease);
+            will-change: opacity;
         }
+        .preview-item.visible { opacity: 1; }
 
-        #preview-img.visible {
-            opacity: 1;
-            transform: scale(1) rotate(0deg);
-        }
-
-        /* ─── About ────────────────────────────────────────────── */
-        #about {
-            padding: clamp(5rem, 10vw, 12rem) clamp(1.5rem, 4vw, 4rem);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: clamp(2rem, 6vw, 8rem);
-            align-items: start;
-        }
-
-        @media (max-width: 700px) {
-            #about {
-                grid-template-columns: 1fr;
-            }
-        }
-
+        /* ─── About styles ──────────────────────────────────────── */
         .about-text {
             font-size: clamp(1.1rem, 2.2vw, 1.9rem);
             line-height: 1.45;
             font-weight: 400;
             letter-spacing: -.01em;
         }
+        .about-text em { font-style: italic; opacity: .7; }
+        .about-details { display: flex; flex-direction: column; gap: 2rem; padding-top: .5rem; }
+        .about-detail-item { border-top: 1px solid var(--muted); padding-top: 1rem; }
+        .about-detail-label { font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; opacity: .35; margin-bottom: .5rem; }
+        .about-detail-value { font-size: clamp(.9rem, 1.2vw, 1.05rem); opacity: .8; }
+        .egg-link { color: inherit; text-decoration: none; }
 
-        .about-text em {
-            font-style: italic;
-            opacity: .7;
+        .currently-strip {
+            margin-top: clamp(2rem, 4vw, 3.5rem);
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--muted);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: .5rem 1.6rem;
+        }
+        .currently-label { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; opacity: .3; flex-shrink: 0; }
+        .currently-items { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 0; }
+        .currently-item { font-size: clamp(.85rem, 1.15vw, 1rem); opacity: .7; display: flex; align-items: baseline; gap: .3rem; }
+        .currently-item + .currently-item::before { content: '·'; opacity: .35; margin-inline-end: .3rem; font-style: normal; }
+        .currently-item .ci-label { opacity: .5; font-style: normal; }
+        .currently-item .ci-sep { opacity: .3; font-style: normal; }
+        .currently-item .ci-value { font-style: italic; }
+
+        /* ─── About modal ───────────────────────────────────────── */
+        #about-modal {
+            position: fixed; inset: 0; z-index: 500;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity .4s var(--ease);
+        }
+        #about-modal.open { opacity: 1; pointer-events: all; }
+        .modal-backdrop { position: absolute; inset: 0; background: rgba(16, 12, 1, .82); backdrop-filter: blur(12px); }
+        .modal-panel {
+            position: relative; z-index: 1;
+            background: var(--bg);
+            border: 1px solid var(--muted);
+            border-radius: 4px;
+            width: min(1200px, 96vw);
+            max-height: 96svh;
+            overflow-y: auto;
+            padding: clamp(2rem, 5vw, 4rem);
+            transform: translateY(24px);
+            transition: transform .4s var(--ease);
+        }
+        #about-modal.open .modal-panel { transform: translateY(0); }
+        .modal-close {
+            position: absolute; top: 1.5rem; left: 1.5rem;
+            background: none; border: none;
+            color: var(--fg); font-size: 1.25rem;
+            cursor: pointer; opacity: .5; transition: opacity .2s;
+            padding: .25rem .5rem;
+        }
+        .modal-close:hover { opacity: 1; }
+        .modal-body { display: grid; grid-template-columns: 200px 1fr; gap: clamp(2rem, 4vw, 4rem); align-items: start; }
+        .modal-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center top; border-radius: 3px; display: block; }
+        .modal-right { display: flex; flex-direction: column; gap: 2rem; }
+        .modal-main .about-text { font-size: clamp(1rem, 2.2vw, 1.4rem); line-height: 1.5; margin-block: 1.5rem; }
+        .modal-main .currently-strip { border-top: 1px solid var(--muted); padding-top: 1.5rem; margin-top: 2rem; }
+        @media (max-width: 580px) {
+            .modal-body { grid-template-columns: 1fr; }
+            .modal-img { aspect-ratio: 4/3; }
         }
 
-        .about-details {
+        /* ─── Page loader ──────────────────────────────────────────── */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse 80% 60% at 15% 10%,  rgba(100,35,35,.22) 0%, transparent 60%),
+                radial-gradient(ellipse 55% 70% at 88% 20%,  rgba(60,25,50,.18)  0%, transparent 55%),
+                radial-gradient(ellipse 70% 50% at 75% 85%,  rgba(120,55,30,.16) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 80% at 10% 80%,  rgba(40,20,55,.14)  0%, transparent 50%),
+                radial-gradient(ellipse 90% 40% at 50% 50%,  rgba(80,30,30,.10)  0%, transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #loader.ldr-fade {
+            opacity: 0;
+            transition: opacity .8s var(--ease);
+            pointer-events: none;
+        }
+        .loader-wrap {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
-            padding-top: .5rem;
+            align-items: center;
+            gap: 1.4rem;
         }
-
-        .about-detail-item {
-            border-top: 1px solid var(--muted);
-            padding-top: 1rem;
-        }
-
-        .about-detail-label {
-            font-size: .75rem;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            opacity: .35;
-            margin-bottom: .5rem;
-        }
-
-        .about-detail-value {
-            font-size: clamp(.9rem, 1.2vw, 1.05rem);
-            opacity: .8;
-        }
-
-        /* ─── Contact ──────────────────────────────────────────── */
-        #contact {
-            padding: clamp(5rem, 10vw, 12rem) clamp(1.5rem, 4vw, 4rem);
-            padding-bottom: clamp(4rem, 8vw, 8rem);
-        }
-
-        .contact-headline {
-            font-size: clamp(3rem, 9vw, 11rem);
-            font-weight: 700;
-            letter-spacing: -.04em;
-            line-height: .9;
-            margin-bottom: clamp(2rem, 5vw, 5rem);
-        }
-
-        .contact-headline a {
-            color: inherit;
-            text-decoration: none;
-            display: inline-block;
+        .loader-eye-cell {
             position: relative;
+            width: clamp(60px, 7vw, 100px);
+            height: clamp(60px, 7vw, 100px);
         }
-
-        .contact-headline a::after {
-            content: '';
+        .ldr-face, .ldr-iris {
             position: absolute;
-            bottom: .05em;
-            left: 0;
-            right: 0;
-            height: .06em;
-            background: var(--accent);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .5s var(--ease);
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            user-select: none;
         }
-
-        .contact-headline a:hover::after {
-            transform: scaleX(1);
-        }
-
-        .contact-links {
-            display: flex;
-            gap: clamp(1.5rem, 4vw, 4rem);
-            flex-wrap: wrap;
-        }
-
-        .contact-links a {
+        .ldr-iris { will-change: transform; }
+        .loader-text {
             font-size: clamp(.8rem, 1.1vw, 1rem);
-            color: var(--fg);
-            text-decoration: none;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            opacity: .45;
-            transition: opacity .3s;
-            border-bottom: 1px solid var(--muted);
-            padding-bottom: .25rem;
+            letter-spacing: .08em;
+            opacity: .4;
         }
 
-        .contact-links a:hover {
-            opacity: 1;
-            border-color: var(--accent);
-        }
 
-        /* ─── Footer ───────────────────────────────────────────── */
-        footer {
-            padding: 2rem clamp(1.5rem, 4vw, 4rem);
-            border-top: 1px solid var(--muted);
+
+        /* ─── Project nav overlay ───────────────────────────────── */
+        #proj-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 400;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: .75rem;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            opacity: .3;
-        }
-
-        /* ─── Reveal animations ────────────────────────────────── */
-        .reveal {
+            padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 4rem);
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity .9s var(--ease), transform .9s var(--ease);
+            pointer-events: none;
+            transition: opacity .4s var(--ease);
+        }
+        #proj-nav.active { opacity: 1; pointer-events: all; }
+        #proj-back-btn {
+            background: none; border: none;
+            cursor: none; padding: 0;
+            font-family: var(--font);
         }
 
-        .reveal.in {
-            opacity: 1;
-            transform: none;
+        /* ─── Project panels ────────────────────────────────────── */
+        .proj-panel {
+            position: fixed;
+            inset: 0;
+            overflow-y: auto;
+            background: var(--bg);
+            z-index: 300;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .5s var(--ease);
         }
+        .proj-panel.active { opacity: 1; pointer-events: all; }
 
-        /* RTL adjustments */
-        [dir="ltr"] .hero-portrait-wrap {
-            left: auto;
-            right: clamp(2rem, 8vw, 10rem);
+        /* ─── Per-panel overrides ───────────────────────────────── */
+        #proj-book .proj-title { font-size: clamp(3rem, 10vw, 12rem); }
+
+        /* Typeface specimen */
+        .typeface-specimen {
+            padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+            border-top: 1px solid var(--muted);
         }
+        .specimen-name { font-size: clamp(4rem, 14vw, 18rem); font-weight: 700; line-height: .85; letter-spacing: -.04em; opacity: .15; margin-bottom: 2rem; }
+        .specimen-alphabet { font-size: clamp(1.5rem, 4vw, 4rem); line-height: 1.4; letter-spacing: .05em; opacity: .6; margin-bottom: 1.5rem; }
+        .specimen-numbers { font-size: clamp(1.2rem, 3vw, 3rem); letter-spacing: .08em; opacity: .4; }
 
-        [dir="ltr"] #thread {
-            left: auto;
-            right: 0;
+        /* Sketchbook grid */
+        .sketch-grid { padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem); columns: 2; column-gap: clamp(1rem, 2vw, 2rem); }
+        @media(max-width:600px) { .sketch-grid { columns: 1; } }
+        .sketch-item { break-inside: avoid; margin-bottom: clamp(1rem, 2vw, 2rem); border-radius: 4px; overflow: hidden; background: rgba(233, 184, 184, .06); }
+        .sketch-item img { width: 100%; height: auto; display: block; }
+        .sketch-item .placeholder { padding: 4rem 2rem; text-align: center; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; opacity: .2; }
+
+        /* ─── Touch / no-hover devices ─────────────────────────── */
+        @media (hover: none) and (pointer: coarse) {
+            body { cursor: auto; }
+            #cursor { display: none; }
+
+            .nav-links a,
+            .nav-back,
+            .proj-next-link { opacity: 1; }
+
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Custom cursor -->
+    <!-- ── Page loader ──────────────────────────────────────────── -->
+    <div id="loader">
+        <div class="loader-wrap">
+            <div class="loader-eye-cell">
+                <img class="ldr-face" src="face copy.png" alt="" draggable="false">
+                <img class="ldr-iris" src="eye copy.png"  alt="" draggable="false">
+            </div>
+            <p class="loader-text">עוד רגע ומתחילים</p>
+        </div>
+    </div>
+
     <div id="cursor"></div>
-
-    <!-- Scroll thread -->
     <div id="thread"></div>
+    <div id="spotlight"></div>
+    <div id="preview-container">
+        <!-- populated by JS -->
+    </div>
 
-    <!-- Floating project preview -->
-    <img id="preview-img" src="" alt="" aria-hidden="true" />
-
-    <!-- ── Nav ──────────────────────────────────────────────────── -->
     <nav>
         <a href="#" class="nav-logo" data-he="יונתן" data-en="Yonatan">יונתן</a>
         <ul class="nav-links">
-            <li><a href="#projects" data-he="עבודות" data-en="Work">עבודות</a></li>
-            <li><a href="#about" data-he="אודות" data-en="About">אודות</a></li>
-            <li><a href="#contact" data-he="קשר" data-en="Contact">קשר</a></li>
             <li><button id="lang-btn">EN</button></li>
+            <li><button id="about-btn" data-he="אודות" data-en="About">אודות</button></li>
         </ul>
     </nav>
 
-    <!-- ── Hero ─────────────────────────────────────────────────── -->
     <section id="hero">
-        <p class="hero-eyebrow reveal" data-he="מעצב דיגיטלי ומפתח קריאייטיב"
-            data-en="Digital Designer & Creative Developer">
-            מעצב דיגיטלי ומפתח קריאייטיב
-        </p>
+        <div id="eye-grid"></div>
 
-        <h1 class="hero-headline reveal" style="transition-delay:.1s">
-            <span data-he="היי!<br>אני <em>יונתן</em>" data-en="Hi!<br>I'm <em>Yonatan</em>">היי!<br>אני
-                <em>יונתן</em></span>
-        </h1>
-
-        <!-- Portrait -->
-        <div class="hero-portrait-wrap">
-            <img src="face.png" alt="Portrait" id="face-layer" />
-            <img src="eye.png" alt="" id="eye-layer" aria-hidden="true" />
-        </div>
-
-        <div class="hero-meta reveal" style="transition-delay:.2s">
-            <div class="hero-meta-left">
-                <span data-he="ירושלים, ישראל" data-en="Jerusalem, Israel">ירושלים, ישראל</span><br>
-                <span data-he="פתוח לפרויקטים חדשים" data-en="Open for new projects">פתוח לפרויקטים חדשים</span>
-            </div>
-            <div class="hero-scroll-hint" data-he="גלול" data-en="Scroll">גלול</div>
-        </div>
     </section>
 
-    <!-- ── Projects ──────────────────────────────────────────────── -->
-    <section id="projects">
-        <p class="section-label reveal" data-he="(עבודות נבחרות)" data-en="(Selected Work)">(עבודות נבחרות)</p>
-
-        <ul class="projects-list">
-            <li class="project-row reveal" data-preview="project1.jpg" style="transition-delay:.05s">
-                <a href="web.html" style="display:contents;color:inherit;text-decoration:none">
-                    <span class="proj-name" data-he="ווב" data-en="Web">ווב</span>
-                    <div class="proj-right">
-                        <span class="proj-cat" data-he="עיצוב ופיתוח" data-en="Web Design">עיצוב ופיתוח</span>
-                        <span class="proj-year">01</span>
+    <!-- ── About modal ──────────────────────────────────────────── -->
+    <div id="about-modal" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+        <div class="modal-panel">
+            <button class="modal-close" id="modal-close-btn" aria-label="סגור">&#x2715;</button>
+            <div class="modal-body">
+                <div class="modal-left">
+                    <img src="face copynew.png" alt="יונתן" class="modal-img">
+                </div>
+                <div class="modal-right">
+                    <div class="modal-main">
+                        <p class="section-label">(אודות)</p>
+                        <p class="about-text">סטודנט לעיצוב גרפי מפרדס חנה כרכור. אוהב טיפוגרפיה, עיצוב ווב ואפליקציות, גיימינג ובישול. מחפש את <em>האתגר הבא שלי</em> כ-UX/UI intern או Product Designer.</p>
+                        <div class="currently-strip">
+                            <span class="currently-label">כרגע</span>
+                            <div class="currently-items">
+                                <span class="currently-item"><span class="ci-label">משחק</span><span class="ci-sep">—</span><span class="ci-value">Heroes of Might and Magic 3</span></span>
+                                <span class="currently-item"><span class="ci-label">אוכל</span><span class="ci-sep">—</span><span class="ci-value"><a href="ramen.html" class="egg-link">כריך סלט ביצים</a></span></span>
+                                <span class="currently-item"><span class="ci-label">שומע</span><span class="ci-sep">—</span><span class="ci-value">Giant Steps, John Coltrane</span></span>
+                            </div>
+                        </div>
                     </div>
-                </a>
-            </li>
-            <li class="project-row reveal" data-preview="project2.jpg" style="transition-delay:.1s">
-                <a href="branding.html" style="display:contents;color:inherit;text-decoration:none">
-                    <span class="proj-name" data-he="ברנדינג" data-en="Branding">ברנדינג</span>
-                    <div class="proj-right">
-                        <span class="proj-cat" data-he="זהות מותגית" data-en="Brand Identity">זהות מותגית</span>
-                        <span class="proj-year">02</span>
+                    <div class="about-details">
+                        <div class="about-detail-item"><div class="about-detail-label">התמחות</div><div class="about-detail-value">Adobe Suite, Figma, Wix</div></div>
+                        <div class="about-detail-item"><div class="about-detail-label">כלים</div><div class="about-detail-value">Figma, React, GSAP, Three.js</div></div>
+                        <div class="about-detail-item"><div class="about-detail-label">זמינות</div><div class="about-detail-value">פתוח לפרויקטים חדשים</div></div>
+                        <div class="about-detail-item"><div class="about-detail-label">קשר</div><div class="about-detail-value"><a href="mailto:yonatanalperin123@gmail.com">yonatanalperin123@gmail.com</a><br><a href="https://www.instagram.com/yonatanalperin123/" target="_blank" rel="noopener">Instagram</a></div></div>
                     </div>
-                </a>
-            </li>
-            <li class="project-row reveal" data-preview="project3.jpg" style="transition-delay:.15s">
-                <a href="typeface.html" style="display:contents;color:inherit;text-decoration:none">
-                    <span class="proj-name" data-he="גופן" data-en="Typeface">גופן</span>
-                    <div class="proj-right">
-                        <span class="proj-cat" data-he="טיפוגרפיה" data-en="Typography">טיפוגרפיה</span>
-                        <span class="proj-year">03</span>
-                    </div>
-                </a>
-            </li>
-            <li class="project-row reveal" data-preview="project1.jpg" style="transition-delay:.2s">
-                <a href="sketchbook.html" style="display:contents;color:inherit;text-decoration:none">
-                    <span class="proj-name" data-he="איור" data-en="Illustration">איור</span>
-                    <div class="proj-right">
-                        <span class="proj-cat" data-he="סקצ'בוק" data-en="Sketchbook">סקצ'בוק</span>
-                        <span class="proj-year">04</span>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </section>
-
-    <!-- ── About ─────────────────────────────────────────────────── -->
-    <section id="about">
-        <div>
-            <p class="section-label reveal" data-he="(אודות)" data-en="(About)">(אודות)</p>
-            <p class="about-text reveal" style="transition-delay:.1s"
-                data-he="סטודנט לעיצוב גרפי מפרדס חנה. אוהב טיפוגרפיה, עיצוב ווב ואפליקציות, גיימינג ובישול. מחפש <em>עמדת סטודנט</em> כ-UX/UI intern או Product Designer."
-                data-en="Graphic design student from Pardes Hanna. I love Typography, web & app design, gaming and cooking. Looking for <em>a student position</em> as a UX/UI intern or Product Designer.">
-                סטודנט לעיצוב גרפי מפרדס חנה. אוהב טיפוגרפיה, עיצוב ווב ואפליקציות, גיימינג ובישול. מחפש <em>עמדת
-                    סטודנט</em> כ-UX/UI intern או Product Designer.
-            </p>
-        </div>
-        <div class="about-details reveal" style="transition-delay:.15s">
-            <div class="about-detail-item">
-                <div class="about-detail-label" data-he="התמחות" data-en="Expertise">התמחות</div>
-                <div class="about-detail-value" data-he="Adobe Suite, Figma, Wix" data-en="Adobe Suite, Figma, Wix">
-                    Adobe Suite, Figma, Wix</div>
-            </div>
-            <div class="about-detail-item">
-                <div class="about-detail-label" data-he="כלים" data-en="Tools">כלים</div>
-                <div class="about-detail-value">Figma, React, GSAP, Three.js</div>
-            </div>
-            <div class="about-detail-item">
-                <div class="about-detail-label" data-he="זמינות" data-en="Availability">זמינות</div>
-                <div class="about-detail-value" data-he="פתוח לפרויקטים חדשים" data-en="Open for new projects">פתוח
-                    לפרויקטים חדשים</div>
-            </div>
-            <div class="about-detail-item">
-                <div class="about-detail-label" data-he="שפות" data-en="Languages">שפות</div>
-                <div class="about-detail-value" data-he="עברית, אנגלית" data-en="Hebrew, English">עברית, אנגלית</div>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- ── Contact ───────────────────────────────────────────────── -->
-    <section id="contact">
-        <p class="section-label reveal" data-he="(צרו קשר)" data-en="(Get in Touch)">(צרו קשר)</p>
-        <h2 class="contact-headline reveal" style="transition-delay:.1s">
-            <a href="mailto:hello@yonatan.com">
-                <span data-he="בואו<br>נדבר" data-en="Let's<br>Talk">בואו<br>נדבר</span>
-            </a>
-        </h2>
-        <div class="contact-links reveal" style="transition-delay:.2s">
-            <a href="mailto:yonatanalperin123@gmail.com">yonatanalperin123@gmail.com</a>
-            <a href="https://www.instagram.com/yonatanalperin123/" target="_blank" rel="noopener" data-he="אינסטגרם"
-                data-en="Instagram">אינסטגרם</a>
+    <!-- ── Project nav (shown when a panel is active) ────────────── -->
+    <div id="proj-nav">
+        <button id="proj-back-btn" class="nav-back">חזרה</button>
+        <span class="nav-logo">יונתן</span>
+    </div>
+
+    <!-- ── Project panels ────────────────────────────────────────── -->
+
+    <!-- 01 ספר -->
+    <div id="proj-book" class="proj-panel">
+        <section class="proj-hero">
+            <p class="proj-number reveal">01 / 05</p>
+            <h1 class="proj-title reveal" style="transition-delay:.1s">ספר<br>המימז<br>הישראלי</h1>
+            <div class="proj-meta reveal" style="transition-delay:.2s">
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">קטגוריה</div>
+                    <div class="proj-meta-value">עיצוב ספר</div>
+                </div>
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">סיכום</div>
+                    <div class="proj-meta-value">ספר העוסק בתרבות המימז הישראלית</div>
+                </div>
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">שנה</div>
+                    <div class="proj-meta-value">2025</div>
+                </div>
+            </div>
+        </section>
+        <div class="proj-description">
+            <div class="proj-desc-label reveal">על הפרויקט</div>
+            <div class="proj-desc-text reveal" style="transition-delay:.1s">
+                <p>ספר זה הוא מקדש לתרבות המימז הישראלית. בספר נחקור את מקורות המימז, נגדיר מה הוא מים ומה הוא מים ישראלי, איך הם משפיעים על חיי היום יום שלנו — ממקפיינים פרסומיים של משרדי ממשלה ועד עמודי מימז איזוטריים.</p>
+                <p>בנוסף, הספר מכיל ארכיב של מימז ישראליים ומגוירים — שמטרתו להראות לקורא את העושר התרבותי שנמצא במקומות חבויים מהעין הציבורית. מטרת הספר היא לפתוח צוהר לתרבות אינטרנט נישתית שלאט לאט הופכת לקונצנזוס ציבורי.</p>
+            </div>
         </div>
-    </section>
+        <div class="proj-images cols-2 reveal">
+            <div class="proj-img-wrap">
+                <img loading="lazy" src="book/להעלאהלאינסטגרם-02.jpg" alt="עטיפה קדמית — בחוץ">
+            </div>
+            <div class="proj-img-wrap">
+                <img loading="lazy" src="book/להעלאהלאינסטגרם-01.jpg" alt="עטיפה אחורית">
+            </div>
+        </div>
+        <div class="proj-images cols-2 reveal" style="transition-delay:.05s">
+            <div class="proj-img-wrap">
+                <img loading="lazy" src="book/להעלאהלאינסטגרם-03.jpg" alt="פרישה פנימית — כותרות">
+            </div>
+            <div class="proj-img-wrap">
+                <img loading="lazy" src="book/להעלאהלאינסטגרם-04.jpg" alt="עמוד פתיחה — תוכן">
+            </div>
+        </div>
+        <div class="proj-images cols-1 reveal" style="transition-delay:.1s">
+            <div class="proj-img-wrap">
+                <img loading="lazy" src="book/להעלאהלאינסטגרם-08.jpg" alt="פרישה פנימית — תוכן">
+            </div>
+        </div>
+        <div class="proj-skills reveal">
+            <span class="proj-skills-label">כלים</span>
+            <span class="skill-tag">Adobe InDesign</span>
+            <span class="skill-tag">Adobe Illustrator</span>
+            <span class="skill-tag">Editorial Design</span>
+            <span class="skill-tag">Photography</span>
+        </div>
+        <div class="proj-next">
+            <span class="proj-next-label">הפרויקט הבא</span>
+            <a href="web.html" class="proj-next-link">ווב →</a>
+        </div>
+        <footer>
+            <span>© 2025 יונתן אלפרין</span>
+            <span>01 / 05</span>
+        </footer>
+    </div>
 
-    <!-- ── Footer ────────────────────────────────────────────────── -->
-    <footer>
-        <span>© 2025 יונתן</span>
-        <span data-he="עוצב ופותח בירושלים" data-en="Designed & built in Jerusalem">עוצב ופותח בירושלים</span>
-    </footer>
+    <!-- 02 ווב -->
+    <div id="proj-web" class="proj-panel">
+        <section class="proj-hero">
+            <p class="proj-number reveal">02 / 05</p>
+            <h1 class="proj-title reveal" style="transition-delay:.1s">ווב</h1>
+            <div class="proj-meta reveal" style="transition-delay:.2s">
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">קטגוריה</div>
+                    <div class="proj-meta-value">עיצוב ופיתוח ווב</div>
+                </div>
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">סיכום</div>
+                    <div class="proj-meta-value">ארכיון דיגיטלי המדמיין מחדש את הקאנון התרבותי של הדור הדתי-לאומי</div>
+                </div>
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">שנה</div>
+                    <div class="proj-meta-value">2025</div>
+                </div>
+            </div>
+        </section>
+        <div class="proj-description">
+            <div class="proj-desc-label reveal">על הפרויקט</div>
+            <div class="proj-desc-text reveal" style="transition-delay:.1s">
+                <p>"הספרייה" הוא ארכיון דיגיטלי ויצירת אמנות אינטראקטיבית שנועדה לדמיין מחדש את הקאנון התרבותי של הדור הדתי-לאומי המודרני.</p>
+                <p>האתר יוצר ספרייה דיגיטלית, לא-היררכית. הוא מציג "קאנון תרבותי חדש" של 26 ספרים המשלב טקסטים תורניים קלאסיים (כמו "אורות" של הרב קוק) עם פרוזה מודרנית (כמו הארי פוטר או פרסי ג'קסון), פילוסופיה ושירה — מפוזרים יחד על משטח וירטואלי ללא הפרדה, המסמל דור שמאמץ את שני העולמות באופן שווה ("ספרא וסייפא").</p>
+                <p>עטיפות הספרים עוצבו מחדש כסדרה קוהרנטית.</p>
+            </div>
+        </div>
+        <div class="proj-images cols-1 reveal">
+            <div class="proj-img-wrap wide">
+                <img src="webcover.jpg" alt="ספריית הספרים הדיגיטלית — עטיפות מעוצבות מחדש">
+            </div>
+        </div>
+        <div class="proj-images cols-2 reveal" style="transition-delay:.05s">
+            <div class="proj-img-wrap">
+                <img src="bookcover.jpg" alt="עטיפת ספר פיזית">
+            </div>
+            <div class="proj-img-wrap"></div>
+        </div>
+        <div class="proj-skills reveal">
+            <span class="proj-skills-label">כלים</span>
+            <span class="skill-tag">Vibe Coding</span>
+            <span class="skill-tag">HTML</span>
+            <span class="skill-tag">Image Making</span>
+            <span class="skill-tag">Adobe Illustrator</span>
+        </div>
+        <div class="proj-next">
+            <span class="proj-next-label">הפרויקט הבא</span>
+            <a href="branding.html" class="proj-next-link">ברנדינג →</a>
+        </div>
+        <footer>
+            <span>© 2025 יונתן אלפרין</span>
+            <span>02 / 05</span>
+        </footer>
+    </div>
+
+    <!-- 03 ברנדינג -->
+    <div id="proj-branding" class="proj-panel">
+        <section class="proj-hero">
+            <p class="proj-number reveal">03 / 05</p>
+            <h1 class="proj-title reveal" style="transition-delay:.1s">ברנדינג</h1>
+            <div class="proj-meta reveal" style="transition-delay:.2s">
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">קטגוריה</div>
+                    <div class="proj-meta-value">זהות מותגית</div>
+                </div>
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">סיכום</div>
+                    <div class="proj-meta-value">זהות מותגית לדליקטסן שחוגג מלאכת יד מקומית וסקרנות קולינרית</div>
+                </div>
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">לקוח</div>
+                    <div class="proj-meta-value">השוקת — פרדס חנה</div>
+                </div>
+            </div>
+        </section>
+        <div class="proj-description">
+            <div class="proj-desc-label reveal">על הפרויקט</div>
+            <div class="proj-desc-text reveal" style="transition-delay:.1s">
+                <p>השוקת היא יותר מסתם דליקטסן — היא חגיגה של מלאכת יד מקומית וסקרנות קולינרית. ממוקמת בפרדס חנה, מרכז אומנותי זה מחבר בין חובבי אוכל לתוצרת איכותית, farm-to-table, עטופה בזהות מותגית שמרגישה אותנטית כמו המרכיבים עצמם.</p>
+                <p>יצרנו שפה ויזואלית השורשת בגוונים אדמתיים ואיורים בסגנון חיתוך עץ, המשקפים את מורשת גידול הבקר של הבעלים ואת התשוקה לשקיפות. מתוויות הצנצנות ועד פוסטרי הסדנאות — כל אלמנט עיצובי מזמין את הלקוחות להאט, לטעום את ההבדל, ולגלות את הסיפור מאחורי האוכל שלהם.</p>
+            </div>
+        </div>
+        <div class="proj-images cols-1 reveal">
+            <div class="proj-img-wrap wide">
+                <img src="brandingcover.jpg" alt="השוקת — זהות מותגית">
+            </div>
+        </div>
+        <div class="proj-skills reveal">
+            <span class="proj-skills-label">כלים</span>
+            <span class="skill-tag">Concept Creation</span>
+            <span class="skill-tag">Adobe Illustrator</span>
+            <span class="skill-tag">Adobe Photoshop</span>
+            <span class="skill-tag">InDesign</span>
+        </div>
+        <div class="proj-next">
+            <span class="proj-next-label">הפרויקט הבא</span>
+            <a href="typeface.html" class="proj-next-link">גופן →</a>
+        </div>
+        <footer>
+            <span>© 2025 יונתן אלפרין</span>
+            <span>03 / 05</span>
+        </footer>
+    </div>
+
+    <!-- 04 גופן -->
+    <div id="proj-typeface" class="proj-panel">
+        <section class="proj-hero">
+            <p class="proj-number reveal">04 / 05</p>
+            <h1 class="proj-title reveal" style="transition-delay:.1s">גופן</h1>
+            <div class="proj-meta reveal" style="transition-delay:.2s">
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">קטגוריה</div>
+                    <div class="proj-meta-value">טיפוגרפיה</div>
+                </div>
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">סיכום</div>
+                    <div class="proj-meta-value">גופן בהשראת הטיפוגרפיה הישראלית של שנות ה-60 וה-70</div>
+                </div>
+            </div>
+        </section>
+        <div class="proj-description">
+            <div class="proj-desc-label reveal">על הפרויקט</div>
+            <div class="proj-desc-text reveal" style="transition-delay:.1s">
+                <p>נבו — גופן עברי חדש שנוצר בהשראת טיפוגרפיה ישראלית משנות ה-60 וה-70 של המאה ה-20.</p>
+                <p>הגופן שואב מהאסתטיקה הגרפית של אותה תקופה — תקופה שבה עיצוב ישראלי מצא את קולו הייחודי, בין מודרניזם אירופי לזהות מקומית מתגבשת.</p>
+            </div>
+        </div>
+        <div class="typeface-specimen reveal">
+            <div class="specimen-name">נבו</div>
+            <div class="specimen-alphabet">אבגדהוזחטיכלמנסעפצקרשת ךםןףץ</div>
+            <div class="specimen-numbers">1234567890 ! ? @ # [] () . , : ; - _ ₪</div>
+        </div>
+        <div class="proj-images cols-1 reveal">
+            <div class="proj-img-wrap wide">
+                <img src="fontcover.jpg" alt="נבו — גופן ארץ ישראלי">
+            </div>
+        </div>
+        <div class="proj-skills reveal">
+            <span class="proj-skills-label">כלים</span>
+            <span class="skill-tag">Glyphs App</span>
+            <span class="skill-tag">Adobe Illustrator</span>
+            <span class="skill-tag">Type Design</span>
+        </div>
+        <div class="proj-next">
+            <span class="proj-next-label">הפרויקט הבא</span>
+            <a href="sketchbook.html" class="proj-next-link">איור →</a>
+        </div>
+        <footer>
+            <span>© 2025 יונתן אלפרין</span>
+            <span>04 / 05</span>
+        </footer>
+    </div>
+
+    <!-- 05 איור -->
+    <div id="proj-sketchbook" class="proj-panel">
+        <section class="proj-hero">
+            <p class="proj-number reveal">05 / 05</p>
+            <h1 class="proj-title reveal" style="transition-delay:.1s">איור</h1>
+            <div class="proj-meta reveal" style="transition-delay:.2s">
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">קטגוריה</div>
+                    <div class="proj-meta-value">סקצ'בוק ואיור</div>
+                </div>
+                <div class="proj-meta-item">
+                    <div class="proj-meta-label">סיכום</div>
+                    <div class="proj-meta-value">אוסף איורים, סקיצות ויצירות אישיות</div>
+                </div>
+            </div>
+        </section>
+        <div class="proj-description">
+            <div class="proj-desc-label reveal">על הפרויקט</div>
+            <div class="proj-desc-text reveal" style="transition-delay:.1s">
+                <p>אוסף של איורים, סקיצות ויצירות שנוצרו מתוך סקרנות ואהבה. כאן אני מאפשר לעצמי לשחק, לנסות ולטעות.</p>
+            </div>
+        </div>
+        <div class="sketch-grid reveal">
+            <div class="sketch-item">
+                <img src="illustrationcover.jpg" alt="איור — מן המיצר">
+            </div>
+            <div class="sketch-item">
+                <img loading="lazy" src="projects/sketchbook/02.jpg" alt=""
+                    onerror="this.parentElement.innerHTML='<div class=placeholder>02.jpg</div>'">
+            </div>
+            <div class="sketch-item">
+                <img loading="lazy" src="projects/sketchbook/03.jpg" alt=""
+                    onerror="this.parentElement.innerHTML='<div class=placeholder>03.jpg</div>'">
+            </div>
+            <div class="sketch-item">
+                <img loading="lazy" src="projects/sketchbook/04.jpg" alt=""
+                    onerror="this.parentElement.innerHTML='<div class=placeholder>04.jpg</div>'">
+            </div>
+            <div class="sketch-item">
+                <img loading="lazy" src="projects/sketchbook/05.jpg" alt=""
+                    onerror="this.parentElement.innerHTML='<div class=placeholder>05.jpg</div>'">
+            </div>
+            <div class="sketch-item">
+                <img loading="lazy" src="projects/sketchbook/06.jpg" alt=""
+                    onerror="this.parentElement.innerHTML='<div class=placeholder>06.jpg</div>'">
+            </div>
+            <div class="sketch-item">
+                <img loading="lazy" src="projects/sketchbook/07.jpg" alt=""
+                    onerror="this.parentElement.innerHTML='<div class=placeholder>07.jpg</div>'">
+            </div>
+            <div class="sketch-item">
+                <img loading="lazy" src="projects/sketchbook/08.jpg" alt=""
+                    onerror="this.parentElement.innerHTML='<div class=placeholder>08.jpg</div>'">
+            </div>
+        </div>
+        <div class="proj-next">
+            <span class="proj-next-label">הפרויקט הבא</span>
+            <a href="book.html" class="proj-next-link">ספר →</a>
+        </div>
+        <footer>
+            <span>© 2025 יונתן אלפרין</span>
+            <span>05 / 05</span>
+        </footer>
+    </div>
 
     <script>
-        /* ═══════════════════════════════════════════════════════════
-           CURSOR
-        ═══════════════════════════════════════════════════════════ */
+        /* ─── Shared mouse state ─────────────────────────────────── */
+        let mouseX = -200, mouseY = -200;
+
+        /* ─── Touch / auto-roam ──────────────────────────────────── */
+        const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+        let roamT = 0;
+
+        /* ─── Eye center cache (rebuilt on grid rebuild) ─────────── */
+        let eyeCache = [];
+
+        /* ─── SPA state (declared early to avoid TDZ in rAF loop) ── */
+        let activePanel = null;
+
+        /* ─── Cursor ─────────────────────────────────────────────── */
         const cursor = document.getElementById('cursor');
-        let cx = -100, cy = -100, tx = -100, ty = -100;
+        let cx = -200, cy = -200;
 
-        document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
-
-        ; (function loop() {
-            cx += (tx - cx) * .18;
-            cy += (ty - cy) * .18;
-            cursor.style.left = cx + 'px';
-            cursor.style.top = cy + 'px';
-            requestAnimationFrame(loop);
-        })();
-
-        document.querySelectorAll('a, button, .project-row').forEach(el => {
+        document.querySelectorAll('a, button').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('big'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
         });
 
-        /* ═══════════════════════════════════════════════════════════
-           SCROLL THREAD
-        ═══════════════════════════════════════════════════════════ */
-        const thread = document.getElementById('thread');
-        window.addEventListener('scroll', () => {
-            const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-            thread.style.height = (pct * 100) + '%';
-        }, { passive: true });
+        /* ─── Eye grid ───────────────────────────────────────────── */
+        const eyeGrid  = document.getElementById('eye-grid');
+        const CELL_PX  = 52;
+        const OPEN_R   = 160;
+        const MAX_IRIS = 5;
 
-        /* ═══════════════════════════════════════════════════════════
-           EYE TRACKING
-        ═══════════════════════════════════════════════════════════ */
-        const eyeLayer = document.getElementById('eye-layer');
-        const faceWrap = document.querySelector('.hero-portrait-wrap');
-        const MAX_EYE = 6; // px — constrained to avoid clipping
+        const PROJECTS = [
+            { cover: 'bookcovernew.jpg',         href: 'book.html',       hue: 0,   sat: 3,   name: 'ספר'     },
+            { cover: 'webcovernew.jpg',           href: 'web.html',        hue: 200, sat: 2.5, name: 'ווב'     },
+            { cover: 'brandingcovernew.jpg',      href: 'branding.html',   hue: 130, sat: 2.5, name: 'ברנדינג' },
+            { cover: 'fontcovernew.jpg',          href: 'typeface.html',   hue: 280, sat: 2.5, name: 'גופן'    },
+            { cover: 'illustrationcovernew.jpg',  href: 'sketchbook.html', hue: 50,  sat: 2.5, name: 'איור'    },
+            { cover: 'face copynew.png',          href: '#about',          hue: 0,   sat: 0,   name: 'אודות'   },
+        ];
+        const PROJ_POSITIONS = [
+            [0.20, 0.22],
+            [0.72, 0.18],
+            [0.35, 0.60],
+            [0.76, 0.65],
+            [0.15, 0.78],
+            [0.50, 0.40],
+        ];
 
-        document.addEventListener('mousemove', e => {
-            if (!faceWrap) return;
-            const r = faceWrap.getBoundingClientRect();
-            const dx = e.clientX - (r.left + r.width / 2);
-            const dy = e.clientY - (r.top + r.height / 2);
-            const dist = Math.hypot(dx, dy);
-            const angle = Math.atan2(dy, dx);
-            const clamped = Math.min(dist / 12, MAX_EYE);
-            const ox = Math.cos(angle) * clamped;
-            const oy = Math.sin(angle) * clamped;
-            eyeLayer.style.transform = `translate(${ox}px, ${oy}px)`;
-        });
+        function scatterProjectEyes() {
+            const gridRect = eyeGrid.getBoundingClientRect();
+            const units    = [...eyeGrid.querySelectorAll('.eye-unit:not([data-project])')];
+            const used     = new Set();
 
-        /* ═══════════════════════════════════════════════════════════
-           PROJECT HOVER PREVIEW  (lerp-smoothed)
-        ═══════════════════════════════════════════════════════════ */
-        const preview = document.getElementById('preview-img');
-        let px = 0, py = 0, ptx = 0, pty = 0, previewActive = false;
+            PROJECTS.forEach((proj, pi) => {
+                const [cf, rf] = PROJ_POSITIONS[pi];
+                const tx = gridRect.left + gridRect.width  * cf;
+                const ty = gridRect.top  + gridRect.height * rf;
 
-        document.querySelectorAll('.project-row').forEach(row => {
-            const src = row.dataset.preview;
+                let bestIdx = -1, bestDist = Infinity;
+                units.forEach((u, ui) => {
+                    if (used.has(ui)) return;
+                    const r   = u.getBoundingClientRect();
+                    const ucx = r.left + r.width  / 2;
+                    const ucy = r.top  + r.height / 2;
+                    const d   = Math.hypot(ucx - tx, ucy - ty);
+                    if (d < bestDist) { bestDist = d; bestIdx = ui; }
+                });
 
-            row.addEventListener('mouseenter', () => {
-                if (src) preview.src = src;
-                preview.classList.add('visible');
-                previewActive = true;
+                if (bestIdx === -1) return;
+                used.add(bestIdx);
+                const u = units[bestIdx];
+                u.dataset.project = proj.href;
+                u.classList.add('proj-eye', 'is-open');
+
+                const iris     = u.querySelector('.eu-eye');
+                const faceOpen = u.querySelector('.eu-open');
+                if (proj.eyeImg) {
+                    if (faceOpen) { faceOpen.src = proj.eyeImg; faceOpen.style.filter = ''; }
+                    if (iris) iris.style.filter = `saturate(0) brightness(1.4)`;
+                } else {
+                    if (iris)     iris.style.filter     = `hue-rotate(${proj.hue}deg) saturate(${proj.sat}) brightness(1.3)`;
+                    if (faceOpen) faceOpen.style.filter = `hue-rotate(${proj.hue}deg) saturate(.4)`;
+                }
+
+
+                u.addEventListener('mouseenter', () => {
+                    cursor.classList.add('big');
+                    const targetImg = document.querySelector(`.preview-item[data-href="${proj.href}"]`);
+                    if (targetImg) targetImg.classList.add('visible');
+                    ptx = calcPreviewX(mouseX);
+                    pty = mouseY - (previewH || 150) / 2;
+                    px = ptx; py = pty;
+                    previewActive = true;
+                });
+                u.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('big');
+                    const targetImg = document.querySelector(`.preview-item[data-href="${proj.href}"]`);
+                    if (targetImg) targetImg.classList.remove('visible');
+                    previewActive = false;
+                });
+                u.addEventListener('click', () => {
+                    if (proj.href === '#about') { window.__openAboutModal && window.__openAboutModal(); }
+                    else { openProject(proj.href); }
+                });
             });
-            row.addEventListener('mouseleave', () => {
-                preview.classList.remove('visible');
-                previewActive = false;
-            });
-            row.addEventListener('mousemove', e => {
-                // offset so image doesn't cover the text
-                ptx = e.clientX + 32;
-                pty = e.clientY - preview.offsetHeight / 2;
-            });
-        });
+        }
 
-        ; (function previewLoop() {
-            px += (ptx - px) * .12;
-            py += (pty - py) * .12;
-            preview.style.left = px + 'px';
-            preview.style.top = py + 'px';
-            requestAnimationFrame(previewLoop);
+        function buildGrid() {
+            eyeGrid.innerHTML = '';
+            const GAP  = 14;
+            const PAD  = 24;
+            const avW  = eyeGrid.offsetWidth  - PAD * 2;
+            const avH  = eyeGrid.offsetHeight - PAD * 2;
+            const cols = Math.floor((avW + GAP) / (CELL_PX + GAP));
+            const rows = Math.floor((avH + GAP) / (CELL_PX + GAP));
+            eyeGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            eyeGrid.style.gridTemplateRows    = `repeat(${rows}, 1fr)`;
+            for (let i = 0; i < cols * rows; i++) {
+                const u = document.createElement('div');
+                u.className = 'eye-unit';
+                u.innerHTML =
+                    '<img class="eu-face eu-closed" src="closed face copy.png" alt="" draggable="false">' +
+                    '<img class="eu-face eu-open"   src="face copy.png"        alt="" draggable="false">' +
+                    '<img class="eu-eye"            src="eye copy.png"         alt="" aria-hidden="true" draggable="false">';
+                const rot = ((Math.random() - 0.5) * 10).toFixed(2);
+                u.style.setProperty('--rot', rot + 'deg');
+                eyeGrid.appendChild(u);
+            }
+            
+            // Build the preload container for hover images
+            const prevCont = document.getElementById('preview-container');
+            prevCont.innerHTML = '';
+            PROJECTS.forEach(proj => {
+                const img = document.createElement('img');
+                img.src = proj.cover;
+                img.className = 'preview-item';
+                img.dataset.href = proj.href;
+                img.alt = '';
+                img.setAttribute('aria-hidden', 'true');
+                prevCont.appendChild(img);
+            });
+
+            setTimeout(() => {
+                scatterProjectEyes();
+                cacheEyeCenters();
+                if (isTouch) touchEntranceWave();
+            }, 60);
+        }
+
+
+
+        function cacheEyeCenters() {
+            eyeCache = [];
+            eyeGrid.querySelectorAll('.eye-unit').forEach(u => {
+                const r = u.getBoundingClientRect();
+                eyeCache.push({
+                    el:    u,
+                    iris:  u.querySelector('.eu-eye'),
+                    cx:    r.left + r.width  / 2,
+                    cy:    r.top  + r.height / 2,
+                    isProj: u.classList.contains('proj-eye'),
+                    isZone: !!u.dataset.textZone,
+                });
+            });
+        }
+
+        function touchEntranceWave() {
+            const projEyes = [...eyeGrid.querySelectorAll('.proj-eye')];
+            const gr  = eyeGrid.getBoundingClientRect();
+            const gcx = gr.left + gr.width  / 2;
+            const gcy = gr.top  + gr.height / 2;
+
+            projEyes.forEach(el => {
+                const r    = el.getBoundingClientRect();
+                const dist = Math.hypot((r.left + r.width / 2) - gcx, (r.top + r.height / 2) - gcy);
+                el.classList.remove('is-open');
+                setTimeout(() => el.classList.add('is-open'), 250 + dist * 1.4);
+            });
+
+        }
+
+        /* ─── Page loader ────────────────────────────────────────── */
+        (function initLoader() {
+            const ldr      = document.getElementById('loader');
+            const ldrCell  = ldr.querySelector('.loader-eye-cell');
+            const ldrIris  = ldr.querySelector('.ldr-iris');
+            const isDesk   = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+            if (!isDesk) { ldr.remove(); return; }
+
+            eyeGrid.dataset.loading = '1';
+
+            // Iris tracks the mouse while loading
+            const MAX_SHIFT = 6;
+            document.addEventListener('mousemove', function onLdrMove(e) {
+                if (!ldr.isConnected) {
+                    document.removeEventListener('mousemove', onLdrMove);
+                    return;
+                }
+                const r   = ldrCell.getBoundingClientRect();
+                const ang = Math.atan2(e.clientY - (r.top + r.height / 2),
+                                       e.clientX - (r.left + r.width  / 2));
+                const d   = Math.min(
+                    Math.hypot(e.clientX - (r.left + r.width  / 2),
+                               e.clientY - (r.top  + r.height / 2)) / 18,
+                    MAX_SHIFT
+                );
+                ldrIris.style.transform = `translate(${(Math.cos(ang)*d).toFixed(2)}px,${(Math.sin(ang)*d).toFixed(2)}px)`;
+            }, { passive: true });
+
+            // Track loaded images
+            const IMAGES = [
+                'face copy.png', 'closed face copy.png', 'eye copy.png', 'prflpic.png',
+                ...PROJECTS.map(p => p.cover),
+            ];
+            const TOTAL   = IMAGES.length;
+            const MIN_MS  = 1100;
+            const startTs = performance.now();
+            let loaded    = 0;
+
+            function finish() {
+                const wait = Math.max(0, MIN_MS - (performance.now() - startTs));
+                setTimeout(() => {
+                    delete eyeGrid.dataset.loading;
+                    eyeGrid.querySelectorAll('.eye-unit').forEach(u => u.classList.add('wave-in'));
+
+                    ldr.classList.add('ldr-fade');
+                    setTimeout(() => ldr.remove(), 820);
+                }, wait);
+            }
+
+            IMAGES.forEach(src => {
+                const img = new Image();
+                img.onload = img.onerror = () => { if (++loaded >= TOTAL) finish(); };
+                img.src = src;
+            });
         })();
 
-        /* ═══════════════════════════════════════════════════════════
-           SCROLL REVEAL
-        ═══════════════════════════════════════════════════════════ */
-        const io = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-        }, { threshold: .08 });
+        buildGrid();
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(buildGrid, 150);
+        });
 
-        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+        /* ─── Project preview ────────────────────────────────────── */
+        const preview = document.getElementById('preview-container');
+        let px = -9999, py = -9999, ptx = -9999, pty = -9999, previewActive = false;
 
-        /* ═══════════════════════════════════════════════════════════
-           LANGUAGE TOGGLE
-        ═══════════════════════════════════════════════════════════ */
+        function calcPreviewX(mx) {
+            const w = preview.offsetWidth || 400;
+            if (mx + 24 + w > window.innerWidth) return mx - 24 - w;
+            return mx + 24;
+        }
+
+        let previewH = 0;
+        const ro = new ResizeObserver(() => { previewH = preview.offsetHeight; });
+        ro.observe(preview);
+
+        if (!isTouch) document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            if (previewActive) {
+                ptx = calcPreviewX(mouseX);
+                pty = mouseY - (previewH || 150) / 2;
+            }
+        }, { passive: true });
+
+        /* ─── Spotlight ─────────────────────────────────────────── */
+        const spotlight = document.getElementById('spotlight');
+        let slx = 50, sly = 50, stx = 50, sty = 50;
+
+        /* ─── rAF loop ───────────────────────────────────────────── */
+        let pScale = 0.9;
+        (function loop() {
+            // Auto-roam on touch devices — clockwise circle, attracted to project eyes
+            if (isTouch) {
+                roamT += 0.004;
+                let bx = window.innerWidth  * (0.5 + 0.38 * Math.cos(roamT));
+                let by = window.innerHeight * (0.5 + 0.38 * Math.sin(roamT));
+
+                eyeCache.forEach(ec => {
+                    if (!ec.isProj) return;
+                    const dx = ec.cx - bx;
+                    const dy = ec.cy - by;
+                    const d  = Math.hypot(dx, dy);
+                    if (d < 220) {
+                        const f = (1 - d / 220) * 0.45;
+                        bx += dx * f;
+                        by += dy * f;
+                    }
+                });
+
+                mouseX = bx;
+                mouseY = by;
+            }
+
+
+
+            // Calculate eye proximity
+            eyeCache.forEach(ec => {
+                if (ec.isProj || ec.isZone) return;
+                const d = Math.hypot(mouseX - ec.cx, mouseY - ec.cy);
+                const isOpen = d < OPEN_R;
+                if (ec.isOpen !== isOpen) {
+                    ec.el.classList.toggle('is-open', isOpen);
+                    ec.isOpen = isOpen;
+                }
+            });
+
+            if (!isTouch) {
+                cx += (mouseX - cx) * .45;
+                cy += (mouseY - cy) * .45;
+                cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+            }
+
+            stx = (mouseX / window.innerWidth)  * 100;
+            sty = (mouseY / window.innerHeight) * 100;
+            slx += (stx - slx) * .04;
+            sly += (sty - sly) * .04;
+            spotlight.style.transform = `translate(${slx - 50}vw, ${sly - 50}vh)`;
+
+            if (!isTouch) {
+                px += (ptx - px) * .18;
+                py += (pty - py) * .18;
+                pScale += ((previewActive ? 1 : 0.9) - pScale) * .15;
+                preview.style.transform = `translate(${px}px, ${py}px) scale(${pScale.toFixed(4)})`;
+            }
+
+            if (!activePanel) eyeCache.forEach(ec => {
+                if (!ec.iris || !ec.el.classList.contains('is-open')) return;
+                const angle = Math.atan2(mouseY - ec.cy, mouseX - ec.cx);
+                const dist  = Math.min(Math.hypot(mouseX - ec.cx, mouseY - ec.cy) / 20, MAX_IRIS);
+                ec.iris.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px)`;
+            });
+
+            requestAnimationFrame(loop);
+        })();
+
+        /* ─── Language toggle ────────────────────────────────────── */
         const html = document.documentElement;
         const langBtn = document.getElementById('lang-btn');
         let lang = 'he';
@@ -780,17 +1137,122 @@
             html.setAttribute('lang', l);
             html.setAttribute('dir', l === 'he' ? 'rtl' : 'ltr');
             langBtn.textContent = l === 'he' ? 'EN' : 'עב';
-
             document.querySelectorAll('[data-he]').forEach(el => {
                 const val = el.dataset[l];
                 if (!val) return;
-                // support <br> and <em> tags
                 if (val.includes('<')) el.innerHTML = val;
                 else el.textContent = val;
             });
         }
 
         langBtn.addEventListener('click', () => applyLang(lang === 'he' ? 'en' : 'he'));
+        document.getElementById('about-btn').addEventListener('click', openModal);
+
+        /* ─── About modal ────────────────────────────────────────── */
+        const aboutModal = document.getElementById('about-modal');
+
+        function openModal() {
+            aboutModal.classList.add('open');
+            aboutModal.setAttribute('aria-hidden', 'false');
+        }
+        function closeModal() {
+            aboutModal.classList.remove('open');
+            aboutModal.setAttribute('aria-hidden', 'true');
+        }
+
+        document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+        aboutModal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                if (aboutModal.classList.contains('open')) closeModal();
+                else if (activePanel) closeProject();
+            }
+        });
+
+        window.__openAboutModal = openModal;
+
+        /* ─── SPA project navigation ─────────────────────────────── */
+        const hero    = document.getElementById('hero');
+        const thread  = document.getElementById('thread');
+        const projNav = document.getElementById('proj-nav');
+
+        const PANEL_MAP = {
+            'book.html':       'proj-book',
+            'web.html':        'proj-web',
+            'branding.html':   'proj-branding',
+            'typeface.html':   'proj-typeface',
+            'sketchbook.html': 'proj-sketchbook',
+        };
+
+        let revealObserver = null;
+
+        function openProject(href) {
+            const panelId = PANEL_MAP[href];
+            if (!panelId) return;
+            const panel = document.getElementById(panelId);
+            if (!panel) return;
+
+            if (activePanel && activePanel !== panel) {
+                activePanel.classList.remove('active');
+            }
+
+            panel.scrollTop = 0;
+            panel.querySelectorAll('.reveal').forEach(el => el.classList.remove('in'));
+
+            hero.classList.add('proj-open');
+            preview.classList.remove('visible');
+            previewActive = false;
+            ptx = -9999; pty = -9999; px = -9999; py = -9999;
+
+            panel.classList.add('active');
+            activePanel = panel;
+
+            projNav.classList.add('active');
+            thread.classList.add('active');
+            thread.style.height = '0%';
+
+            if (revealObserver) revealObserver.disconnect();
+            revealObserver = new IntersectionObserver(
+                entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
+                { threshold: .08, root: panel }
+            );
+            panel.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        }
+
+        function closeProject() {
+            if (!activePanel) return;
+            activePanel.classList.remove('active');
+            activePanel = null;
+            hero.classList.remove('proj-open');
+            projNav.classList.remove('active');
+            thread.classList.remove('active');
+            if (revealObserver) { revealObserver.disconnect(); revealObserver = null; }
+        }
+
+        // Scroll thread — track active panel's scroll
+        document.querySelectorAll('.proj-panel').forEach(panel => {
+            panel.addEventListener('scroll', () => {
+                if (panel !== activePanel) return;
+                const p = panel.scrollTop / (panel.scrollHeight - panel.clientHeight);
+                thread.style.height = (p * 100) + '%';
+            }, { passive: true });
+        });
+
+        // Intercept all links inside project panels
+        document.addEventListener('click', e => {
+            const link = e.target.closest('.proj-panel a[href]');
+            if (!link) return;
+            const href = link.getAttribute('href');
+            if (href === 'index.html') {
+                e.preventDefault();
+                closeProject();
+            } else if (PANEL_MAP[href]) {
+                e.preventDefault();
+                openProject(href);
+            }
+        });
+
+        document.getElementById('proj-back-btn').addEventListener('click', closeProject);
     </script>
 </body>
 
