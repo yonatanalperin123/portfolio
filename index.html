@@ -30,7 +30,7 @@
         /* ─── Nevo — variable weight 1–1000 (1 = lightest/least heavy) ─ */
         @font-face {
             font-family: 'Nevo';
-            src: url('font/Nevo-VF.ttf') format('truetype-variations');
+            src: url('Nevo-VF.ttf') format('truetype-variations');
             font-weight: 1 1000;
             font-style: normal;
             font-display: swap;
@@ -256,7 +256,6 @@
             letter-spacing: -.01em;
         }
         .about-text em { font-style: italic; opacity: .7; }
-        .about-details { display: flex; flex-direction: column; gap: 2rem; padding-top: .5rem; }
         .about-detail-item { border-top: 1px solid var(--muted); padding-top: 1rem; }
         .about-detail-label { font-size: .7rem; font-variation-settings: var(--fvs-light); letter-spacing: .14em; text-transform: uppercase; opacity: .35; margin-bottom: .5rem; }
         .about-detail-value { font-size: clamp(1rem, 1.3vw, 1.1rem); font-variation-settings: var(--fvs-regular); opacity: .8; }
@@ -311,9 +310,25 @@
         .modal-close:hover { opacity: 1; }
         .modal-body { display: grid; grid-template-columns: 200px 1fr; gap: clamp(2rem, 4vw, 4rem); align-items: start; }
         .modal-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center top; border-radius: 3px; display: block; }
-        .modal-right { display: flex; flex-direction: column; gap: 2rem; }
-        .modal-main .about-text { font-size: clamp(1rem, 2.2vw, 1.4rem); line-height: 1.5; margin-block: 1.5rem; }
-        .modal-main .currently-strip { border-top: 1px solid var(--muted); padding-top: 1.5rem; margin-top: 2rem; }
+        .modal-right { display: flex; flex-direction: column; gap: 1.5rem; }
+        .modal-main .about-text { font-size: clamp(1rem, 2.2vw, 1.4rem); line-height: 1.42; margin-block: .9rem; }
+        .modal-main .currently-strip { border-top: 1px solid var(--muted); padding-top: 1.25rem; margin-top: 1.25rem; }
+        .about-details { display: flex; flex-direction: column; gap: 1.25rem; padding-top: .25rem; }
+        .about-contact { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .35rem; }
+        .contact-btn {
+            color: var(--fg);
+            text-decoration: none;
+            font-size: .7rem;
+            font-variation-settings: var(--fvs-light);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            border: 1px solid var(--muted);
+            padding: .35rem .85rem;
+            border-radius: 2px;
+            opacity: .6;
+            transition: opacity .2s, border-color .2s;
+        }
+        .contact-btn:hover { opacity: 1; border-color: rgba(233,184,184,.45); }
         @media (max-width: 580px) {
             .modal-body { grid-template-columns: 1fr; }
             .modal-img { aspect-ratio: 4/3; }
@@ -616,7 +631,7 @@
             <button class="modal-close" id="modal-close-btn" aria-label="סגור">&#x2715;</button>
             <div class="modal-body">
                 <div class="modal-left">
-                    <img src="face copynew.png" alt="יונתן" class="modal-img">
+                    <img src="prflpic.png" alt="יונתן" class="modal-img">
                 </div>
                 <div class="modal-right">
                     <div class="modal-main">
@@ -635,7 +650,7 @@
                         <div class="about-detail-item"><div class="about-detail-label">התמחות</div><div class="about-detail-value">Adobe Suite, Figma, Wix</div></div>
                         <div class="about-detail-item"><div class="about-detail-label">כלים</div><div class="about-detail-value">Figma, React, GSAP, Three.js</div></div>
                         <div class="about-detail-item"><div class="about-detail-label">זמינות</div><div class="about-detail-value">פתוח לפרויקטים חדשים</div></div>
-                        <div class="about-detail-item"><div class="about-detail-label">קשר</div><div class="about-detail-value"><a href="mailto:yonatanalperin123@gmail.com">yonatanalperin123@gmail.com</a><br><a href="https://www.instagram.com/yonatanalperin123/" target="_blank" rel="noopener">Instagram</a></div></div>
+                        <div class="about-detail-item"><div class="about-detail-label">קשר</div><div class="about-contact"><a href="mailto:yonatanalperin123@gmail.com" class="contact-btn">מייל</a><a href="https://www.instagram.com/yonatanalperin123/" target="_blank" rel="noopener" class="contact-btn">Instagram</a></div></div>
                     </div>
                 </div>
             </div>
@@ -678,14 +693,14 @@
             </div>
         </div>
         <div class="proj-grid g2 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-02.jpg" alt="עטיפה קדמית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-01.jpg" alt="עטיפה אחורית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-03.jpg" alt="פרישה פנימית — כותרות"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-04.jpg" alt="עמוד פתיחה — תוכן"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-05.jpg" alt="פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-06.jpg" alt="פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-07.jpg" alt="פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-08.jpg" alt="פרישה פנימית — תוכן"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-02.jpg" alt="עטיפה קדמית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-01.jpg" alt="עטיפה אחורית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-03.jpg" alt="פרישה פנימית — כותרות"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-04.jpg" alt="עמוד פתיחה — תוכן"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-05.jpg" alt="פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-06.jpg" alt="פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-07.jpg" alt="פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-08.jpg" alt="פרישה פנימית — תוכן"></div>
         </div>
         <div class="proj-skills reveal">
             <span class="proj-skills-label">כלים</span>
@@ -740,19 +755,19 @@
         <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
             <div class="proj-img-wrap">
                 <video autoplay muted loop playsinline>
-                    <source src="web/Sequence%2002.mp4" type="video/mp4">
+                    <source src="Sequence%2002.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
         <div class="proj-grid g4 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="web/1.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/5.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/7.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/12.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/14.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/17.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/21.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/26.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="1.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="5.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="7.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="12.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="14.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="17.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="21.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="26.png" alt="הספרייה — עטיפה"></div>
         </div>
         <div class="proj-skills reveal">
             <span class="proj-skills-label">כלים</span>
@@ -804,18 +819,18 @@
             </div>
         </div>
         <div class="proj-grid g3 feed reveal">
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-01.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-03.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-04.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-05.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-06.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-07.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-08.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-09.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-10.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-11.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-12.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-13.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-01.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-03.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-04.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-05.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-06.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-07.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-08.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-09.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-10.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-11.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-12.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-13.jpg" alt=""></div>
         </div>
         <div class="proj-skills reveal">
             <span class="proj-skills-label">כלים</span>
@@ -882,18 +897,18 @@
         <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
             <div class="proj-img-wrap">
                 <video autoplay muted loop playsinline>
-                    <source src="font/main.mp4" type="video/mp4">
+                    <source src="main.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
         <div class="proj-grid g2 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="font/WhatsApp%20Image%202025-06-19%20at%2020.42.54%20(1).jpeg" alt="תהליך"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="font/WhatsApp%20Image%202025-06-21%20at%2023.36.01.jpeg" alt="תהליך"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="WhatsApp%20Image%202025-06-19%20at%2020.42.54%20(1).jpeg" alt="תהליך"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="WhatsApp%20Image%202025-06-21%20at%2023.36.01.jpeg" alt="תהליך"></div>
         </div>
         <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
             <div class="proj-img-wrap">
                 <video autoplay muted loop playsinline>
-                    <source src="font/Comp%201.mp4" type="video/mp4">
+                    <source src="Comp%201.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
