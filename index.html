@@ -27,6 +27,15 @@
             font-display: swap;
         }
 
+        /* ─── Nevo — variable weight 1–1000 (1 = lightest/least heavy) ─ */
+        @font-face {
+            font-family: 'Nevo';
+            src: url('font/Nevo-VF.ttf') format('truetype-variations');
+            font-weight: 1 1000;
+            font-style: normal;
+            font-display: swap;
+        }
+
         /* ─── Reset & Base ─────────────────────────────────────── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -399,12 +408,101 @@
 
         /* Typeface specimen */
         .typeface-specimen {
-            padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+            padding: clamp(4rem, 9vw, 11rem) clamp(1.5rem, 4vw, 4rem);
             border-top: 1px solid var(--muted);
         }
-        .specimen-name { font-size: clamp(4rem, 14vw, 18rem); font-weight: 700; line-height: .85; letter-spacing: -.04em; opacity: .15; margin-bottom: 2rem; }
-        .specimen-alphabet { font-size: clamp(1.5rem, 4vw, 4rem); line-height: 1.4; letter-spacing: .05em; opacity: .6; margin-bottom: 1.5rem; }
-        .specimen-numbers { font-size: clamp(1.2rem, 3vw, 3rem); letter-spacing: .08em; opacity: .4; }
+        .specimen-name {
+            font-size: clamp(5rem, 16vw, 20rem);
+            font-variation-settings: "wght" 160;
+            line-height: 1.08;
+            letter-spacing: -.04em;
+            opacity: .15;
+            margin-bottom: clamp(2.5rem, 6vw, 5rem);
+            padding-block: .08em;
+        }
+        .specimen-alphabet { font-size: clamp(1.5rem, 4vw, 4rem); font-variation-settings: "wght" 280; line-height: 1.55; letter-spacing: .05em; opacity: .6; margin-bottom: 2rem; }
+        .specimen-numbers { font-size: clamp(1.2rem, 3vw, 3rem); font-variation-settings: "wght" 280; line-height: 1.5; letter-spacing: .08em; opacity: .4; }
+
+        /* ─── Interactive type tester ───────────────────────────── */
+        .type-tester {
+            padding: clamp(3rem, 6vw, 7rem) clamp(1.5rem, 4vw, 4rem);
+            border-top: 1px solid var(--muted);
+        }
+        .tester-stage {
+            font-family: 'Nevo', serif;
+            font-size: 96px;
+            line-height: 1.18;
+            font-variation-settings: "wght" 600;
+            letter-spacing: 0;
+            margin: clamp(1.5rem, 4vw, 3rem) 0;
+            min-height: 1.2em;
+            outline: none;
+            overflow-wrap: anywhere;
+            caret-color: var(--fg);
+        }
+        .tester-stage:focus { opacity: 1; }
+        .tester-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: clamp(1.5rem, 4vw, 3rem);
+            border-top: 1px solid var(--muted);
+            padding-top: clamp(1.5rem, 3vw, 2.5rem);
+        }
+        .tester-ctrl { display: flex; flex-direction: column; gap: .7rem; }
+        .tester-ctrl-head { display: flex; justify-content: space-between; align-items: baseline; }
+        .tester-ctrl-label { font-size: .7rem; font-variation-settings: var(--fvs-light); letter-spacing: .14em; text-transform: uppercase; opacity: .4; }
+        .tester-ctrl-val { font-size: .8rem; opacity: .55; font-variant-numeric: tabular-nums; direction: ltr; }
+        input[type=range].tester-range {
+            -webkit-appearance: none; appearance: none;
+            width: 100%; height: 1px;
+            background: var(--muted);
+            cursor: none;
+            direction: ltr;
+        }
+        input[type=range].tester-range::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: var(--fg); cursor: none;
+            transition: transform .2s var(--ease);
+        }
+        input[type=range].tester-range:hover::-webkit-slider-thumb { transform: scale(1.25); }
+        input[type=range].tester-range::-moz-range-thumb {
+            width: 14px; height: 14px; border: none; border-radius: 50%;
+            background: var(--fg); cursor: none;
+        }
+
+        /* ─── Type specimen lines (live text in Nevo) ───────────── */
+        .type-lines {
+            padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+            border-top: 1px solid var(--muted);
+            font-family: 'Nevo', serif;
+        }
+        .type-line {
+            padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+            margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+            border-bottom: 1px solid var(--muted);
+            line-height: 1.12;
+            letter-spacing: -.01em;
+        }
+        .type-line:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .type-line .tl-meta {
+            display: block;
+            font-family: var(--font);
+            font-size: .62rem;
+            font-variation-settings: var(--fvs-light);
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            opacity: .3;
+            margin-bottom: .8rem;
+            direction: ltr;
+            text-align: start;
+        }
+        .tl-1 { font-size: clamp(3rem, 11vw, 10rem); font-variation-settings: "wght" 200; opacity: .92; }
+        .tl-2 { font-size: clamp(2.2rem, 7vw, 6rem); font-variation-settings: "wght" 400; opacity: .82; }
+        .tl-3 { font-size: clamp(1.6rem, 4.5vw, 3.6rem); font-variation-settings: "wght" 700; opacity: .72; }
+        .tl-4 { font-size: clamp(1.15rem, 2.4vw, 1.9rem); font-variation-settings: "wght" 1000; line-height: 1.5; opacity: .6; }
+
+        /* Sketchbook grid */
 
         /* Sketchbook grid */
         .sketch-grid { padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem); columns: 2; column-gap: clamp(1rem, 2vw, 2rem); }
@@ -412,6 +510,21 @@
         .sketch-item { break-inside: avoid; margin-bottom: clamp(1rem, 2vw, 2rem); border-radius: 4px; overflow: hidden; background: rgba(233, 184, 184, .06); }
         .sketch-item img { width: 100%; height: auto; display: block; }
         .sketch-item .placeholder { padding: 4rem 2rem; text-align: center; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; opacity: .2; }
+
+        /* ─── Coming-soon panel (final project teaser) ──────────── */
+        .coming-soon {
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: clamp(1rem, 2.5vw, 1.8rem);
+            padding: clamp(2rem, 6vw, 6rem);
+        }
+        .cs-label { font-size: clamp(.7rem, .9vw, .85rem); font-variation-settings: var(--fvs-light); letter-spacing: .22em; text-transform: uppercase; opacity: .4; }
+        .cs-title { font-size: clamp(2.2rem, 7vw, 6rem); font-variation-settings: var(--fvs-bold); line-height: 1.12; letter-spacing: -.03em; max-width: 16ch; }
+        .cs-sub { font-size: clamp(1rem, 1.4vw, 1.3rem); opacity: .45; letter-spacing: .14em; }
 
         /* ─── Touch / no-hover devices ─────────────────────────── */
         @media (hover: none) and (pointer: coarse) {
@@ -422,6 +535,43 @@
             .nav-back,
             .proj-next-link { opacity: 1; }
 
+        }
+
+        /* ─── Video in project panels ───────────────────────────── */
+        .proj-img-wrap video { width: 100%; height: auto; display: block; }
+
+        /* ─── Tight unified galleries ───────────────────────────── */
+        /* One grid per set → row spacing = grid gap (not section padding),
+           so a project's images read as a single cohesive block.       */
+        .proj-grid {
+            padding: clamp(2rem, 4vw, 5rem) clamp(1.5rem, 4vw, 4rem);
+            display: grid;
+            gap: clamp(.5rem, 1.1vw, 1.1rem);
+        }
+        .proj-grid.bordered { border-top: 1px solid var(--muted); }
+        .proj-grid.g2 { grid-template-columns: repeat(2, 1fr); }
+        .proj-grid.g3 { grid-template-columns: repeat(3, 1fr); }
+        .proj-grid.g4 { grid-template-columns: repeat(4, 1fr); }
+        .proj-grid .proj-img-wrap { margin: 0; }
+        /* Instagram feed: edge-to-edge, hair-thin gaps */
+        .proj-grid.feed { gap: clamp(.25rem, .5vw, .5rem); }
+        .proj-grid.feed .proj-img-wrap { border-radius: 0; }
+        /* Centered single hero (tall poster etc.) */
+        .proj-feature {
+            padding: clamp(2rem, 4vw, 5rem) clamp(1.5rem, 4vw, 4rem);
+            display: flex;
+            justify-content: center;
+        }
+        .proj-feature .proj-img-wrap { width: auto; max-width: min(520px, 100%); }
+        .proj-feature .proj-img-wrap img { width: 100%; }
+
+        @media (max-width: 900px) {
+            .proj-grid.g4 { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .proj-grid.g3, .proj-grid.g4 { grid-template-columns: repeat(2, 1fr); }
+            .proj-grid.g2 { grid-template-columns: 1fr; }
+            .proj-grid.feed { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
@@ -527,26 +677,15 @@
                 <p>בנוסף, הספר מכיל ארכיב של מימז ישראליים ומגוירים — שמטרתו להראות לקורא את העושר התרבותי שנמצא במקומות חבויים מהעין הציבורית. מטרת הספר היא לפתוח צוהר לתרבות אינטרנט נישתית שלאט לאט הופכת לקונצנזוס ציבורי.</p>
             </div>
         </div>
-        <div class="proj-images cols-2 reveal">
-            <div class="proj-img-wrap">
-                <img loading="lazy" src="book/להעלאהלאינסטגרם-02.jpg" alt="עטיפה קדמית — בחוץ">
-            </div>
-            <div class="proj-img-wrap">
-                <img loading="lazy" src="book/להעלאהלאינסטגרם-01.jpg" alt="עטיפה אחורית">
-            </div>
-        </div>
-        <div class="proj-images cols-2 reveal" style="transition-delay:.05s">
-            <div class="proj-img-wrap">
-                <img loading="lazy" src="book/להעלאהלאינסטגרם-03.jpg" alt="פרישה פנימית — כותרות">
-            </div>
-            <div class="proj-img-wrap">
-                <img loading="lazy" src="book/להעלאהלאינסטגרם-04.jpg" alt="עמוד פתיחה — תוכן">
-            </div>
-        </div>
-        <div class="proj-images cols-1 reveal" style="transition-delay:.1s">
-            <div class="proj-img-wrap">
-                <img loading="lazy" src="book/להעלאהלאינסטגרם-08.jpg" alt="פרישה פנימית — תוכן">
-            </div>
+        <div class="proj-grid g2 reveal">
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-02.jpg" alt="עטיפה קדמית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-01.jpg" alt="עטיפה אחורית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-03.jpg" alt="פרישה פנימית — כותרות"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-04.jpg" alt="עמוד פתיחה — תוכן"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-05.jpg" alt="פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-06.jpg" alt="פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-07.jpg" alt="פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-08.jpg" alt="פרישה פנימית — תוכן"></div>
         </div>
         <div class="proj-skills reveal">
             <span class="proj-skills-label">כלים</span>
@@ -598,11 +737,22 @@
                 <img src="webcover.jpg" alt="ספריית הספרים הדיגיטלית — עטיפות מעוצבות מחדש">
             </div>
         </div>
-        <div class="proj-images cols-2 reveal" style="transition-delay:.05s">
+        <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
             <div class="proj-img-wrap">
-                <img src="bookcover.jpg" alt="עטיפת ספר פיזית">
+                <video autoplay muted loop playsinline>
+                    <source src="web/Sequence%2002.mp4" type="video/mp4">
+                </video>
             </div>
-            <div class="proj-img-wrap"></div>
+        </div>
+        <div class="proj-grid g4 reveal">
+            <div class="proj-img-wrap"><img loading="lazy" src="web/1.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/5.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/7.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/12.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/14.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/17.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/21.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/26.png" alt="הספרייה — עטיפה"></div>
         </div>
         <div class="proj-skills reveal">
             <span class="proj-skills-label">כלים</span>
@@ -653,6 +803,20 @@
                 <img src="brandingcover.jpg" alt="השוקת — זהות מותגית">
             </div>
         </div>
+        <div class="proj-grid g3 feed reveal">
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-01.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-03.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-04.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-05.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-06.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-07.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-08.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-09.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-10.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-11.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-12.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="brand%20design/פוסט%20אינסטגרם-13.jpg" alt=""></div>
+        </div>
         <div class="proj-skills reveal">
             <span class="proj-skills-label">כלים</span>
             <span class="skill-tag">Concept Creation</span>
@@ -689,18 +853,48 @@
         <div class="proj-description">
             <div class="proj-desc-label reveal">על הפרויקט</div>
             <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>נבו — גופן עברי חדש שנוצר בהשראת טיפוגרפיה ישראלית משנות ה-60 וה-70 של המאה ה-20.</p>
-                <p>הגופן שואב מהאסתטיקה הגרפית של אותה תקופה — תקופה שבה עיצוב ישראלי מצא את קולו הייחודי, בין מודרניזם אירופי לזהות מקומית מתגבשת.</p>
+                <p>נבו - גופן עברי חדש שנוצר בהשראת טיפוגרפיה ישראלית משנות ה-60 וה-70 של המאה ה-20.</p>
+                <p>הגופן שואב מהאסתטיקה הגרפית של אותה תקופה - תקופה שבה עיצוב ישראלי מצא את קולו הייחודי, בין מודרניזם אירופי לזהות מקומית מתגבשת.</p>
             </div>
         </div>
-        <div class="typeface-specimen reveal">
+        <div class="typeface-specimen reveal" style="font-family: 'Nevo', serif;">
             <div class="specimen-name">נבו</div>
             <div class="specimen-alphabet">אבגדהוזחטיכלמנסעפצקרשת ךםןףץ</div>
             <div class="specimen-numbers">1234567890 ! ? @ # [] () . , : ; - _ ₪</div>
         </div>
-        <div class="proj-images cols-1 reveal">
-            <div class="proj-img-wrap wide">
-                <img src="fontcover.jpg" alt="נבו — גופן ארץ ישראלי">
+
+        <!-- Interactive type tester -->
+        <div class="type-tester reveal">
+            <p class="section-label">(!נסו בעצמכם)</p>
+            <div class="tester-stage" id="tester-stage" contenteditable="true" spellcheck="false" dir="rtl">צא ולמד</div>
+            <div class="tester-controls">
+            </div>
+        </div>
+
+        <!-- Live specimen lines (Nevo, narrow, descending sizes) -->
+        <div class="type-lines reveal">
+            <div class="type-line tl-1"><span class="tl-meta">כותרת ראשית</span>עברית חדשה</div>
+            <div class="type-line tl-2"><span class="tl-meta">כותרת</span>אותיות מספרות סיפור</div>
+            <div class="type-line tl-3"><span class="tl-meta">כותרת משנה</span>בין מודרניזם אירופי לזהות מקומית מתגבשת, נולד קול טיפוגרפי עכשווי ומגניב</div>
+            <div class="type-line tl-4"><span class="tl-meta">טקסט רץ</span>נבו שואב מהאסתטיקה הגרפית של שנות השישים והשבעים - תקופה שבה העיצוב הישראלי מצא את קולו הייחודי, וגופני הרחוב, השלטים והכרזות עיצבו את הנוף החזותי של הארץ הצעירה.</div>
+        </div>
+
+        <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
+            <div class="proj-img-wrap">
+                <video autoplay muted loop playsinline>
+                    <source src="font/main.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+        <div class="proj-grid g2 reveal">
+            <div class="proj-img-wrap"><img loading="lazy" src="font/WhatsApp%20Image%202025-06-19%20at%2020.42.54%20(1).jpeg" alt="תהליך"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="font/WhatsApp%20Image%202025-06-21%20at%2023.36.01.jpeg" alt="תהליך"></div>
+        </div>
+        <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
+            <div class="proj-img-wrap">
+                <video autoplay muted loop playsinline>
+                    <source src="font/Comp%201.mp4" type="video/mp4">
+                </video>
             </div>
         </div>
         <div class="proj-skills reveal">
@@ -711,7 +905,7 @@
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="sketchbook.html" class="proj-next-link">איור →</a>
+            <a href="sketchbook.html" class="proj-next-link">פרויקט גמר →</a>
         </div>
         <footer>
             <span>© 2025 יונתן אלפרין</span>
@@ -721,67 +915,9 @@
 
     <!-- 05 איור -->
     <div id="proj-sketchbook" class="proj-panel">
-        <section class="proj-hero">
-            <p class="proj-number reveal">05 / 05</p>
-            <h1 class="proj-title reveal" style="transition-delay:.1s">איור</h1>
-            <div class="proj-meta reveal" style="transition-delay:.2s">
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">קטגוריה</div>
-                    <div class="proj-meta-value">סקצ'בוק ואיור</div>
-                </div>
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">סיכום</div>
-                    <div class="proj-meta-value">אוסף איורים, סקיצות ויצירות אישיות</div>
-                </div>
-            </div>
+        <section class="coming-soon">
+            <h1 class="cs-title">התצוגה בהקמה,<br>עוד מעט ויהיה פגמ"ר</h1>
         </section>
-        <div class="proj-description">
-            <div class="proj-desc-label reveal">על הפרויקט</div>
-            <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>אוסף של איורים, סקיצות ויצירות שנוצרו מתוך סקרנות ואהבה. כאן אני מאפשר לעצמי לשחק, לנסות ולטעות.</p>
-            </div>
-        </div>
-        <div class="sketch-grid reveal">
-            <div class="sketch-item">
-                <img src="illustrationcover.jpg" alt="איור — מן המיצר">
-            </div>
-            <div class="sketch-item">
-                <img loading="lazy" src="projects/sketchbook/02.jpg" alt=""
-                    onerror="this.parentElement.innerHTML='<div class=placeholder>02.jpg</div>'">
-            </div>
-            <div class="sketch-item">
-                <img loading="lazy" src="projects/sketchbook/03.jpg" alt=""
-                    onerror="this.parentElement.innerHTML='<div class=placeholder>03.jpg</div>'">
-            </div>
-            <div class="sketch-item">
-                <img loading="lazy" src="projects/sketchbook/04.jpg" alt=""
-                    onerror="this.parentElement.innerHTML='<div class=placeholder>04.jpg</div>'">
-            </div>
-            <div class="sketch-item">
-                <img loading="lazy" src="projects/sketchbook/05.jpg" alt=""
-                    onerror="this.parentElement.innerHTML='<div class=placeholder>05.jpg</div>'">
-            </div>
-            <div class="sketch-item">
-                <img loading="lazy" src="projects/sketchbook/06.jpg" alt=""
-                    onerror="this.parentElement.innerHTML='<div class=placeholder>06.jpg</div>'">
-            </div>
-            <div class="sketch-item">
-                <img loading="lazy" src="projects/sketchbook/07.jpg" alt=""
-                    onerror="this.parentElement.innerHTML='<div class=placeholder>07.jpg</div>'">
-            </div>
-            <div class="sketch-item">
-                <img loading="lazy" src="projects/sketchbook/08.jpg" alt=""
-                    onerror="this.parentElement.innerHTML='<div class=placeholder>08.jpg</div>'">
-            </div>
-        </div>
-        <div class="proj-next">
-            <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="book.html" class="proj-next-link">ספר →</a>
-        </div>
-        <footer>
-            <span>© 2025 יונתן אלפרין</span>
-            <span>05 / 05</span>
-        </footer>
     </div>
 
     <script>
@@ -814,11 +950,11 @@
         const MAX_IRIS = 5;
 
         const PROJECTS = [
-            { cover: 'bookcovernew.jpg',         href: 'book.html',       hue: 0,   sat: 3,   name: 'ספר'     },
+            { cover: 'illustrationcovernew.jpg', href: 'sketchbook.html', hue: 0,   sat: 3,   bri: 0.65, name: 'פרויקט גמר' },
             { cover: 'webcovernew.jpg',           href: 'web.html',        hue: 200, sat: 2.5, name: 'ווב'     },
             { cover: 'brandingcovernew.jpg',      href: 'branding.html',   hue: 130, sat: 2.5, name: 'ברנדינג' },
             { cover: 'fontcovernew.jpg',          href: 'typeface.html',   hue: 280, sat: 2.5, name: 'גופן'    },
-            { cover: 'illustrationcovernew.jpg',  href: 'sketchbook.html', hue: 50,  sat: 2.5, name: 'איור'    },
+            { cover: 'bookcovernew.jpg',          href: 'book.html',       hue: 55,  sat: 4,   bri: 1.3, name: 'ספר'      },
             { cover: 'face copynew.png',          href: '#about',          hue: 0,   sat: 0,   name: 'אודות'   },
         ];
         const PROJ_POSITIONS = [
@@ -862,7 +998,7 @@
                     if (faceOpen) { faceOpen.src = proj.eyeImg; faceOpen.style.filter = ''; }
                     if (iris) iris.style.filter = `saturate(0) brightness(1.4)`;
                 } else {
-                    if (iris)     iris.style.filter     = `hue-rotate(${proj.hue}deg) saturate(${proj.sat}) brightness(1.3)`;
+                    if (iris)     iris.style.filter     = `hue-rotate(${proj.hue}deg) saturate(${proj.sat}) brightness(${proj.bri || 1.3})`;
                     if (faceOpen) faceOpen.style.filter = `hue-rotate(${proj.hue}deg) saturate(.4)`;
                 }
 
@@ -1248,6 +1384,36 @@
         });
 
         document.getElementById('proj-back-btn').addEventListener('click', closeProject);
+
+        /* ─── Interactive type tester ────────────────────────────── */
+        (function initTypeTester() {
+            const stage = document.getElementById('tester-stage');
+            if (!stage) return;
+            const sizeR = document.getElementById('tt-size');
+            const wghtR = document.getElementById('tt-wght');
+            const trakR = document.getElementById('tt-track');
+            const sizeV = document.getElementById('tt-size-val');
+            const wghtV = document.getElementById('tt-wght-val');
+            const trakV = document.getElementById('tt-track-val');
+
+            function apply() {
+                const em = (trakR.value / 1000);
+                stage.style.fontSize      = sizeR.value + 'px';
+                stage.style.letterSpacing = em + 'em';
+                stage.style.fontVariationSettings = '"wght" ' + wghtR.value;
+                sizeV.textContent = sizeR.value + 'px';
+                wghtV.textContent = wghtR.value;
+                trakV.textContent = em.toFixed(3) + 'em';
+            }
+            [sizeR, wghtR, trakR].forEach(r => r.addEventListener('input', apply));
+
+            // Single line — block Enter from inserting breaks
+            stage.addEventListener('keydown', e => {
+                if (e.key === 'Enter') e.preventDefault();
+            });
+
+            apply();
+        })();
     </script>
 </body>
 
