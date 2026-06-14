@@ -129,10 +129,14 @@ nav {
     min-height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
     padding: clamp(1.5rem, 4vw, 4rem);
     padding-top: 8rem;
     border-bottom: 1px solid var(--muted)
+}
+
+.proj-meta {
+    margin-top: auto;
 }
 
 .proj-number {
@@ -276,31 +280,33 @@ nav {
 }
 
 .proj-next {
-    padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+    padding: clamp(4rem, 8vw, 10rem) clamp(1.5rem, 4vw, 4rem);
     border-top: 1px solid var(--muted);
     display: flex;
-    justify-content: space-between;
-    align-items: center
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    min-height: 60svh;
+    justify-content: center;
 }
 
 .proj-next-label {
     font-size: .7rem;
     font-variation-settings: var(--fvs-light);
-    letter-spacing: .12em;
+    letter-spacing: .16em;
     text-transform: uppercase;
-    opacity: .35
+    opacity: .3
 }
 
 .proj-next-link {
-    font-size: clamp(2rem, 6vw, 7rem);
-    font-weight: 700;
+    font-size: clamp(5rem, 16vw, 18rem);
     font-variation-settings: var(--fvs-bold);
     letter-spacing: -.04em;
     color: var(--fg);
     text-decoration: none;
-    line-height: 1;
-    opacity: .4;
-    transition: opacity .3s var(--ease)
+    line-height: .88;
+    opacity: .25;
+    transition: opacity .4s var(--ease);
+    display: block;
 }
 
 .proj-next-link:hover { opacity: 1 }
