@@ -304,7 +304,7 @@ nav {
     color: var(--fg);
     text-decoration: none;
     line-height: .88;
-    opacity: .25;
+    opacity: .6;
     transition: opacity .4s var(--ease);
     display: block;
 }

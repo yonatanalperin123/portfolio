@@ -406,6 +406,35 @@
             font-family: var(--font);
         }
 
+        /* ─── Hero background media ─────────────────────────────── */
+        .proj-hero { position: relative; }
+        .proj-hero > * { position: relative; z-index: 1; }
+        .proj-hero-media {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .proj-hero-media img,
+        .proj-hero-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .proj-hero-media::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to bottom,
+                    rgba(16,12,1,.92) 0%,
+                    rgba(16,12,1,.45) 35%,
+                    rgba(16,12,1,.45) 65%,
+                    rgba(16,12,1,.92) 100%
+                );
+        }
+
         /* ─── Project panels ────────────────────────────────────── */
         .proj-panel {
             position: fixed;
@@ -421,6 +450,7 @@
 
         /* ─── Per-panel overrides ───────────────────────────────── */
         #proj-book .proj-title { font-size: clamp(3rem, 10vw, 12rem); }
+        #proj-typeface .proj-title { letter-spacing: .06em; }
 
         /* Typeface specimen */
         .typeface-specimen {
@@ -432,12 +462,12 @@
             font-variation-settings: "wght" 160;
             line-height: 1.08;
             letter-spacing: -.04em;
-            opacity: .15;
+            opacity: 1;
             margin-bottom: clamp(2.5rem, 6vw, 5rem);
             padding-block: .08em;
         }
-        .specimen-alphabet { font-size: clamp(1.5rem, 4vw, 4rem); font-variation-settings: "wght" 280; line-height: 1.55; letter-spacing: .05em; opacity: .6; margin-bottom: 2rem; }
-        .specimen-numbers { font-size: clamp(1.2rem, 3vw, 3rem); font-variation-settings: "wght" 280; line-height: 1.5; letter-spacing: .08em; opacity: .4; }
+        .specimen-alphabet { font-size: clamp(1.5rem, 4vw, 4rem); font-variation-settings: "wght" 280; line-height: 1.55; letter-spacing: .05em; opacity: 1; margin-bottom: 2rem; }
+        .specimen-numbers { font-size: clamp(1.2rem, 3vw, 3rem); font-variation-settings: "wght" 280; line-height: 1.5; letter-spacing: .08em; opacity: 1; }
 
         /* ─── Interactive type tester ───────────────────────────── */
         .type-tester {
@@ -513,10 +543,10 @@
             direction: ltr;
             text-align: start;
         }
-        .tl-1 { font-size: clamp(3rem, 11vw, 10rem); font-variation-settings: "wght" 200; opacity: .92; }
-        .tl-2 { font-size: clamp(2.2rem, 7vw, 6rem); font-variation-settings: "wght" 400; opacity: .82; }
-        .tl-3 { font-size: clamp(1.6rem, 4.5vw, 3.6rem); font-variation-settings: "wght" 700; opacity: .72; }
-        .tl-4 { font-size: clamp(1.15rem, 2.4vw, 1.9rem); font-variation-settings: "wght" 1000; line-height: 1.5; opacity: .6; }
+        .tl-1 { font-size: clamp(3rem, 11vw, 10rem); font-variation-settings: "wght" 200; opacity: 1; }
+        .tl-2 { font-size: clamp(2.2rem, 7vw, 6rem); font-variation-settings: "wght" 400; opacity: 1; }
+        .tl-3 { font-size: clamp(1.6rem, 4.5vw, 3.6rem); font-variation-settings: "wght" 700; opacity: 1; }
+        .tl-4 { font-size: clamp(1.15rem, 2.4vw, 1.9rem); font-variation-settings: "wght" 1000; line-height: 1.5; opacity: 1; }
 
         /* Sketchbook grid */
 
@@ -668,6 +698,7 @@
     <!-- 01 ספר -->
     <div id="proj-book" class="proj-panel">
         <section class="proj-hero">
+            <div class="proj-hero-media"><img src="book/להעלאהלאינסטגרם-02.jpg" alt="" aria-hidden="true" draggable="false"></div>
             <p class="proj-number reveal">01 / 05</p>
             <h1 class="proj-title reveal" style="transition-delay:.1s">ספר<br>המימז<br>הישראלי</h1>
             <div class="proj-meta reveal" style="transition-delay:.2s">
@@ -704,7 +735,7 @@
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="web.html" class="proj-next-link">ווב →</a>
+            <a href="web.html" class="proj-next-link">הספרייה ←</a>
         </div>
         <footer>
             <span>© 2025 יונתן אלפרין</span>
@@ -715,6 +746,7 @@
     <!-- 02 ווב -->
     <div id="proj-web" class="proj-panel">
         <section class="proj-hero">
+            <div class="proj-hero-media"><video autoplay muted loop playsinline><source src="web/Sequence%2002.mp4" type="video/mp4"></video></div>
             <p class="proj-number reveal">02 / 05</p>
             <h1 class="proj-title reveal" style="transition-delay:.1s">הספרייה</h1>
             <div class="proj-meta reveal" style="transition-delay:.2s">
@@ -764,7 +796,7 @@
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="branding.html" class="proj-next-link">ברנדינג →</a>
+            <a href="branding.html" class="proj-next-link">השוקת ←</a>
         </div>
         <footer>
             <span>© 2025 יונתן אלפרין</span>
@@ -775,6 +807,7 @@
     <!-- 03 ברנדינג -->
     <div id="proj-branding" class="proj-panel">
         <section class="proj-hero">
+            <div class="proj-hero-media"><img src="newbackforbrand.png" alt="" aria-hidden="true" draggable="false"></div>
             <p class="proj-number reveal">03 / 05</p>
             <h1 class="proj-title reveal" style="transition-delay:.1s">השוקת</h1>
             <div class="proj-meta reveal" style="transition-delay:.2s">
@@ -820,7 +853,7 @@
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="typeface.html" class="proj-next-link">גופן →</a>
+            <a href="typeface.html" class="proj-next-link">נבו ←</a>
         </div>
         <footer>
             <span>© 2025 יונתן אלפרין</span>
@@ -831,6 +864,7 @@
     <!-- 04 גופן -->
     <div id="proj-typeface" class="proj-panel">
         <section class="proj-hero">
+            <div class="proj-hero-media"><video autoplay muted loop playsinline><source src="font/Comp%201.mp4" type="video/mp4"></video></div>
             <p class="proj-number reveal">04 / 05</p>
             <h1 class="proj-title reveal" style="transition-delay:.1s">נבו</h1>
             <div class="proj-meta reveal" style="transition-delay:.2s">
@@ -914,7 +948,7 @@
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="sketchbook.html" class="proj-next-link">פרויקט גמר →</a>
+            <a href="sketchbook.html" class="proj-next-link">פרויקט גמר ←</a>
         </div>
         <footer>
             <span>© 2025 יונתן אלפרין</span>
