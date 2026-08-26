@@ -11,32 +11,8 @@
     <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <link href="https://api.fontshare.com/v2/css?f[]=sentient@400,500,700,400i&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://use.typekit.net/zpc1hbl.css" />
-    <link rel="preload" href="webcover.jpg" as="image" />
-    <link rel="preload" href="brandingcover.jpg" as="image" />
-    <link rel="preload" href="fontcover.jpg" as="image" />
-    <link rel="preload" href="illustrationcover.jpg" as="image" />
-    <link rel="preload" href="bookcover.jpg" as="image" />
-    <link rel="stylesheet" href="proj.css" />
 
     <style>
-        /* ─── NarkissYair Variable ───────────────────────────── */
-        @font-face {
-            font-family: 'NarkissYair';
-            src: url('NarkissYair-Variable.ttf') format('truetype');
-            font-weight: 100 900;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        /* ─── Nevo — variable weight 1–1000 (1 = lightest/least heavy) ─ */
-        @font-face {
-            font-family: 'Nevo';
-            src: url('Nevo.ttf') format('truetype-variations');
-            font-weight: 1 1000;
-            font-style: normal;
-            font-display: swap;
-        }
-
         /* ─── Reset & Base ─────────────────────────────────────── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -45,7 +21,7 @@
             --fg: #E9B8B8;
             --accent: #E9B8B8;
             --muted: rgba(233, 184, 184, .2);
-            --font: "narkiss-yair-variable", 'NarkissYair', 'Sentient', Georgia, serif;
+            --font: "narkiss-yair-variable", 'Sentient', Georgia, serif;
             --ease: cubic-bezier(.16, 1, .3, 1);
             --fvs-light:   "MONO" 0, "wght" 300;
             --fvs-regular: "MONO" 0, "wght" 400;
@@ -119,15 +95,6 @@
             border: 1.5px solid var(--fg);
         }
         #cursor.hidden { opacity: 0; }
-
-        /* ─── Scroll thread — override proj.css for SPA ─────────── */
-        #thread {
-            opacity: 0;
-            z-index: 450;
-            transition: height .05s linear, opacity .3s var(--ease);
-        }
-        #thread.active { opacity: 1; }
-
         /* ─── Nav (hidden on index) ─────────────────────────────── */
         nav { display: none; }
 
@@ -384,240 +351,10 @@
             opacity: .4;
         }
 
-
-
-        /* ─── Project nav overlay ───────────────────────────────── */
-        #proj-nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 400;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 4rem);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .4s var(--ease);
-        }
-        #proj-nav.active { opacity: 1; pointer-events: all; }
-        #proj-back-btn {
-            background: none; border: none;
-            cursor: none; padding: 0;
-            font-family: var(--font);
-        }
-
-        /* ─── Hero background media ─────────────────────────────── */
-        .proj-hero { position: relative; }
-        .proj-hero > * { position: relative; z-index: 1; }
-        .proj-hero-media {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .proj-hero-media img,
-        .proj-hero-media video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .proj-hero-media::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(to bottom,
-                    rgba(16,12,1,.92) 0%,
-                    rgba(16,12,1,.45) 35%,
-                    rgba(16,12,1,.45) 65%,
-                    rgba(16,12,1,.92) 100%
-                );
-        }
-
-        /* ─── Project panels ────────────────────────────────────── */
-        .proj-panel {
-            position: fixed;
-            inset: 0;
-            overflow-y: auto;
-            background: var(--bg);
-            z-index: 300;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .5s var(--ease);
-        }
-        .proj-panel.active { opacity: 1; pointer-events: all; }
-
-        /* ─── Per-panel overrides ───────────────────────────────── */
-        #proj-book .proj-title { font-size: clamp(3rem, 10vw, 12rem); }
-        #proj-typeface .proj-title { letter-spacing: .06em; }
-
-        /* Typeface specimen */
-        .typeface-specimen {
-            padding: clamp(4rem, 9vw, 11rem) clamp(1.5rem, 4vw, 4rem);
-            border-top: 1px solid var(--muted);
-        }
-        .specimen-name {
-            font-size: clamp(5rem, 16vw, 20rem);
-            font-variation-settings: "wght" 160;
-            line-height: 1.08;
-            letter-spacing: -.04em;
-            opacity: 1;
-            margin-bottom: clamp(2.5rem, 6vw, 5rem);
-            padding-block: .08em;
-        }
-        .specimen-alphabet { font-size: clamp(1.5rem, 4vw, 4rem); font-variation-settings: "wght" 280; line-height: 1.55; letter-spacing: .05em; opacity: 1; margin-bottom: 2rem; }
-        .specimen-numbers { font-size: clamp(1.2rem, 3vw, 3rem); font-variation-settings: "wght" 280; line-height: 1.5; letter-spacing: .08em; opacity: 1; }
-
-        /* ─── Interactive type tester ───────────────────────────── */
-        .type-tester {
-            padding: clamp(3rem, 6vw, 7rem) clamp(1.5rem, 4vw, 4rem);
-            border-top: 1px solid var(--muted);
-        }
-        .tester-stage {
-            font-family: 'Nevo', serif;
-            font-size: 96px;
-            line-height: 1.18;
-            font-variation-settings: "wght" 600;
-            letter-spacing: 0;
-            margin: clamp(1.5rem, 4vw, 3rem) 0;
-            min-height: 1.2em;
-            outline: none;
-            overflow-wrap: anywhere;
-            caret-color: var(--fg);
-        }
-        .tester-stage:focus { opacity: 1; }
-        .tester-controls {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: clamp(1.5rem, 4vw, 3rem);
-            border-top: 1px solid var(--muted);
-            padding-top: clamp(1.5rem, 3vw, 2.5rem);
-        }
-        .tester-ctrl { display: flex; flex-direction: column; gap: .7rem; }
-        .tester-ctrl-head { display: flex; justify-content: space-between; align-items: baseline; }
-        .tester-ctrl-label { font-size: .7rem; font-variation-settings: var(--fvs-light); letter-spacing: .14em; text-transform: uppercase; opacity: .4; }
-        .tester-ctrl-val { font-size: .8rem; opacity: .55; font-variant-numeric: tabular-nums; direction: ltr; }
-        input[type=range].tester-range {
-            -webkit-appearance: none; appearance: none;
-            width: 100%; height: 1px;
-            background: var(--muted);
-            cursor: none;
-            direction: ltr;
-        }
-        input[type=range].tester-range::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none;
-            width: 14px; height: 14px; border-radius: 50%;
-            background: var(--fg); cursor: none;
-            transition: transform .2s var(--ease);
-        }
-        input[type=range].tester-range:hover::-webkit-slider-thumb { transform: scale(1.25); }
-        input[type=range].tester-range::-moz-range-thumb {
-            width: 14px; height: 14px; border: none; border-radius: 50%;
-            background: var(--fg); cursor: none;
-        }
-
-        /* ─── Type specimen lines (live text in Nevo) ───────────── */
-        .type-lines {
-            padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
-            border-top: 1px solid var(--muted);
-            font-family: 'Nevo', serif;
-        }
-        .type-line {
-            padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
-            margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
-            border-bottom: 1px solid var(--muted);
-            line-height: 1.12;
-            letter-spacing: -.01em;
-        }
-        .type-line:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .type-line .tl-meta {
-            display: block;
-            font-family: var(--font);
-            font-size: .62rem;
-            font-variation-settings: var(--fvs-light);
-            letter-spacing: .14em;
-            text-transform: uppercase;
-            opacity: .3;
-            margin-bottom: .8rem;
-            direction: ltr;
-            text-align: start;
-        }
-        .tl-1 { font-size: clamp(3rem, 11vw, 10rem); font-variation-settings: "wght" 200; opacity: 1; }
-        .tl-2 { font-size: clamp(2.2rem, 7vw, 6rem); font-variation-settings: "wght" 400; opacity: 1; }
-        .tl-3 { font-size: clamp(1.6rem, 4.5vw, 3.6rem); font-variation-settings: "wght" 700; opacity: 1; }
-        .tl-4 { font-size: clamp(1.15rem, 2.4vw, 1.9rem); font-variation-settings: "wght" 1000; line-height: 1.5; opacity: 1; }
-
-        /* Sketchbook grid */
-
-        /* Sketchbook grid */
-        .sketch-grid { padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem); columns: 2; column-gap: clamp(1rem, 2vw, 2rem); }
-        @media(max-width:600px) { .sketch-grid { columns: 1; } }
-        .sketch-item { break-inside: avoid; margin-bottom: clamp(1rem, 2vw, 2rem); border-radius: 4px; overflow: hidden; background: rgba(233, 184, 184, .06); }
-        .sketch-item img { width: 100%; height: auto; display: block; }
-        .sketch-item .placeholder { padding: 4rem 2rem; text-align: center; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; opacity: .2; }
-
-        /* ─── Coming-soon panel (final project teaser) ──────────── */
-        .coming-soon {
-            min-height: 100svh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            gap: clamp(1rem, 2.5vw, 1.8rem);
-            padding: clamp(2rem, 6vw, 6rem);
-        }
-        .cs-label { font-size: clamp(.7rem, .9vw, .85rem); font-variation-settings: var(--fvs-light); letter-spacing: .22em; text-transform: uppercase; opacity: .4; }
-        .cs-title { font-size: clamp(2.2rem, 7vw, 6rem); font-variation-settings: var(--fvs-bold); line-height: 1.12; letter-spacing: -.03em; max-width: 16ch; }
-        .cs-sub { font-size: clamp(1rem, 1.4vw, 1.3rem); opacity: .45; letter-spacing: .14em; }
-
         /* ─── Touch / no-hover devices ─────────────────────────── */
         @media (hover: none) and (pointer: coarse) {
             body { cursor: auto; }
             #cursor { display: none; }
-
-            .nav-links a,
-            .nav-back,
-            .proj-next-link { opacity: 1; }
-
-        }
-
-        /* ─── Video in project panels ───────────────────────────── */
-        .proj-img-wrap video { width: 100%; height: auto; display: block; }
-
-        /* ─── Tight unified galleries ───────────────────────────── */
-        /* One grid per set → row spacing = grid gap (not section padding),
-           so a project's images read as a single cohesive block.       */
-        .proj-grid {
-            padding: clamp(2rem, 4vw, 5rem) clamp(1.5rem, 4vw, 4rem);
-            display: grid;
-            gap: clamp(.5rem, 1.1vw, 1.1rem);
-        }
-        .proj-grid.bordered { border-top: 1px solid var(--muted); }
-        .proj-grid.g2 { grid-template-columns: repeat(2, 1fr); }
-        .proj-grid.g3 { grid-template-columns: repeat(3, 1fr); }
-        .proj-grid.g4 { grid-template-columns: repeat(4, 1fr); }
-        .proj-grid .proj-img-wrap { margin: 0; }
-        /* Instagram feed: edge-to-edge, hair-thin gaps */
-        .proj-grid.feed { gap: clamp(.25rem, .5vw, .5rem); }
-        .proj-grid.feed .proj-img-wrap { border-radius: 0; }
-        /* Centered single hero (tall poster etc.) */
-        .proj-feature {
-            padding: clamp(2rem, 4vw, 5rem) clamp(1.5rem, 4vw, 4rem);
-            display: flex;
-            justify-content: center;
-        }
-        .proj-feature .proj-img-wrap { width: auto; max-width: min(520px, 100%); }
-        .proj-feature .proj-img-wrap img { width: 100%; }
-
-        @media (max-width: 900px) {
-            .proj-grid.g4 { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (max-width: 600px) {
-            .proj-grid.g3, .proj-grid.g4 { grid-template-columns: repeat(2, 1fr); }
-            .proj-grid.g2 { grid-template-columns: 1fr; }
-            .proj-grid.feed { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
@@ -636,7 +373,6 @@
     </div>
 
     <div id="cursor"></div>
-    <div id="thread"></div>
     <div id="spotlight"></div>
     <div id="preview-container">
         <!-- populated by JS -->
@@ -687,281 +423,6 @@
         </div>
     </div>
 
-    <!-- ── Project nav (shown when a panel is active) ────────────── -->
-    <div id="proj-nav">
-        <button id="proj-back-btn" class="nav-back">חזרה</button>
-    </div>
-
-    <!-- ── Project panels ────────────────────────────────────────── -->
-
-    <!-- 01 ספר -->
-    <div id="proj-book" class="proj-panel">
-        <section class="proj-hero">
-            <div class="proj-hero-media"><img src="להעלאהלאינסטגרם-02.jpg" alt="" aria-hidden="true" draggable="false"></div>
-            <p class="proj-number reveal">01 / 05</p>
-            <h1 class="proj-title reveal" style="transition-delay:.1s">ספר<br>המימז<br>הישראלי</h1>
-            <div class="proj-meta reveal" style="transition-delay:.2s">
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">קטגוריה</div>
-                    <div class="proj-meta-value">עיצוב ספר</div>
-                </div>
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">סיכום</div>
-                    <div class="proj-meta-value">ספר העוסק בתרבות המימז הישראלית</div>
-                </div>
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">שנה</div>
-                    <div class="proj-meta-value">2025</div>
-                </div>
-            </div>
-        </section>
-        <div class="proj-description">
-            <div class="proj-desc-label reveal">על הפרויקט</div>
-            <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>ספר זה הוא מקדש לתרבות המימז הישראלית. בספר נחקור את מקורות המימז, נגדיר מה הוא מים ומה הוא מים ישראלי, איך הם משפיעים על חיי היום יום שלנו — ממקפיינים פרסומיים של משרדי ממשלה ועד עמודי מימז איזוטריים.</p>
-                <p>בנוסף, הספר מכיל ארכיב של מימז ישראליים ומגוירים — שמטרתו להראות לקורא את העושר התרבותי שנמצא במקומות חבויים מהעין הציבורית. מטרת הספר היא לפתוח צוהר לתרבות אינטרנט נישתית שלאט לאט הופכת לקונצנזוס ציבורי.</p>
-            </div>
-        </div>
-        <div class="proj-grid g2 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-02.jpg" alt="עטיפה קדמית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-01.jpg" alt="עטיפה אחורית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-03.jpg" alt="פרישה פנימית — כותרות"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-04.jpg" alt="עמוד פתיחה — תוכן"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-05.jpg" alt="פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-06.jpg" alt="פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-07.jpg" alt="פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="להעלאהלאינסטגרם-08.jpg" alt="פרישה פנימית — תוכן"></div>
-        </div>
-        <div class="proj-next">
-            <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="web.html" class="proj-next-link">הספרייה ←</a>
-        </div>
-        <footer>
-            <span>© 2025 יונתן אלפרין</span>
-            <span>01 / 05</span>
-        </footer>
-    </div>
-
-    <!-- 02 ווב -->
-    <div id="proj-web" class="proj-panel">
-        <section class="proj-hero">
-            <div class="proj-hero-media"><video autoplay muted loop playsinline><source src="Sequence%2002.mp4" type="video/mp4"></video></div>
-            <p class="proj-number reveal">02 / 05</p>
-            <h1 class="proj-title reveal" style="transition-delay:.1s">הספרייה</h1>
-            <div class="proj-meta reveal" style="transition-delay:.2s">
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">קטגוריה</div>
-                    <div class="proj-meta-value">עיצוב ופיתוח ווב</div>
-                </div>
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">סיכום</div>
-                    <div class="proj-meta-value">ארכיון דיגיטלי המדמיין מחדש את הקאנון התרבותי של הדור הדתי-לאומי</div>
-                </div>
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">שנה</div>
-                    <div class="proj-meta-value">2025</div>
-                </div>
-            </div>
-        </section>
-        <div class="proj-description">
-            <div class="proj-desc-label reveal">על הפרויקט</div>
-            <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>"הספרייה" הוא ארכיון דיגיטלי ויצירת אמנות אינטראקטיבית שנועדה לדמיין מחדש את הקאנון התרבותי של הדור הדתי-לאומי המודרני.</p>
-                <p>האתר יוצר ספרייה דיגיטלית, לא-היררכית. הוא מציג "קאנון תרבותי חדש" של 26 ספרים המשלב טקסטים תורניים קלאסיים (כמו "אורות" של הרב קוק) עם פרוזה מודרנית (כמו הארי פוטר או פרסי ג'קסון), פילוסופיה ושירה — מפוזרים יחד על משטח וירטואלי ללא הפרדה, המסמל דור שמאמץ את שני העולמות באופן שווה ("ספרא וסייפא").</p>
-                <p>עטיפות הספרים עוצבו מחדש כסדרה קוהרנטית.</p>
-            </div>
-        </div>
-        <div class="proj-images cols-1 reveal">
-            <div class="proj-img-wrap wide">
-                <img src="webcover.jpg" alt="ספריית הספרים הדיגיטלית — עטיפות מעוצבות מחדש">
-            </div>
-        </div>
-        <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
-            <div class="proj-img-wrap">
-                <video autoplay muted loop playsinline>
-                    <source src="Sequence%2002.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-        <div class="proj-grid g4 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="1.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="5.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="7.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="12.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="14.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="17.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="21.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="26.png" alt="הספרייה — עטיפה"></div>
-        </div>
-        <div class="proj-next">
-            <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="branding.html" class="proj-next-link">השוקת ←</a>
-        </div>
-        <footer>
-            <span>© 2025 יונתן אלפרין</span>
-            <span>02 / 05</span>
-        </footer>
-    </div>
-
-    <!-- 03 ברנדינג -->
-    <div id="proj-branding" class="proj-panel">
-        <section class="proj-hero">
-            <div class="proj-hero-media"><img src="newbackforbrand.png" alt="" aria-hidden="true" draggable="false"></div>
-            <p class="proj-number reveal">03 / 05</p>
-            <h1 class="proj-title reveal" style="transition-delay:.1s">השוקת</h1>
-            <div class="proj-meta reveal" style="transition-delay:.2s">
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">קטגוריה</div>
-                    <div class="proj-meta-value">זהות מותגית</div>
-                </div>
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">סיכום</div>
-                    <div class="proj-meta-value">זהות מותגית לדליקטסן שחוגג מלאכת יד מקומית וסקרנות קולינרית</div>
-                </div>
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">לקוח</div>
-                    <div class="proj-meta-value">השוקת — פרדס חנה</div>
-                </div>
-            </div>
-        </section>
-        <div class="proj-description">
-            <div class="proj-desc-label reveal">על הפרויקט</div>
-            <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>השוקת היא יותר מסתם דליקטסן — היא חגיגה של מלאכת יד מקומית וסקרנות קולינרית. ממוקמת בפרדס חנה, מרכז אומנותי זה מחבר בין חובבי אוכל לתוצרת איכותית, farm-to-table, עטופה בזהות מותגית שמרגישה אותנטית כמו המרכיבים עצמם.</p>
-                <p>יצרנו שפה ויזואלית השורשת בגוונים אדמתיים ואיורים בסגנון חיתוך עץ, המשקפים את מורשת גידול הבקר של הבעלים ואת התשוקה לשקיפות. מתוויות הצנצנות ועד פוסטרי הסדנאות — כל אלמנט עיצובי מזמין את הלקוחות להאט, לטעום את ההבדל, ולגלות את הסיפור מאחורי האוכל שלהם.</p>
-            </div>
-        </div>
-        <div class="proj-images cols-1 reveal">
-            <div class="proj-img-wrap">
-                <img src="brandingcover.jpg" alt="השוקת — זהות מותגית">
-            </div>
-        </div>
-        <div class="proj-grid g3 feed reveal">
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-01.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-03.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-04.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-05.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-06.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-07.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-08.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-09.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-10.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-11.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-12.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-13.jpg" alt=""></div>
-        </div>
-        <div class="proj-next">
-            <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="typeface.html" class="proj-next-link">נבו ←</a>
-        </div>
-        <footer>
-            <span>© 2025 יונתן אלפרין</span>
-            <span>03 / 05</span>
-        </footer>
-    </div>
-
-    <!-- 04 גופן -->
-    <div id="proj-typeface" class="proj-panel">
-        <section class="proj-hero">
-            <div class="proj-hero-media"><video autoplay muted loop playsinline><source src="fontberris.mp4" type="video/mp4"></video></div>
-            <p class="proj-number reveal">04 / 05</p>
-            <h1 class="proj-title reveal" style="transition-delay:.1s">נבו</h1>
-            <div class="proj-meta reveal" style="transition-delay:.2s">
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">קטגוריה</div>
-                    <div class="proj-meta-value">טיפוגרפיה</div>
-                </div>
-                <div class="proj-meta-item">
-                    <div class="proj-meta-label">סיכום</div>
-                    <div class="proj-meta-value">גופן בהשראת הטיפוגרפיה הישראלית של שנות ה-60 וה-70</div>
-                </div>
-            </div>
-        </section>
-        <div class="proj-description">
-            <div class="proj-desc-label reveal">על הפרויקט</div>
-            <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>נבו - גופן עברי חדש שנוצר בהשראת טיפוגרפיה ישראלית משנות ה-60 וה-70 של המאה ה-20.</p>
-                <p>הגופן שואב מהאסתטיקה הגרפית של אותה תקופה - תקופה שבה עיצוב ישראלי מצא את קולו הייחודי, בין מודרניזם אירופי לזהות מקומית מתגבשת.</p>
-            </div>
-        </div>
-        <div class="typeface-specimen reveal" style="font-family: 'Nevo', serif;">
-            <div class="specimen-name">נבו</div>
-            <div class="specimen-alphabet">אבגדהוזחטיכלמנסעפצקרשת ךםןףץ</div>
-            <div class="specimen-numbers">1234567890 ! ? @ # [] () . , : ; - _ ₪</div>
-        </div>
-
-        <!-- Interactive type tester -->
-        <div class="type-tester reveal">
-            <p class="section-label">(נסו בעצמכם)</p>
-            <div class="tester-stage" id="tester-stage" contenteditable="true" spellcheck="false" dir="rtl">צא ולמד</div>
-            <div class="tester-controls">
-                <div class="tester-ctrl">
-                    <div class="tester-ctrl-head">
-                        <span class="tester-ctrl-label">גודל</span>
-                        <span class="tester-ctrl-val" id="tt-size-val">96px</span>
-                    </div>
-                    <input type="range" class="tester-range" id="tt-size" min="20" max="200" value="96" step="1">
-                </div>
-                <div class="tester-ctrl">
-                    <div class="tester-ctrl-head">
-                        <span class="tester-ctrl-label">משקל</span>
-                        <span class="tester-ctrl-val" id="tt-wght-val">600</span>
-                    </div>
-                    <input type="range" class="tester-range" id="tt-wght" min="100" max="1000" value="600" step="10">
-                </div>
-                <div class="tester-ctrl">
-                    <div class="tester-ctrl-head">
-                        <span class="tester-ctrl-label">מרווח</span>
-                        <span class="tester-ctrl-val" id="tt-track-val">0.000em</span>
-                    </div>
-                    <input type="range" class="tester-range" id="tt-track" min="-100" max="200" value="0" step="1">
-                </div>
-            </div>
-        </div>
-
-        <!-- Live specimen lines (Nevo, narrow, descending sizes) -->
-        <div class="type-lines reveal">
-            <div class="type-line tl-1"><span class="tl-meta">כותרת ראשית</span>עברית חדשה</div>
-            <div class="type-line tl-2"><span class="tl-meta">כותרת</span>אותיות מספרות סיפור</div>
-            <div class="type-line tl-3"><span class="tl-meta">כותרת משנה</span>בין מודרניזם אירופי לזהות מקומית מתגבשת, נולד קול טיפוגרפי עכשווי ומגניב</div>
-            <div class="type-line tl-4"><span class="tl-meta">טקסט רץ</span>נבו שואב מהאסתטיקה הגרפית של שנות השישים והשבעים - תקופה שבה העיצוב הישראלי מצא את קולו הייחודי, וגופני הרחוב, השלטים והכרזות עיצבו את הנוף החזותי של הארץ הצעירה.</div>
-        </div>
-
-        <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
-            <div class="proj-img-wrap">
-                <video autoplay muted loop playsinline>
-                    <source src="main.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-        <div class="proj-grid g2 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="WhatsApp%20Image%202025-06-19%20at%2020.42.54%20(1).jpeg" alt="תהליך"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="WhatsApp%20Image%202025-06-21%20at%2023.36.01.jpeg" alt="תהליך"></div>
-        </div>
-        <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
-            <div class="proj-img-wrap">
-                <video autoplay muted loop playsinline>
-                    <source src="Comp%201.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-        <div class="proj-next">
-            <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="sketchbook.html" class="proj-next-link">פרויקט גמר ←</a>
-        </div>
-        <footer>
-            <span>© 2025 יונתן אלפרין</span>
-            <span>04 / 05</span>
-        </footer>
-    </div>
-
-    <!-- 05 איור -->
-    <div id="proj-sketchbook" class="proj-panel">
-        <section class="coming-soon">
-            <h1 class="cs-title">התצוגה בהקמה,<br>עוד מעט ויהיה פגמ"ר</h1>
-        </section>
-    </div>
-
     <script>
         /* ─── Shared mouse state ─────────────────────────────────── */
         let mouseX = -200, mouseY = -200;
@@ -972,10 +433,6 @@
 
         /* ─── Eye center cache (rebuilt on grid rebuild) ─────────── */
         let eyeCache = [];
-
-        /* ─── SPA state (declared early to avoid TDZ in rAF loop) ── */
-        let activePanel = null;
-
         /* ─── Cursor ─────────────────────────────────────────────── */
         const cursor = document.getElementById('cursor');
         let cx = -200, cy = -200;
@@ -992,7 +449,7 @@
         const MAX_IRIS = 5;
 
         const PROJECTS = [
-            { cover: 'illustrationcovernew.png', href: 'sketchbook.html', hue: 0,   sat: 3,   bri: 0.65, name: 'פרויקט גמר' },
+            { cover: 'illustrationcovernew.png', href: 'raziel.html',     hue: 0,   sat: 3,   bri: 0.65, name: 'רזיאל'      },
             { cover: 'webcovernew.jpg',           href: 'web.html',        hue: 200, sat: 2.5, name: 'ווב'     },
             { cover: 'brandingcovernew.jpg',      href: 'branding.html',   hue: 130, sat: 2.5, name: 'ברנדינג' },
             { cover: 'fontcovernew.jpg',          href: 'typeface.html',   hue: 280, sat: 2.5, name: 'גופן'    },
@@ -1062,7 +519,7 @@
                 });
                 u.addEventListener('click', () => {
                     if (proj.href === '#about') { window.__openAboutModal && window.__openAboutModal(); }
-                    else { openProject(proj.href); }
+                    else { window.location.href = proj.href; }
                 });
             });
         }
@@ -1148,7 +605,15 @@
             const ldrIris  = ldr.querySelector('.ldr-iris');
             const isDesk   = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-            if (!isDesk) { ldr.remove(); return; }
+            /* Project pages are separate documents now, so returning here would
+               replay the whole 1.1s reveal on every back-navigation. Run it once
+               per browsing session instead. */
+            let seen = false;
+            try { seen = sessionStorage.getItem('ya-loader') === '1'; } catch (e) {}
+
+            if (!isDesk || seen) { ldr.remove(); return; }
+
+            try { sessionStorage.setItem('ya-loader', '1'); } catch (e) {}
 
             eyeGrid.dataset.loading = '1';
 
@@ -1290,7 +755,7 @@
                 preview.style.transform = `translate(${px}px, ${py}px) scale(${pScale.toFixed(4)})`;
             }
 
-            if (!activePanel) eyeCache.forEach(ec => {
+            eyeCache.forEach(ec => {
                 if (!ec.iris || !ec.el.classList.contains('is-open')) return;
                 const angle = Math.atan2(mouseY - ec.cy, mouseX - ec.cx);
                 const dist  = Math.min(Math.hypot(mouseX - ec.cx, mouseY - ec.cy) / 20, MAX_IRIS);
@@ -1338,125 +803,10 @@
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape') {
                 if (aboutModal.classList.contains('open')) closeModal();
-                else if (activePanel) closeProject();
             }
         });
 
-        window.__openAboutModal = openModal;
-
-        /* ─── SPA project navigation ─────────────────────────────── */
-        const hero    = document.getElementById('hero');
-        const thread  = document.getElementById('thread');
-        const projNav = document.getElementById('proj-nav');
-
-        const PANEL_MAP = {
-            'book.html':       'proj-book',
-            'web.html':        'proj-web',
-            'branding.html':   'proj-branding',
-            'typeface.html':   'proj-typeface',
-            'sketchbook.html': 'proj-sketchbook',
-        };
-
-        let revealObserver = null;
-
-        function openProject(href) {
-            const panelId = PANEL_MAP[href];
-            if (!panelId) return;
-            const panel = document.getElementById(panelId);
-            if (!panel) return;
-
-            if (activePanel && activePanel !== panel) {
-                activePanel.classList.remove('active');
-            }
-
-            panel.scrollTop = 0;
-            panel.querySelectorAll('.reveal').forEach(el => el.classList.remove('in'));
-
-            hero.classList.add('proj-open');
-            preview.classList.remove('visible');
-            previewActive = false;
-            ptx = -9999; pty = -9999; px = -9999; py = -9999;
-
-            panel.classList.add('active');
-            activePanel = panel;
-
-            projNav.classList.add('active');
-            thread.classList.add('active');
-            thread.style.height = '0%';
-
-            if (revealObserver) revealObserver.disconnect();
-            revealObserver = new IntersectionObserver(
-                entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
-                { threshold: .08, root: panel }
-            );
-            panel.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-        }
-
-        function closeProject() {
-            if (!activePanel) return;
-            activePanel.classList.remove('active');
-            activePanel = null;
-            hero.classList.remove('proj-open');
-            projNav.classList.remove('active');
-            thread.classList.remove('active');
-            if (revealObserver) { revealObserver.disconnect(); revealObserver = null; }
-        }
-
-        // Scroll thread — track active panel's scroll
-        document.querySelectorAll('.proj-panel').forEach(panel => {
-            panel.addEventListener('scroll', () => {
-                if (panel !== activePanel) return;
-                const p = panel.scrollTop / (panel.scrollHeight - panel.clientHeight);
-                thread.style.height = (p * 100) + '%';
-            }, { passive: true });
-        });
-
-        // Intercept all links inside project panels
-        document.addEventListener('click', e => {
-            const link = e.target.closest('.proj-panel a[href]');
-            if (!link) return;
-            const href = link.getAttribute('href');
-            if (href === 'index.html') {
-                e.preventDefault();
-                closeProject();
-            } else if (PANEL_MAP[href]) {
-                e.preventDefault();
-                openProject(href);
-            }
-        });
-
-        document.getElementById('proj-back-btn').addEventListener('click', closeProject);
-
-        /* ─── Interactive type tester ────────────────────────────── */
-        (function initTypeTester() {
-            const stage = document.getElementById('tester-stage');
-            if (!stage) return;
-            const sizeR = document.getElementById('tt-size');
-            const wghtR = document.getElementById('tt-wght');
-            const trakR = document.getElementById('tt-track');
-            const sizeV = document.getElementById('tt-size-val');
-            const wghtV = document.getElementById('tt-wght-val');
-            const trakV = document.getElementById('tt-track-val');
-
-            function apply() {
-                const em = (trakR.value / 1000);
-                stage.style.fontSize      = sizeR.value + 'px';
-                stage.style.letterSpacing = em + 'em';
-                stage.style.fontVariationSettings = '"wght" ' + wghtR.value;
-                sizeV.textContent = sizeR.value + 'px';
-                wghtV.textContent = wghtR.value;
-                trakV.textContent = em.toFixed(3) + 'em';
-            }
-            [sizeR, wghtR, trakR].forEach(r => r.addEventListener('input', apply));
-
-            // Single line — block Enter from inserting breaks
-            stage.addEventListener('keydown', e => {
-                if (e.key === 'Enter') e.preventDefault();
-            });
-
-            apply();
-        })();
-    </script>
+        window.__openAboutModal = openModal;    </script>
 </body>
 
 </html>

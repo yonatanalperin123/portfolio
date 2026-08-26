@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>נבו — יונתן אלפרין</title>
+    <meta name="description" content="גופן עברי בהשראת הטיפוגרפיה הישראלית של שנות ה-60 וה-70. יונתן אלפרין, 2025." />
+    <link rel="icon" type="image/png" href="browsericon.png" />
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link href="https://api.fontshare.com/v2/css?f[]=sentient@400,500,700,400i&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.typekit.net/zpc1hbl.css" />
+    <link rel="stylesheet" href="proj.css" />
+    <style>
+        /* ─── Nevo — variable weight 1–1000 (1 = lightest/least heavy) ─ */
+        @font-face {
+            font-family: 'Nevo';
+            src: url('Nevo.woff2') format('woff2');
+            font-weight: 1 1000;
+            font-style: normal;
+            font-display: swap;
+        }
+
+
+        :root { --specimen-font: 'Nevo', serif; }
+
+        .proj-title { letter-spacing: .06em; }
+
+        /* ─── Type specimen lines (live text in Nevo) ───────────── */
+        .type-lines {
+            padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+            border-top: 1px solid var(--muted);
+            font-family: 'Nevo', serif;
+        }
+        .type-line {
+            padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+            margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+            border-bottom: 1px solid var(--muted);
+            line-height: 1.12;
+            letter-spacing: -.01em;
+        }
+        .type-line:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .type-line .tl-meta {
+            display: block;
+            font-family: var(--font);
+            font-size: .62rem;
+            font-variation-settings: var(--fvs-light);
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            opacity: .3;
+            margin-bottom: .8rem;
+            direction: ltr;
+            text-align: start;
+        }
+        .tl-1 { font-size: clamp(3rem, 11vw, 10rem); font-variation-settings: "wght" 200; opacity: 1; }
+        .tl-2 { font-size: clamp(2.2rem, 7vw, 6rem); font-variation-settings: "wght" 400; opacity: 1; }
+        .tl-3 { font-size: clamp(1.6rem, 4.5vw, 3.6rem); font-variation-settings: "wght" 700; opacity: 1; }
+        .tl-4 { font-size: clamp(1.15rem, 2.4vw, 1.9rem); font-variation-settings: "wght" 1000; line-height: 1.5; opacity: 1; }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="cursor"></div>
+    <div id="thread"></div>
+
+    <nav>
+        <a href="index.html" class="nav-back">חזרה</a>
+        <a href="index.html" class="nav-logo">יונתן</a>
+    </nav>
+
+    <section class="proj-hero">
+        <div class="proj-hero-media"><video autoplay muted loop playsinline><source src="fontberris.mp4" type="video/mp4"></video></div>
+        <p class="proj-number reveal">04 / 05</p>
+        <h1 class="proj-title reveal" style="transition-delay:.1s">נבו</h1>
+        <div class="proj-meta reveal" style="transition-delay:.2s">
+            <div class="proj-meta-item">
+                <div class="proj-meta-label">קטגוריה</div>
+                <div class="proj-meta-value">טיפוגרפיה</div>
+            </div>
+            <div class="proj-meta-item">
+                <div class="proj-meta-label">סיכום</div>
+                <div class="proj-meta-value">גופן בהשראת הטיפוגרפיה הישראלית של שנות ה-60 וה-70</div>
+            </div>
+        </div>
+    </section>
+    <div class="proj-description">
+        <div class="proj-desc-label reveal">על הפרויקט</div>
+        <div class="proj-desc-text reveal" style="transition-delay:.1s">
+            <p>נבו - גופן עברי חדש שנוצר בהשראת טיפוגרפיה ישראלית משנות ה-60 וה-70 של המאה ה-20.</p>
+            <p>הגופן שואב מהאסתטיקה הגרפית של אותה תקופה - תקופה שבה עיצוב ישראלי מצא את קולו הייחודי, בין מודרניזם אירופי לזהות מקומית מתגבשת.</p>
+        </div>
+    </div>
+    <div class="typeface-specimen reveal" style="font-family: 'Nevo', serif;">
+        <div class="specimen-name">נבו</div>
+        <div class="specimen-alphabet">אבגדהוזחטיכלמנסעפצקרשת ךםןףץ</div>
+        <div class="specimen-numbers">1234567890 ! ? @ # [] () . , : ; - _ ₪</div>
+    </div>
+
+    <!-- Interactive type tester -->
+    <div class="type-tester reveal">
+        <p class="section-label">(נסו בעצמכם)</p>
+        <div class="tester-stage" id="tester-stage" contenteditable="true" spellcheck="false" dir="rtl">צא ולמד</div>
+        <div class="tester-controls">
+            <div class="tester-ctrl">
+                <div class="tester-ctrl-head">
+                    <span class="tester-ctrl-label">גודל</span>
+                    <span class="tester-ctrl-val" id="tt-size-val">96px</span>
+                </div>
+                <input type="range" class="tester-range" id="tt-size" min="20" max="200" value="96" step="1">
+            </div>
+            <div class="tester-ctrl">
+                <div class="tester-ctrl-head">
+                    <span class="tester-ctrl-label">משקל</span>
+                    <span class="tester-ctrl-val" id="tt-wght-val">600</span>
+                </div>
+                <input type="range" class="tester-range" id="tt-wght" min="100" max="1000" value="600" step="10">
+            </div>
+            <div class="tester-ctrl">
+                <div class="tester-ctrl-head">
+                    <span class="tester-ctrl-label">מרווח</span>
+                    <span class="tester-ctrl-val" id="tt-track-val">0.000em</span>
+                </div>
+                <input type="range" class="tester-range" id="tt-track" min="-100" max="200" value="0" step="1">
+            </div>
+        </div>
+    </div>
+
+    <!-- Live specimen lines (Nevo, narrow, descending sizes) -->
+    <div class="type-lines reveal">
+        <div class="type-line tl-1"><span class="tl-meta">כותרת ראשית</span>עברית חדשה</div>
+        <div class="type-line tl-2"><span class="tl-meta">כותרת</span>אותיות מספרות סיפור</div>
+        <div class="type-line tl-3"><span class="tl-meta">כותרת משנה</span>בין מודרניזם אירופי לזהות מקומית מתגבשת, נולד קול טיפוגרפי עכשווי ומגניב</div>
+        <div class="type-line tl-4"><span class="tl-meta">טקסט רץ</span>נבו שואב מהאסתטיקה הגרפית של שנות השישים והשבעים - תקופה שבה העיצוב הישראלי מצא את קולו הייחודי, וגופני הרחוב, השלטים והכרזות עיצבו את הנוף החזותי של הארץ הצעירה.</div>
+    </div>
+
+    <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
+        <div class="proj-img-wrap">
+            <video autoplay muted loop playsinline>
+                <source src="font/main.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    <div class="proj-grid g2 reveal">
+        <div class="proj-img-wrap"><img loading="lazy" src="font/WhatsApp%20Image%202025-06-19%20at%2020.42.54%20(1).jpeg" alt="תהליך"></div>
+        <div class="proj-img-wrap"><img loading="lazy" src="font/WhatsApp%20Image%202025-06-21%20at%2023.36.01.jpeg" alt="תהליך"></div>
+    </div>
+    <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
+        <div class="proj-img-wrap">
+            <video autoplay muted loop playsinline>
+                <source src="font/Comp%201.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    <div class="proj-next">
+        <span class="proj-next-label">הפרויקט הבא</span>
+        <a href="raziel.html" class="proj-next-link">רזיאל ←</a>
+    </div>
+    <footer>
+        <span>© 2025 יונתן אלפרין</span>
+        <span>04 / 05</span>
+    </footer>
+
+    <script src="proj.js"></script>
+    <script>
+        /* ─── Interactive type tester ────────────────────────────── */
+        (function initTypeTester() {
+            const stage = document.getElementById('tester-stage');
+            if (!stage) return;
+            const sizeR = document.getElementById('tt-size');
+            const wghtR = document.getElementById('tt-wght');
+            const trakR = document.getElementById('tt-track');
+            const sizeV = document.getElementById('tt-size-val');
+            const wghtV = document.getElementById('tt-wght-val');
+            const trakV = document.getElementById('tt-track-val');
+
+            function apply() {
+                const em = (trakR.value / 1000);
+                stage.style.fontSize      = sizeR.value + 'px';
+                stage.style.letterSpacing = em + 'em';
+                stage.style.fontVariationSettings = '"wght" ' + wghtR.value;
+                sizeV.textContent = sizeR.value + 'px';
+                wghtV.textContent = wghtR.value;
+                trakV.textContent = em.toFixed(3) + 'em';
+            }
+            [sizeR, wghtR, trakR].forEach(r => r.addEventListener('input', apply));
+
+            // Single line — block Enter from inserting breaks
+            stage.addEventListener('keydown', e => {
+                if (e.key === 'Enter') e.preventDefault();
+            });
+
+            apply();
+        })();
+    </script>
+</body>
+
+</html>
