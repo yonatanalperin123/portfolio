@@ -903,7 +903,7 @@
                 </div>
                 <div class="proj-meta-item">
                     <div class="proj-meta-label">לקוח</div>
-                    <div class="proj-meta-value">השוקת — פרדס חנה</div>
+                    <div class="proj-meta-value">השוקת - פרדס חנה</div>
                 </div>
             </div>
         </section>
@@ -1163,10 +1163,10 @@
             </div>
         </div>
         <div class="proj-grid g2 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="raziel/book-1.jpg" alt="ספר הספסימן — סקיצות ידניות של האותיות"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="raziel/book-2.jpg" alt="ספר הספסימן — היררכיית גדלים"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="raziel/book-3.jpg" alt="ספר הספסימן — פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="raziel/book-4.jpg" alt="ספר הספסימן — סולם גדלים וטקסט רץ"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book-1.jpg" alt="ספר הספסימן — סקיצות ידניות של האותיות"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book-2.jpg" alt="ספר הספסימן — היררכיית גדלים"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book-3.jpg" alt="ספר הספסימן — פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book-4.jpg" alt="ספר הספסימן — סולם גדלים וטקסט רץ"></div>
         </div>
 
         <div class="proj-next">
@@ -1575,6 +1575,7 @@
         };
 
         let revealObserver = null;
+        let videoObserver  = null;
 
         function openProject(href) {
             const panelId = PANEL_MAP[href];
@@ -1607,16 +1608,34 @@
                 { threshold: .08, root: panel }
             );
             panel.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+            /* Chrome only autoplays a muted video once it judges it visible, and it
+               never makes that judgement for videos inside this fixed, internally
+               scrolling panel — they stay parked at t=0 showing their poster. Drive
+               them by hand, and pause the offscreen ones so we aren't decoding
+               several videos at once. */
+            if (videoObserver) videoObserver.disconnect();
+            videoObserver = new IntersectionObserver(
+                entries => entries.forEach(e => {
+                    const v = e.target;
+                    if (e.isIntersecting) { const p = v.play(); if (p) p.catch(() => {}); }
+                    else v.pause();
+                }),
+                { threshold: .1, root: panel }
+            );
+            panel.querySelectorAll('video').forEach(v => videoObserver.observe(v));
         }
 
         function closeProject() {
             if (!activePanel) return;
             activePanel.classList.remove('active');
+            activePanel.querySelectorAll('video').forEach(v => v.pause());
             activePanel = null;
             hero.classList.remove('proj-open');
             projNav.classList.remove('active');
             thread.classList.remove('active');
             if (revealObserver) { revealObserver.disconnect(); revealObserver = null; }
+            if (videoObserver)  { videoObserver.disconnect();  videoObserver  = null; }
         }
 
         // Scroll thread — track active panel's scroll
