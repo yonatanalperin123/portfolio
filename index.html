@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://api.fontshare.com" />
     <link rel="preconnect" href="https://use.typekit.net" crossorigin />
     <link rel="preconnect" href="https://p.typekit.net" crossorigin />
-    <link href="https://api.fontshare.com/v2/css?f[]=sentient@400,500,700,400i&display=swap" rel="stylesheet" />
+    <link href="https://api.fontshare.com/v2/css?f[]=sentient@400,500,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://use.typekit.net/zpc1hbl.css" />
     <link rel="stylesheet" href="proj.css" />
 
@@ -211,7 +211,7 @@
 
         /* ─── Section Label ────────────────────────────────────── */
         .section-label {
-            font-size: clamp(.7rem, .9vw, .85rem);
+            font-size: clamp(calc(.7rem + 1px), calc(.9vw + 1px), calc(.85rem + 1px));
             font-variation-settings: var(--fvs-light);
             letter-spacing: .14em;
             text-transform: uppercase;
@@ -252,9 +252,9 @@
             font-variation-settings: var(--fvs-regular);
             letter-spacing: -.01em;
         }
-        .about-text em { font-style: italic; opacity: .7; }
+        .about-text em { font-style: normal; opacity: .7; }
         .about-detail-item { border-top: 1px solid var(--muted); padding-top: 1.25rem; padding-bottom: 1.25rem; }
-        .about-detail-label { font-size: .65rem; font-variation-settings: var(--fvs-light); letter-spacing: .18em; text-transform: uppercase; opacity: .3; margin-bottom: .65rem; }
+        .about-detail-label { font-size: calc(.65rem + 1px); font-variation-settings: var(--fvs-light); letter-spacing: .18em; text-transform: uppercase; opacity: .3; margin-bottom: .65rem; }
         .about-detail-value { font-size: clamp(1rem, 1.4vw, 1.1rem); font-variation-settings: var(--fvs-regular); opacity: .85; line-height: 1.5; }
         .egg-link { color: inherit; text-decoration: none; }
 
@@ -267,13 +267,13 @@
             align-items: baseline;
             gap: .5rem 1.6rem;
         }
-        .currently-label { font-size: .7rem; font-variation-settings: var(--fvs-light); letter-spacing: .14em; text-transform: uppercase; opacity: .3; flex-shrink: 0; }
+        .currently-label { font-size: calc(.7rem + 1px); font-variation-settings: var(--fvs-light); letter-spacing: .14em; text-transform: uppercase; opacity: .3; flex-shrink: 0; }
         .currently-items { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 0; }
         .currently-item { font-size: clamp(.85rem, 1.15vw, 1rem); opacity: .7; display: flex; align-items: baseline; gap: .3rem; }
         .currently-item + .currently-item::before { content: '·'; opacity: .35; margin-inline-end: .3rem; font-style: normal; }
         .currently-item .ci-label { opacity: .5; font-style: normal; }
         .currently-item .ci-sep { opacity: .3; font-style: normal; }
-        .currently-item .ci-value { font-style: italic; }
+        .currently-item .ci-value { font-style: normal; }
 
         /* ─── About modal ───────────────────────────────────────── */
         #about-modal {
@@ -315,7 +315,7 @@
         .contact-btn {
             color: var(--fg);
             text-decoration: none;
-            font-size: .68rem;
+            font-size: calc(.68rem + 1px);
             font-variation-settings: var(--fvs-light);
             letter-spacing: .12em;
             text-transform: uppercase;
@@ -492,7 +492,7 @@
         }
         .tester-ctrl { display: flex; flex-direction: column; gap: .7rem; }
         .tester-ctrl-head { display: flex; justify-content: space-between; align-items: baseline; }
-        .tester-ctrl-label { font-size: .7rem; font-variation-settings: var(--fvs-light); letter-spacing: .14em; text-transform: uppercase; opacity: .4; }
+        .tester-ctrl-label { font-size: calc(.7rem + 1px); font-variation-settings: var(--fvs-light); letter-spacing: .14em; text-transform: uppercase; opacity: .4; }
         .tester-ctrl-val { font-size: .8rem; opacity: .55; font-variant-numeric: tabular-nums; direction: ltr; }
         input[type=range].tester-range {
             -webkit-appearance: none; appearance: none;
@@ -530,7 +530,7 @@
         .type-line .tl-meta {
             display: block;
             font-family: var(--font);
-            font-size: .62rem;
+            font-size: calc(.62rem + 1px);
             font-variation-settings: var(--fvs-light);
             letter-spacing: .14em;
             text-transform: uppercase;
@@ -638,7 +638,7 @@
             gap: clamp(1.2rem, 2.5vw, 2rem);
         }
         .live-cta-label {
-            font-size: .7rem; font-variation-settings: var(--fvs-light);
+            font-size: calc(.7rem + 1px); font-variation-settings: var(--fvs-light);
             letter-spacing: .16em; text-transform: uppercase; opacity: .3;
         }
         .live-cta-link {
@@ -754,9 +754,9 @@
                         <div class="currently-strip">
                             <span class="currently-label">כרגע</span>
                             <div class="currently-items">
-                                <span class="currently-item"><span class="ci-label">משחק</span><span class="ci-sep">—</span><span class="ci-value">Heroes of Might and Magic 3</span></span>
-                                <span class="currently-item"><span class="ci-label">אוכל</span><span class="ci-sep">—</span><span class="ci-value"><a href="ramen.html" class="egg-link">כריך סלט ביצים</a></span></span>
-                                <span class="currently-item"><span class="ci-label">שומע</span><span class="ci-sep">—</span><span class="ci-value">Giant Steps, John Coltrane</span></span>
+                                <span class="currently-item"><span class="ci-label">משחק</span><span class="ci-sep">-</span><span class="ci-value">Heroes of Might and Magic 3</span></span>
+                                <span class="currently-item"><span class="ci-label">אוכל</span><span class="ci-sep">-</span><span class="ci-value"><a href="ramen.html" class="egg-link">כריך סלט ביצים</a></span></span>
+                                <span class="currently-item"><span class="ci-label">שומע</span><span class="ci-sep">-</span><span class="ci-value">Giant Steps, John Coltrane</span></span>
                             </div>
                         </div>
                     </div>
@@ -801,19 +801,19 @@
         <div class="proj-description">
             <div class="proj-desc-label reveal">על הפרויקט</div>
             <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>ספר זה הוא מקדש לתרבות המימז הישראלית. בספר נחקור את מקורות המימז, נגדיר מה הוא מים ומה הוא מים ישראלי, איך הם משפיעים על חיי היום יום שלנו — ממקפיינים פרסומיים של משרדי ממשלה ועד עמודי מימז איזוטריים.</p>
-                <p>בנוסף, הספר מכיל ארכיב של מימז ישראליים ומגוירים — שמטרתו להראות לקורא את העושר התרבותי שנמצא במקומות חבויים מהעין הציבורית. מטרת הספר היא לפתוח צוהר לתרבות אינטרנט נישתית שלאט לאט הופכת לקונצנזוס ציבורי.</p>
+                <p>ספר זה הוא מקדש לתרבות המימז הישראלית. בספר נחקור את מקורות המימז, נגדיר מה הוא מים ומה הוא מים ישראלי, איך הם משפיעים על חיי היום יום שלנו - ממקפיינים פרסומיים של משרדי ממשלה ועד עמודי מימז איזוטריים.</p>
+                <p>בנוסף, הספר מכיל ארכיב של מימז ישראליים ומגוירים - שמטרתו להראות לקורא את העושר התרבותי שנמצא במקומות חבויים מהעין הציבורית. מטרת הספר היא לפתוח צוהר לתרבות אינטרנט נישתית שלאט לאט הופכת לקונצנזוס ציבורי.</p>
             </div>
         </div>
         <div class="proj-grid g2 reveal">
             <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-02.jpg" alt="עטיפה קדמית"></div>
             <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-01.jpg" alt="עטיפה אחורית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-03.jpg" alt="פרישה פנימית — כותרות"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-04.jpg" alt="עמוד פתיחה — תוכן"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-03.jpg" alt="פרישה פנימית - כותרות"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-04.jpg" alt="עמוד פתיחה - תוכן"></div>
             <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-05.jpg" alt="פרישה פנימית"></div>
             <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-06.jpg" alt="פרישה פנימית"></div>
             <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-07.jpg" alt="פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-08.jpg" alt="פרישה פנימית — תוכן"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book/להעלאהלאינסטגרם-08.jpg" alt="פרישה פנימית - תוכן"></div>
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
@@ -850,13 +850,13 @@
             <div class="proj-desc-label reveal">על הפרויקט</div>
             <div class="proj-desc-text reveal" style="transition-delay:.1s">
                 <p>"הספרייה" הוא ארכיון דיגיטלי ויצירת אמנות אינטראקטיבית שנועדה לדמיין מחדש את הקאנון התרבותי של הדור הדתי-לאומי המודרני.</p>
-                <p>האתר יוצר ספרייה דיגיטלית, לא-היררכית. הוא מציג "קאנון תרבותי חדש" של 26 ספרים המשלב טקסטים תורניים קלאסיים (כמו "אורות" של הרב קוק) עם פרוזה מודרנית (כמו הארי פוטר או פרסי ג'קסון), פילוסופיה ושירה — מפוזרים יחד על משטח וירטואלי ללא הפרדה, המסמל דור שמאמץ את שני העולמות באופן שווה ("ספרא וסייפא").</p>
+                <p>האתר יוצר ספרייה דיגיטלית, לא-היררכית. הוא מציג "קאנון תרבותי חדש" של 26 ספרים המשלב טקסטים תורניים קלאסיים (כמו "אורות" של הרב קוק) עם פרוזה מודרנית (כמו הארי פוטר או פרסי ג'קסון), פילוסופיה ושירה - מפוזרים יחד על משטח וירטואלי ללא הפרדה, המסמל דור שמאמץ את שני העולמות באופן שווה ("ספרא וסייפא").</p>
                 <p>עטיפות הספרים עוצבו מחדש כסדרה קוהרנטית.</p>
             </div>
         </div>
         <div class="proj-images cols-1 reveal">
             <div class="proj-img-wrap wide">
-                <img src="webcover.jpg" alt="ספריית הספרים הדיגיטלית — עטיפות מעוצבות מחדש">
+                <img src="webcover.jpg" alt="ספריית הספרים הדיגיטלית - עטיפות מעוצבות מחדש">
             </div>
         </div>
         <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
@@ -867,14 +867,14 @@
             </div>
         </div>
         <div class="proj-grid g4 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="web/1.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/5.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/7.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/12.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/14.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/17.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/21.png" alt="הספרייה — עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="web/26.png" alt="הספרייה — עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/1.png" alt="הספרייה - עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/5.png" alt="הספרייה - עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/7.png" alt="הספרייה - עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/12.png" alt="הספרייה - עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/14.png" alt="הספרייה - עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/17.png" alt="הספרייה - עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/21.png" alt="הספרייה - עטיפה"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="web/26.png" alt="הספרייה - עטיפה"></div>
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
@@ -910,13 +910,13 @@
         <div class="proj-description">
             <div class="proj-desc-label reveal">על הפרויקט</div>
             <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>השוקת היא יותר מסתם דליקטסן — היא חגיגה של מלאכת יד מקומית וסקרנות קולינרית. ממוקמת בפרדס חנה, מרכז אומנותי זה מחבר בין חובבי אוכל לתוצרת איכותית, farm-to-table, עטופה בזהות מותגית שמרגישה אותנטית כמו המרכיבים עצמם.</p>
-                <p>יצרנו שפה ויזואלית השורשת בגוונים אדמתיים ואיורים בסגנון חיתוך עץ, המשקפים את מורשת גידול הבקר של הבעלים ואת התשוקה לשקיפות. מתוויות הצנצנות ועד פוסטרי הסדנאות — כל אלמנט עיצובי מזמין את הלקוחות להאט, לטעום את ההבדל, ולגלות את הסיפור מאחורי האוכל שלהם.</p>
+                <p>השוקת היא יותר מסתם דליקטסן - היא חגיגה של מלאכת יד מקומית וסקרנות קולינרית. ממוקמת בפרדס חנה, מרכז אומנותי זה מחבר בין חובבי אוכל לתוצרת איכותית, farm-to-table, עטופה בזהות מותגית שמרגישה אותנטית כמו המרכיבים עצמם.</p>
+                <p>יצרנו שפה ויזואלית השורשת בגוונים אדמתיים ואיורים בסגנון חיתוך עץ, המשקפים את מורשת גידול הבקר של הבעלים ואת התשוקה לשקיפות. מתוויות הצנצנות ועד פוסטרי הסדנאות - כל אלמנט עיצובי מזמין את הלקוחות להאט, לטעום את ההבדל, ולגלות את הסיפור מאחורי האוכל שלהם.</p>
             </div>
         </div>
         <div class="proj-images cols-1 reveal">
             <div class="proj-img-wrap">
-                <img src="brandingcover.jpg" alt="השוקת — זהות מותגית">
+                <img src="brandingcover.jpg" alt="השוקת - זהות מותגית">
             </div>
         </div>
         <div class="proj-grid g3 feed reveal">
@@ -1113,12 +1113,12 @@
         <div class="proj-description" style="border-top:1px solid var(--muted)">
             <div class="proj-desc-label reveal">אות מול אות</div>
             <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>האות ש — משמאל הצורה הממוצעת בכתב היד, ומימין הפרשנות בגופן. שלוש המשיכות נשמרות, הסריף נבלע בתוך צורת האות, והתנועה האורגנית של כלי הכתיבה נשארת ביציאה בתחתית.</p>
+                <p>האות ש - משמאל הצורה הממוצעת בכתב היד, ומימין הפרשנות בגופן. שלוש המשיכות נשמרות, הסריף נבלע בתוך צורת האות, והתנועה האורגנית של כלי הכתיבה נשארת ביציאה בתחתית.</p>
             </div>
         </div>
         <div class="proj-images cols-1 reveal">
             <div class="proj-img-wrap plain">
-        <svg class="anat" viewBox="0 0 1815 845" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="ניתוח האות ש — כתב היד מול הגופן">
+        <svg class="anat" viewBox="0 0 1815 845" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="ניתוח האות ש - כתב היד מול הגופן">
           <path fill="#67514A" stroke="#E9B8B8" stroke-width="4" d="M1306.41 611.333c-2.78.101-5.44.269-7.98.461-5.34 10.058-9.6 17.269-12.02 20.039-13.5 15.5-45.5 72.5-86 80s-102-9.5-118.5-31.5-37-56.5-27.5-74 29-40 60.5-33.5 79.5 26.999 92.5 20c13-7 28-9 33.5-23.5s29-112.001 29-134c0-22-4-51 3-56.5 0-1.833 0-3.667 0-5.5-2-8.5-6-121-3-130.5s16-32 40-34 45 6.5 78 0 51-15.5 66.5-27.5 38.5-18 50-9 27.5 37 9 57-43.5 65.5-63.5 79c-16 10.8-61.66 44.5-82.5 60 -.833 2.667-1.667 5.333-2.5 8c-3.5 21.5-6.5 56.5 0 71 1.08 2.394.02 8.604-2.54 17.374 12.21 2.415 24.43 4.626 36.54 4.626 18 0 125.09-22 157.5-34 32.42-12.001 52.09-25.833 61.59-67s21.91-98.5 30.91-113 33.92-20 59-10l.98.387c24.62 9.812 44.12 17.579 51.52 53.113 7.5 36-26.08 141.332-56.5 191-30.41 49.667-74.58 63.999-152 103-77.41 39-218 17.5-245.5 18.5Z"/>
           <mask id="a" width="534" height="525" x="259" y="174" fill="#000" maskUnits="userSpaceOnUse">
             <path fill="#fff" d="M259 174h534v525H259z"/>
@@ -1159,14 +1159,14 @@
         <div class="proj-description" style="border-top:1px solid var(--muted)">
             <div class="proj-desc-label reveal">הספסימן המודפס</div>
             <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>ספר ספסימן שמלווה את הגופן — אנטומיה של האותיות, היררכיית גדלים וטקסט רץ.</p>
+                <p>ספר ספסימן שמלווה את הגופן - אנטומיה של האותיות, היררכיית גדלים וטקסט רץ.</p>
             </div>
         </div>
         <div class="proj-grid g2 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="book-1.jpg" alt="ספר הספסימן — סקיצות ידניות של האותיות"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book-2.jpg" alt="ספר הספסימן — היררכיית גדלים"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book-3.jpg" alt="ספר הספסימן — פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book-4.jpg" alt="ספר הספסימן — סולם גדלים וטקסט רץ"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book-1.jpg" alt="ספר הספסימן - סקיצות ידניות של האותיות"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book-2.jpg" alt="ספר הספסימן - היררכיית גדלים"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book-3.jpg" alt="ספר הספסימן - פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="book-4.jpg" alt="ספר הספסימן - סולם גדלים וטקסט רץ"></div>
         </div>
 
         <div class="proj-next">
