@@ -177,6 +177,47 @@
             gap: 14px;
             padding: 24px;
             overflow: hidden;
+            /* dense lets filler eyes backfill the cells a wide title skipped
+               when it wrapped to the next line. */
+            grid-auto-flow: dense;
+        }
+
+        /* ─── Hero quick links ──────────────────────────────────── */
+        /* Each project title is a grid cell among the eyes: it spans however
+           many columns its text needs, and once the titles run out, eyes fill
+           the rest of the row. The titles are part of the table, not a strip
+           under it. */
+        .hero-link {
+            display: flex;
+            align-items: center;
+            /* flex-start is the right edge in RTL: each title begins exactly on
+               a column line, the same edge the eye above it starts on, and the
+               leftover span space falls to the left of the text. */
+            justify-content: flex-start;
+            min-width: 0;
+            color: inherit;
+            text-decoration: none;
+            font-size: calc(clamp(.82rem, 1.05vw, .98rem) + 2px);
+            font-variation-settings: var(--fvs-light);
+            letter-spacing: .05em;
+            white-space: nowrap;
+            opacity: .55;
+            transition: opacity .25s var(--ease);
+        }
+        .hero-link:hover,
+        .hero-link:focus-visible,
+        /* .hot mirrors hover: set from JS while the matching eye is hovered */
+        .hero-link.hot { opacity: 1; }
+
+        /* Offscreen ruler for measuring title widths in the link font. */
+        #hero-measure {
+            position: absolute;
+            visibility: hidden;
+            white-space: nowrap;
+            pointer-events: none;
+            font-size: calc(clamp(.82rem, 1.05vw, .98rem) + 2px);
+            font-variation-settings: var(--fvs-light);
+            letter-spacing: .05em;
         }
         /* cells hidden while loader is active */
         #eye-grid[data-loading] .eye-unit { opacity: 0; }
@@ -961,7 +1002,6 @@
 
     <section id="hero">
         <div id="eye-grid"></div>
-
     </section>
 
     <!-- ── About modal ──────────────────────────────────────────── -->
@@ -1545,12 +1585,18 @@
                     pty = mouseY - (previewH || 150) / 2;
                     px = ptx; py = pty;
                     previewActive = true;
+                    previewAnchored = false;
+                    /* light up the matching quick link below */
+                    const link = heroLinkEls.find(l => l.getAttribute('href') === proj.href);
+                    if (link) link.classList.add('hot');
                 });
                 u.addEventListener('mouseleave', () => {
                     cursor.classList.remove('big');
                     const targetImg = document.querySelector(`.preview-item[data-href="${proj.href}"]`);
                     if (targetImg) targetImg.classList.remove('visible');
                     previewActive = false;
+                    const link = heroLinkEls.find(l => l.getAttribute('href') === proj.href);
+                    if (link) link.classList.remove('hot');
                 });
                 u.addEventListener('click', () => {
                     if (proj.href === '#about') { window.__openAboutModal && window.__openAboutModal(); }
@@ -1569,7 +1615,32 @@
             const rows = Math.floor((avH + GAP) / (CELL_PX + GAP));
             eyeGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
             eyeGrid.style.gridTemplateRows    = `repeat(${rows}, 1fr)`;
-            for (let i = 0; i < cols * rows; i++) {
+            /* Each title spans as many columns as its text needs. Measured per
+               build because the webfont may finish loading between builds. */
+            const cellW = (avW - (cols - 1) * GAP) / cols;
+            /* Spans are sized to each title's text, aiming for the same amount
+               of free space after every title. Equal spans looked equal on
+               paper (equal start-to-start distances) but not to the eye: the
+               wide Latin title swallowed the gap to its neighbour while the
+               short Hebrew ones floated in huge ones. */
+            const cellStep = cellW + GAP;
+            /* The face artwork ends ~8.6% short of its cell's edge (transparent
+               margin in the PNG), so a title flush with the cell line juts out
+               past the visible eye above it. Inset the text to the drawn edge. */
+            const eyeInset = Math.round(cellW * 0.086);
+            let spanSum = 0;
+            heroLinkEls.forEach(a => {
+                heroMeasure.textContent = a.textContent;
+                const w = heroMeasure.offsetWidth;
+                /* text width + ~1.5 cells of air, rounded to whole cells */
+                const span = Math.min(cols, Math.max(1, Math.round(w / cellStep + 1.5)));
+                a.style.gridColumn = 'span ' + span;
+                a.style.paddingRight = eyeInset + 'px';
+                spanSum += span;
+            });
+            const linkRows = Math.min(rows, Math.ceil(spanSum / cols));
+            const eyeRows = Math.max(0, rows - linkRows);
+            for (let i = 0; i < cols * eyeRows; i++) {
                 const u = document.createElement('div');
                 u.className = 'eye-unit';
                 u.innerHTML =
@@ -1580,7 +1651,24 @@
                 u.style.setProperty('--rot', rot + 'deg');
                 eyeGrid.appendChild(u);
             }
-            
+            /* Titles flow into the last row(s) from the right (RTL), then
+               filler eyes complete every remaining cell, so the titles sit
+               between eyes rather than on an empty band. The same elements are
+               re-appended each build, so their listeners survive. */
+            heroLinkEls.forEach(a => eyeGrid.appendChild(a));
+            const filler = cols * linkRows - spanSum;
+            for (let i = 0; i < filler; i++) {
+                const u = document.createElement('div');
+                u.className = 'eye-unit';
+                u.innerHTML =
+                    '<img class="eu-face eu-closed" src="closed face copy.png" alt="" draggable="false">' +
+                    '<img class="eu-face eu-open"   src="face copy.png"        alt="" draggable="false">' +
+                    '<img class="eu-eye"            src="eye copy.png"         alt="" aria-hidden="true" draggable="false">';
+                const rot = ((Math.random() - 0.5) * 10).toFixed(2);
+                u.style.setProperty('--rot', rot + 'deg');
+                eyeGrid.appendChild(u);
+            }
+
             // Build the preload container for hover images
             const prevCont = document.getElementById('preview-container');
             prevCont.innerHTML = '';
@@ -1690,6 +1778,67 @@
             });
         })();
 
+        /* ─── Hero quick links ───────────────────────────────────
+           Built from PROJECTS so the list can never drift out of sync with the
+           eyes. Click and hover behave exactly like the project eyes do.
+           buildGrid() places each title as a cell in the grid's last rows. */
+        const heroLinkEls = [];
+        const heroMeasure = document.createElement('span');
+        heroMeasure.id = 'hero-measure';
+        document.body.appendChild(heroMeasure);
+        /* Panel order, not PROJECTS order: rightmost link is project 01 and so
+           on, with about last. PROJECTS itself must not be reordered — its
+           indexes drive where each project's eye lands on the grid. */
+        const HERO_LINK_ORDER = ['book.html', 'green.html', 'branding.html', 'typeface.html', 'raziel.html', '#about'];
+        (function buildHeroLinks() {
+            const ordered = HERO_LINK_ORDER
+                .map(h => PROJECTS.find(p => p.href === h))
+                .filter(Boolean);
+            ordered.forEach(proj => {
+                const a = document.createElement('a');
+                a.href = proj.href;
+                a.className = 'hero-link';
+                a.textContent = proj.name;
+                heroLinkEls.push(a);
+                a.addEventListener('click', e => {
+                    e.preventDefault();
+                    if (proj.href === '#about') { window.__openAboutModal && window.__openAboutModal(); }
+                    else { openProject(proj.href); }
+                });
+                a.addEventListener('mouseenter', () => {
+                    cursor.classList.add('big');
+                    const targetImg = document.querySelector(`.preview-item[data-href="${proj.href}"]`);
+                    if (targetImg) targetImg.classList.add('visible');
+                    /* Anchor the preview beside this project's eye, so the
+                       link points the viewer at where its door actually is. */
+                    const eye = document.querySelector(`.eye-unit[data-project="${proj.href}"]`);
+                    if (eye) {
+                        const r = eye.getBoundingClientRect();
+                        const w = preview.offsetWidth || 300;
+                        const h = previewH || 150;
+                        ptx = (r.right + 24 + w <= window.innerWidth)
+                            ? r.right + 24
+                            : r.left - 24 - w;
+                        pty = Math.min(Math.max(12, r.top + r.height / 2 - h / 2),
+                                       window.innerHeight - h - 12);
+                        previewAnchored = true;
+                    } else {
+                        ptx = calcPreviewX(mouseX);
+                        pty = mouseY - (previewH || 150) / 2;
+                    }
+                    px = ptx; py = pty;
+                    previewActive = true;
+                });
+                a.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('big');
+                    const targetImg = document.querySelector(`.preview-item[data-href="${proj.href}"]`);
+                    if (targetImg) targetImg.classList.remove('visible');
+                    previewActive = false;
+                    previewAnchored = false;
+                });
+            });
+        })();
+
         buildGrid();
         let resizeTimer;
         window.addEventListener('resize', () => {
@@ -1700,6 +1849,9 @@
         /* ─── Project preview ────────────────────────────────────── */
         const preview = document.getElementById('preview-container');
         let px = -9999, py = -9999, ptx = -9999, pty = -9999, previewActive = false;
+        /* true while a hero link anchors the preview beside its project's eye,
+           so mousemove must not drag it back to the cursor. */
+        let previewAnchored = false;
 
         function calcPreviewX(mx) {
             const w = preview.offsetWidth || 400;
@@ -1715,7 +1867,7 @@
             mouseX = e.clientX;
             mouseY = e.clientY;
 
-            if (previewActive) {
+            if (previewActive && !previewAnchored) {
                 ptx = calcPreviewX(mouseX);
                 pty = mouseY - (previewH || 150) / 2;
             }
