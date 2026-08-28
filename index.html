@@ -209,7 +209,9 @@
         /* .hot mirrors hover: set from JS while the matching eye is hovered */
         .hero-link.hot { opacity: 1; }
 
-        /* Offscreen ruler for measuring title widths in the link font. */
+        /* Offscreen ruler for measuring title widths in the link font. Must
+           mirror .hero-link's font in every media query, or spans are computed
+           for the wrong size and titles clip. */
         #hero-measure {
             position: absolute;
             visibility: hidden;
@@ -218,6 +220,18 @@
             font-size: calc(clamp(.82rem, 1.05vw, .98rem) + 2px);
             font-variation-settings: var(--fvs-light);
             letter-spacing: .05em;
+        }
+        /* On phones the quiet desktop treatment disappears: 15px at 55%
+           opacity scattered among eye tiles does not read as navigation. */
+        @media (max-width: 700px) {
+            .hero-link, #hero-measure { font-size: 1.1rem; }
+            .hero-link { opacity: .85; }
+
+            /* Panel hero tags: one per row, so none of them wrap mid-value.
+               The advisor/year pair is the exception and shares a row. */
+            .proj-panel .proj-meta { flex-wrap: wrap; gap: 1.25rem; }
+            .proj-panel .proj-meta-item { flex: 1 1 100%; }
+            .proj-panel .proj-meta-item.meta-pair { flex: 1 1 calc(50% - .75rem); }
         }
         /* cells hidden while loader is active */
         #eye-grid[data-loading] .eye-unit { opacity: 0; }
@@ -1372,11 +1386,11 @@
                     <div class="proj-meta-label">סיכום</div>
                     <div class="proj-meta-value">גופן עברי ואתר שבו סוכן AI שוזר קמע אישי</div>
                 </div>
-                <div class="proj-meta-item">
+                <div class="proj-meta-item meta-pair">
                     <div class="proj-meta-label">מנחה</div>
                     <div class="proj-meta-value">עפרי פורטיס</div>
                 </div>
-                <div class="proj-meta-item">
+                <div class="proj-meta-item meta-pair">
                     <div class="proj-meta-label">שנה</div>
                     <div class="proj-meta-value">2026</div>
                 </div>
@@ -1525,7 +1539,7 @@
 
         const PROJECTS = [
             { cover: 'illustrationcovernew.png', href: 'raziel.html',     hue: 0,   sat: 3,   bri: 0.65, name: 'רזיאל'      },
-            { cover: 'buffersymbol.png',          href: 'green.html',      hue: 95,  sat: 2.5, name: 'Green Assistant' },
+            { cover: 'buffersymbol.png',          href: 'green.html',      hue: 95,  sat: 2.5, name: 'UX/UI' },
             { cover: 'brandingcovernew.jpg',      href: 'branding.html',   hue: 130, sat: 2.5, name: 'ברנדינג' },
             { cover: 'fontcovernew.jpg',          href: 'typeface.html',   hue: 280, sat: 2.5, name: 'גופן'    },
             { cover: 'bookcovernew.jpg',          href: 'book.html',       hue: 55,  sat: 4,   bri: 1.3, name: 'ספר'      },
@@ -1628,17 +1642,36 @@
                margin in the PNG), so a title flush with the cell line juts out
                past the visible eye above it. Inset the text to the drawn edge. */
             const eyeInset = Math.round(cellW * 0.086);
-            let spanSum = 0;
-            heroLinkEls.forEach(a => {
+            const measured = heroLinkEls.map(a => {
                 heroMeasure.textContent = a.textContent;
-                const w = heroMeasure.offsetWidth;
-                /* text width + ~1.5 cells of air, rounded to whole cells */
-                const span = Math.min(cols, Math.max(1, Math.round(w / cellStep + 1.5)));
-                a.style.gridColumn = 'span ' + span;
-                a.style.paddingRight = eyeInset + 'px';
-                spanSum += span;
+                return { a, w: heroMeasure.offsetWidth };
             });
-            const linkRows = Math.min(rows, Math.ceil(spanSum / cols));
+            if (cols <= 6) {
+                /* Narrow screens: a fixed row recipe of [text][gap][text][eye][eye].
+                   Every title is a single cell; the empty spacer cell between the
+                   two also absorbs any overflow from a long first title, since
+                   right-aligned RTL text overflows leftward into it. */
+                measured.forEach(m => { m.span = 1; });
+            } else {
+                /* Wide screens: text width + ~1.5 cells of air, rounded to
+                   whole cells. With same-scale labels this lands on a uniform
+                   pitch, keeping the starts evenly spaced. */
+                measured.forEach(m => {
+                    m.span = Math.min(cols, Math.max(1, Math.round(m.w / cellStep + 1.5)));
+                });
+            }
+            let spanSum = 0;
+            measured.forEach(m => {
+                m.a.style.gridColumn = 'span ' + m.span;
+                m.a.style.paddingRight = eyeInset + 'px';
+                spanSum += m.span;
+            });
+            /* On narrow screens each pair owns a whole row (its 3 cells plus
+               the 2 eyes appended right after it force the break); on wide
+               screens the titles pack a shared row. */
+            const linkRows = (cols <= 6)
+                ? Math.min(rows, Math.ceil(measured.length / 2))
+                : Math.min(rows, Math.ceil(spanSum / cols));
             const eyeRows = Math.max(0, rows - linkRows);
             for (let i = 0; i < cols * eyeRows; i++) {
                 const u = document.createElement('div');
@@ -1655,18 +1688,36 @@
                filler eyes complete every remaining cell, so the titles sit
                between eyes rather than on an empty band. The same elements are
                re-appended each build, so their listeners survive. */
-            heroLinkEls.forEach(a => eyeGrid.appendChild(a));
-            const filler = cols * linkRows - spanSum;
-            for (let i = 0; i < filler; i++) {
+            const makeEye = () => {
                 const u = document.createElement('div');
                 u.className = 'eye-unit';
                 u.innerHTML =
                     '<img class="eu-face eu-closed" src="closed face copy.png" alt="" draggable="false">' +
                     '<img class="eu-face eu-open"   src="face copy.png"        alt="" draggable="false">' +
                     '<img class="eu-eye"            src="eye copy.png"         alt="" aria-hidden="true" draggable="false">';
-                const rot = ((Math.random() - 0.5) * 10).toFixed(2);
-                u.style.setProperty('--rot', rot + 'deg');
-                eyeGrid.appendChild(u);
+                u.style.setProperty('--rot', ((Math.random() - 0.5) * 10).toFixed(2) + 'deg');
+                return u;
+            };
+            if (cols <= 6) {
+                /* Interleave per row: title, spacer cell, title, then eyes to
+                   finish the row. The spacer is a real (empty) grid item so the
+                   dense auto-flow cannot backfill its cell with an eye. */
+                for (let i = 0; i < measured.length; i += 2) {
+                    const pair = measured.slice(i, i + 2);
+                    let used = 0;
+                    eyeGrid.appendChild(pair[0].a); used += pair[0].span;
+                    if (pair[1]) {
+                        const gap = document.createElement('div');
+                        gap.className = 'hero-gap';
+                        eyeGrid.appendChild(gap); used += 1;
+                        eyeGrid.appendChild(pair[1].a); used += pair[1].span;
+                    }
+                    for (let k = 0; k < cols - used; k++) eyeGrid.appendChild(makeEye());
+                }
+            } else {
+                heroLinkEls.forEach(a => eyeGrid.appendChild(a));
+                const filler = cols * linkRows - spanSum;
+                for (let i = 0; i < filler; i++) eyeGrid.appendChild(makeEye());
             }
 
             // Build the preload container for hover images
@@ -2106,7 +2157,21 @@
                 { threshold: .1, root: panel }
             );
             panel.querySelectorAll('video').forEach(v => videoObserver.observe(v));
+
+            /* One history entry per "a panel is open" state, so the system back
+               gesture on mobile closes the panel instead of leaving the site.
+               Moving between panels replaces the entry rather than stacking:
+               back always means home, never a tour of previous panels. */
+            if (history.state && history.state.panel) {
+                history.replaceState({ panel: href }, '');
+            } else {
+                history.pushState({ panel: href }, '');
+            }
         }
+
+        window.addEventListener('popstate', () => {
+            if (activePanel) closeProject();
+        });
 
         function closeProject() {
             if (!activePanel) return;
@@ -2143,7 +2208,12 @@
             }
         });
 
-        document.getElementById('proj-back-btn').addEventListener('click', closeProject);
+        document.getElementById('proj-back-btn').addEventListener('click', () => {
+            /* Route through the browser stack when we own an entry, so the
+               button and the system back gesture stay in sync. */
+            if (history.state && history.state.panel) history.back();
+            else closeProject();
+        });
 
         /* ─── Raziel type tester — size + tracking only ──────────── */
         /* Raziel Sans is a single static weight, so there is no weight axis. */
