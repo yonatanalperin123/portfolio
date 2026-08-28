@@ -702,6 +702,232 @@
             .proj-grid.g2 { grid-template-columns: 1fr; }
             .proj-grid.feed { grid-template-columns: repeat(3, 1fr); }
         }
+        .gw-wide { aspect-ratio: auto; }
+
+        /* A screenshot and its explanation, side by side. The site's reading
+           rhythm puts annotation in the narrow right column and the subject in
+           the wide left one; these figures follow it. Text stacked under an
+           image read as the opening of a new section rather than as a caption. */
+        .gw-figure {
+            padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+            border-top: 1px solid var(--muted);
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: clamp(2rem, 5vw, 6rem);
+            align-items: center;
+        }
+        .gw-figure-text {
+            font-size: clamp(1rem, 1.35vw, 1.2rem);
+            line-height: 1.6;
+            opacity: .75;
+        }
+        .gw-figure-media {
+            display: grid;
+            gap: clamp(.5rem, 1.1vw, 1.1rem);
+        }
+        /* Two related shots stack vertically inside the media column rather
+           than splitting it. Side by side they landed at 368px from a 2340px
+           source, a 6x reduction that left a dashboard unreadable; stacked they
+           get the column's full 752px each. */
+
+        /* A portrait shot would balloon if it filled the wide column. */
+        .gw-figure-media.narrow { max-width: 340px; justify-self: center; }
+
+        /* A figure whose text column carries the section's argument rather than
+           a one-line caption. The prose is much taller than the images, so both
+           columns start at the top instead of centring on each other, and the
+           paragraphs keep body spacing. */
+        /* Every figure putting its text on the same side makes the eye track a
+           straight rule down the page. Flipping alternate figures turns that
+           into a zigzag, and hands the wider column to the image. */
+        .gw-figure.flip { grid-template-columns: 1.5fr 1fr; }
+        .gw-figure.flip .gw-figure-media { grid-column: 1; grid-row: 1; }
+        .gw-figure.flip .gw-figure-text { grid-column: 2; grid-row: 1; }
+        @media (max-width: 700px) {
+            .gw-figure.flip { grid-template-columns: 1fr; }
+            .gw-figure.flip .gw-figure-media,
+            .gw-figure.flip .gw-figure-text { grid-column: 1; grid-row: auto; }
+        }
+
+        /* Before/after comparison. Both versions are the same card at the same
+           size, so overlaying them and wiping between the two is a truer
+           comparison than two pictures the eye has to travel between. The site
+           is RTL, so the top layer is anchored right: version 26 holds the right
+           side and dragging leftward uncovers version 37. */
+        .gw-compare {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            background: rgba(233, 184, 184, .06);
+            touch-action: pan-y;
+            --split: 55%;
+        }
+        .gw-compare > img { display: block; width: 100%; }
+        .gw-compare-top {
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            width: var(--split);
+            overflow: hidden;
+        }
+        .gw-compare-top img {
+            position: absolute;
+            top: 0; right: 0;
+            height: 100%;
+            width: auto;
+            max-width: none;
+        }
+        .gw-compare-handle {
+            position: absolute;
+            top: 0; bottom: 0;
+            right: var(--split);
+            width: 2px;
+            background: var(--fg);
+            transform: translateX(1px);
+            opacity: .8;
+        }
+        .gw-compare-grip {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 34px; height: 34px;
+            transform: translate(-50%, -50%);
+            border: 1px solid var(--fg);
+            border-radius: 50%;
+            background: var(--bg);
+            opacity: .9;
+        }
+        /* Two tail-less chevrons: a square showing only its top and left
+           borders is a corner, and rotating that corner points it either way. */
+        .gw-compare-grip::before,
+        .gw-compare-grip::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 6px; height: 6px;
+            border-top: 1.5px solid var(--fg);
+            border-left: 1.5px solid var(--fg);
+        }
+        .gw-compare-grip::before { left: 8px;  transform: translateY(-50%) rotate(-45deg); }
+        .gw-compare-grip::after  { right: 8px; transform: translateY(-50%) rotate(135deg); }
+        .gw-compare:focus-within .gw-compare-handle { opacity: 1; }
+        .gw-compare-hit {
+            position: absolute;
+            inset: 0;
+            background: none;
+            border: 0;
+            padding: 0;
+            appearance: none;
+        }
+        /* The version labels sit above the image, not on it. Over a dark
+           screenshot they were unreadable whatever the backing plate. */
+        .gw-compare-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: .7rem;
+            font-size: clamp(.72rem, .95vw, .85rem);
+            letter-spacing: .1em;
+            opacity: .55;
+        }
+        @media (max-width: 700px) {
+            .gw-compare-grip { width: 44px; height: 44px; }
+        }
+
+        .gw-figure.prose { align-items: start; }
+        .gw-figure.prose .gw-figure-text p + p { margin-top: 1em; }
+        .gw-figure-note {
+            margin-top: 1.75em;
+            padding-top: 1em;
+            border-top: 1px solid var(--muted);
+            font-size: clamp(.8rem, 1vw, .92rem);
+            opacity: .55;
+        }
+        @media (max-width: 700px) {
+            .gw-figure { grid-template-columns: 1fr; gap: 1.5rem; }
+            .gw-figure-media.narrow { justify-self: start; }
+        }
+
+        /* Typographic hierarchy for this panel only. The site's default section
+           label is 11px at 35% opacity in caps, which makes the heading the
+           faintest thing on screen while the body sits at 1.5rem. That inversion
+           reads as a marginal note above a wall of text. Here the heading leads
+           on size and weight, and every paragraph sits at full opacity so
+           hierarchy comes from scale rather than from fading text out. */
+        #proj-green .proj-desc-label,
+        #proj-green .gw-stance-label {
+            font-size: clamp(1.35rem, 2.4vw, 2.1rem);
+            font-variation-settings: var(--fvs-bold);
+            letter-spacing: 0;
+            text-transform: none;
+            opacity: 1;
+            line-height: 1.2;
+            padding-top: 0;
+        }
+        #proj-green .gw-stance-label { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+        #proj-green .proj-desc-text,
+        #proj-green .gw-figure-text,
+        #proj-green .gw-stance-note { opacity: 1; }
+
+        /* "What we decided not to be" — a full-width band, not a description
+           grid. Three equal stances side by side, each led by its claim rather
+           than by a label: the name is the message, the sentence beneath it is
+           the footnote. Deliberately the inverse of .proj-meta, which puts a
+           faint uppercase label above full-size body text. */
+        .gw-stance {
+            padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+            border-top: 1px solid var(--muted);
+        }
+        .gw-stance-label {
+            font-size: calc(.7rem + 1px);
+            font-variation-settings: var(--fvs-light);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            opacity: .35;
+            margin-bottom: clamp(2rem, 4vw, 3.5rem);
+        }
+        .gw-stance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(1.5rem, 4vw, 4rem);
+        }
+        .gw-stance-item { border-top: 1px solid var(--muted); padding-top: 1.1rem; }
+        .gw-stance-num {
+            font-size: calc(.7rem + 1px);
+            font-variation-settings: var(--fvs-light);
+            letter-spacing: .12em;
+            opacity: .3;
+            margin-bottom: .9rem;
+            direction: ltr;
+            text-align: right;
+        }
+        .gw-stance-name {
+            font-size: clamp(1.15rem, 1.9vw, 1.6rem);
+            font-variation-settings: var(--fvs-bold);
+            line-height: 1.25;
+            margin-bottom: .6rem;
+        }
+        .gw-stance-note {
+            font-size: clamp(.85rem, 1.05vw, 1rem);
+            line-height: 1.6;
+            opacity: .45;
+        }
+        @media (max-width: 700px) {
+            .gw-stance-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+        @media (max-width: 700px) {
+            /* green-flow-1.jpg (the wide Create-Post/AI-Assistant screenshot)
+               is unreadable at 390px when scaled to full width. Crop it to a
+               taller aspect anchored right so the AI Assistant panel — the
+               part that needs to be read — renders larger. Scoped to .gw-wide
+               only: the two-column dashboard pair (green-flow-3/4) is
+               already legible after the existing single-column collapse,
+               and cropping those the same way would cut off their left
+               half; the portrait green-flow-2.jpg is already ~4:5 and
+               unaffected either way, so it is left alone too. */
+            #proj-green .gw-wide img {
+                object-fit: cover;
+                object-position: 100% 0;
+                aspect-ratio: 4 / 5;
+            }
+        }
     </style>
 </head>
 
@@ -817,7 +1043,7 @@
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="web.html" class="proj-next-link">הספרייה ←</a>
+            <a href="green.html" class="proj-next-link"><span dir="ltr">Buffer Green Assistant</span> ←</a>
         </div>
         <footer>
             <span>© 2025 יונתן אלפרין</span>
@@ -825,57 +1051,106 @@
         </footer>
     </div>
 
-    <!-- 02 ווב -->
-    <div id="proj-web" class="proj-panel">
+    <!-- 02 Buffer Green Assistant -->
+    <div id="proj-green" class="proj-panel">
         <section class="proj-hero">
-            <div class="proj-hero-media"><video autoplay muted loop playsinline><source src="Sequence%2002.mp4" type="video/mp4"></video></div>
+            <div class="proj-hero-media"><video autoplay muted loop playsinline poster="green-hero-poster.jpg"><source src="green-hero.mp4" type="video/mp4"></video></div>
             <p class="proj-number reveal">02 / 05</p>
-            <h1 class="proj-title reveal" style="transition-delay:.1s">הספרייה</h1>
+            <h1 class="proj-title reveal" style="transition-delay:.1s">Buffer Green Assistant</h1>
             <div class="proj-meta reveal" style="transition-delay:.2s">
                 <div class="proj-meta-item">
                     <div class="proj-meta-label">קטגוריה</div>
-                    <div class="proj-meta-value">עיצוב ופיתוח ווב</div>
+                    <div class="proj-meta-value">עיצוב מוצר דיגיטלי</div>
                 </div>
                 <div class="proj-meta-item">
                     <div class="proj-meta-label">סיכום</div>
-                    <div class="proj-meta-value">ארכיון דיגיטלי המדמיין מחדש את הקאנון התרבותי של הדור הדתי-לאומי</div>
+                    <div class="proj-meta-value">שכבת זיהוי גרינוושינג בתוך ה-AI Assistant של Buffer, שמלמדת מותג לנסח טענות סביבתיות שאפשר לגבות</div>
                 </div>
                 <div class="proj-meta-item">
                     <div class="proj-meta-label">שנה</div>
-                    <div class="proj-meta-value">2025</div>
+                    <div class="proj-meta-value">2026</div>
                 </div>
             </div>
         </section>
+
         <div class="proj-description">
             <div class="proj-desc-label reveal">על הפרויקט</div>
             <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>"הספרייה" הוא ארכיון דיגיטלי ויצירת אמנות אינטראקטיבית שנועדה לדמיין מחדש את הקאנון התרבותי של הדור הדתי-לאומי המודרני.</p>
-                <p>האתר יוצר ספרייה דיגיטלית, לא-היררכית. הוא מציג "קאנון תרבותי חדש" של 26 ספרים המשלב טקסטים תורניים קלאסיים (כמו "אורות" של הרב קוק) עם פרוזה מודרנית (כמו הארי פוטר או פרסי ג'קסון), פילוסופיה ושירה - מפוזרים יחד על משטח וירטואלי ללא הפרדה, המסמל דור שמאמץ את שני העולמות באופן שווה ("ספרא וסייפא").</p>
-                <p>עטיפות הספרים עוצבו מחדש כסדרה קוהרנטית.</p>
+                <p><span dir="ltr">Buffer</span> היא פלטפורמה לניהול נוכחות ברשתות חברתיות. מנהלי תוכן כותבים בה פוסטים, מתזמנים אותם לכל הערוצים ועוקבים אחרי הביצועים. המשימה בקורס הייתה לקחת מוצר דיגיטלי קיים ולהוסיף לו פיצ'ר שמשרת מטרה סביבתית, בלי לשבור את מה שכבר עובד בו.</p>
+                <p>מנהלי סושיאל מפרסמים טענות סביבתיות שאין להן כיסוי, לא מתוך כוונה להטעות, אלא כי "ידידותי לסביבה" נשמע כמו שיווק ולא כמו הצהרה שצריך לעמוד מאחוריה. בינתיים הרגולציה מתהדקת: ה-EU Green Claims Directive וה-FTC Green Guides דורשים שטענה כזו תהיה מסויגת ומגובה בראיות.</p>
+                <p>ההחלטה המרכזית שלנו הייתה לא לבנות כלי חדש. ל-Buffer כבר יש AI Assistant שכותב ומשכתב פוסטים, והמשתמש כבר פונה אליו ברגע הנכון: בזמן הכתיבה, לפני הפרסום. במקום להוסיף עוד מסך שצריך לזכור להיכנס אליו, נכנסנו לתוך הכלי שכבר יושב בזרימת העבודה.</p>
+                <p>מעבר לזיהוי נוסף מאגר. כל טענה שסומנה, כל מקור שצורף וכל ניסוח חלופי שנבחר נאספים לאורך זמן. כך המערכת מפסיקה להיות בודק־איות ומתחילה להראות למותג איך השפה שלו משתנה.</p>
             </div>
         </div>
-        <div class="proj-images cols-1 reveal">
-            <div class="proj-img-wrap wide">
-                <img src="webcover.jpg" alt="ספריית הספרים הדיגיטלית - עטיפות מעוצבות מחדש">
+
+        <div class="gw-stance">
+            <div class="gw-stance-label reveal">המטרות שלנו</div>
+            <div class="gw-stance-grid reveal" style="transition-delay:.1s">
+                <div class="gw-stance-item">
+                    <div class="gw-stance-num">01</div>
+                    <div class="gw-stance-name">מתקן, לא מדרג</div>
+                    <div class="gw-stance-note">לא <span dir="ltr">Grammarly</span>. בלי קווים אדומים תוקפניים ובלי חלוניות שקופצות באמצע משפט. תיקון לא אמור להרגיש כמו ציון.</div>
+                </div>
+                <div class="gw-stance-item">
+                    <div class="gw-stance-num">02</div>
+                    <div class="gw-stance-name">כלי כתיבה, לא ביקורת</div>
+                    <div class="gw-stance-note">לא כלי ציות. בלי טפסים, בלי צ'קבוקסים ובלי שפה של אכיפה. המטרה היא שהמשתמש ירגיש בטוח לפרסם, לא שיעבור מבחן.</div>
+                </div>
+                <div class="gw-stance-item">
+                    <div class="gw-stance-num">03</div>
+                    <div class="gw-stance-name">בצד המסך, לא בשיחה</div>
+                    <div class="gw-stance-note">לא צ'אטבוט. בלי בועות ובלי הלוך ושוב. הסיוע יושב בצד ולא מנהל דיאלוג.</div>
+                </div>
             </div>
         </div>
-        <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
-            <div class="proj-img-wrap">
-                <video autoplay muted loop playsinline>
-                    <source src="Sequence%2002.mp4" type="video/mp4">
-                </video>
+
+        <div class="gw-figure reveal">
+            <p class="gw-figure-text">כל טענה שסומנה מציעה שתי פעולות שסותרות זו את זו, לצרף מקור או להחליף ניסוח, מופרדות ב-or. הצ'קבוקס שהיה שם קודם וסטטוס אישור המקור ירדו. המשתמש בוחר נתיב אחד וזהו.</p>
+            <div class="gw-figure-media">
+                <div class="proj-img-wrap gw-wide"><img loading="lazy" src="green-flow-1.jpg" alt="פאנל ה-Green Assistant מסמן את הצירוף eco-friendly ומציע שתי דרכי טיפול"></div>
             </div>
         </div>
-        <div class="proj-grid g4 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="1.png" alt="הספרייה - עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="5.png" alt="הספרייה - עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="7.png" alt="הספרייה - עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="12.png" alt="הספרייה - עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="14.png" alt="הספרייה - עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="17.png" alt="הספרייה - עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="21.png" alt="הספרייה - עטיפה"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="26.png" alt="הספרייה - עטיפה"></div>
+
+        <div class="gw-figure flip reveal" style="transition-delay:.04s">
+            <p class="gw-figure-text">סיום הפלואו מציג מצב הצלחה סטטי ופעולה אחת שמחזירה לקומפוזר. בגרסאות קודמות עמד שם כפתור שהזמין להמשיך, ולא היה ברור אם נשארה עבודה.</p>
+            <div class="gw-figure-media narrow">
+                <div class="proj-img-wrap"><img loading="lazy" src="green-flow-2.jpg" alt="מצב סיום: כל הקליימים טופלו, עם פעולה יחידה Done and Close"></div>
+            </div>
         </div>
+
+        <div class="gw-figure reveal">
+            <p class="gw-figure-text">נתוני הקליימים קיבלו טאב משלהם ולא נדחסו לתוך ה-Overview הקיים. שם ממשיכים למדוד engagement, וכאן נמדדת האמינות, כך ששתי השאלות לא מתחרות על אותו מסך. גרף "claims per month" הוסר כי הפסיק להיקרא בקנה מידה גדול.</p>
+            <div class="gw-figure-media">
+                <div class="proj-img-wrap"><img loading="lazy" src="green-flow-3.jpg" alt="טאב Credibility and Claims עם גרף Claim Coverage ומדד Vocabulary Maturity"></div>
+            </div>
+        </div>
+
+        <div class="gw-figure prose flip reveal">
+            <div class="gw-figure-text">
+                <p>רוב העבודה לא הייתה בהמצאה אלא ביישור. הפרוטוטייפ עבר שתים־עשרה גרסאות, ורובן הוקדשו להטמעת הפיצ'ר בתוך Buffer כך שייקרא כאילו היה שם מלכתחילה.</p>
+                <p>בגרסאות המוקדמות בנינו לרכיב תצוגת נתונים משלו: שדה נקודות שבו כל נקודה היא טענה אחת, טבעות זהובות לטענות שסומנו, וגרף חודשי בגווני זית. זה נראה טוב וזה עבד. מה שלא החזיק היו שתי הנחות שמתחתיו. הראשונה, שזו צורת תצוגה שמשתמש יודע לקרוא בלי ללמוד אותה; מנהל סושיאל לא פוגש שדה נקודות ביום־יום. השנייה, שהיא תחזיק בכל קנה מידה; אפשר לקרוא ארבעים נקודות, לא ארבעת אלפים, ומותג גדול מייצר טענות בקצב הזה.</p>
+                <p>לכן עברנו לתצוגה קלאסית: עמודות מקובצות בירוק ובאפור ניטרלי, בפלטה הרשמית של Buffer. ויתרנו על משהו שאהבנו לטובת משהו שכל משתמש כבר יודע לקרוא ושממשיך לעבוד גם בסדר גודל אחר. מה שהנחה אותנו לאורך כל הדרך היה פתרון מינימלי ויעיל, כזה שמשיג את המטרה בהתערבות הקטנה ביותר במערכת הקיימת. הרכיב יצא פחות ייחודי ויותר נכון.</p>
+                <p class="gw-figure-note">גררו את הידית. אותו כרטיס, אותה כותרת ואותם נתונים בדיוק, כך שההבדל היחיד הוא צורת ההצגה.</p>
+            </div>
+            <div class="gw-figure-media">
+                <div class="gw-compare-labels" aria-hidden="true">
+                    <span dir="ltr">Prototype</span>
+                    <span dir="ltr">Final design</span>
+                </div>
+                <div class="gw-compare" id="gw-compare">
+                    <img loading="lazy" src="green-after.jpg" alt="העיצוב הסופי: אותו רכיב עם עמודות מקובצות בפלטה של Buffer">
+                    <div class="gw-compare-top" aria-hidden="true">
+                        <img loading="lazy" src="green-before.jpg" alt="">
+                    </div>
+                    <div class="gw-compare-handle" aria-hidden="true"><span class="gw-compare-grip"></span></div>
+                    <button type="button" class="gw-compare-hit" role="slider"
+                            aria-label="השוואה בין הפרוטוטייפ לעיצוב הסופי"
+                            aria-valuemin="0" aria-valuemax="100" aria-valuenow="55"
+                            aria-valuetext="55% פרוטוטייפ"></button>
+                </div>
+            </div>
+        </div>
+
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
             <a href="branding.html" class="proj-next-link">השוקת ←</a>
@@ -1210,7 +1485,7 @@
 
         const PROJECTS = [
             { cover: 'illustrationcovernew.png', href: 'raziel.html',     hue: 0,   sat: 3,   bri: 0.65, name: 'רזיאל'      },
-            { cover: 'webcovernew.jpg',           href: 'web.html',        hue: 200, sat: 2.5, name: 'ווב'     },
+            { cover: 'buffersymbol.png',          href: 'green.html',      hue: 95,  sat: 2.5, name: 'Green Assistant' },
             { cover: 'brandingcovernew.jpg',      href: 'branding.html',   hue: 130, sat: 2.5, name: 'ברנדינג' },
             { cover: 'fontcovernew.jpg',          href: 'typeface.html',   hue: 280, sat: 2.5, name: 'גופן'    },
             { cover: 'bookcovernew.jpg',          href: 'book.html',       hue: 55,  sat: 4,   bri: 1.3, name: 'ספר'      },
@@ -1561,6 +1836,61 @@
 
         window.__openAboutModal = openModal;
 
+        /* ─── Before/after wipe (Buffer Green Assistant panel) ───── */
+        (function initCompare() {
+            const box = document.getElementById('gw-compare');
+            if (!box) return;
+            const hit = box.querySelector('.gw-compare-hit');
+            const MIN = 0, MAX = 100;
+            let split = 55;
+
+            function apply(v) {
+                split = Math.min(MAX, Math.max(MIN, v));
+                box.style.setProperty('--split', split + '%');
+                const r = Math.round(split);
+                hit.setAttribute('aria-valuenow', r);
+                hit.setAttribute('aria-valuetext', r + '% פרוטוטייפ');
+            }
+
+            /* The panel is RTL and the top layer is pinned to the right edge, so
+               distance from the right edge is what the split measures. */
+            function fromPointer(clientX) {
+                const r = box.getBoundingClientRect();
+                apply(((r.right - clientX) / r.width) * 100);
+            }
+
+            let dragging = false;
+            box.addEventListener('pointerdown', e => {
+                dragging = true;
+                box.setPointerCapture(e.pointerId);
+                fromPointer(e.clientX);
+            });
+            box.addEventListener('pointermove', e => {
+                if (dragging) { e.preventDefault(); fromPointer(e.clientX); }
+            });
+            const stop = e => {
+                if (!dragging) return;
+                dragging = false;
+                if (box.hasPointerCapture(e.pointerId)) box.releasePointerCapture(e.pointerId);
+            };
+            box.addEventListener('pointerup', stop);
+            box.addEventListener('pointercancel', stop);
+
+            /* In RTL the left arrow should move the divider left, which reveals
+               more of version 37, i.e. a larger split. */
+            hit.addEventListener('keydown', e => {
+                const step = e.shiftKey ? 10 : 3;
+                if (e.key === 'ArrowLeft')       apply(split + step);
+                else if (e.key === 'ArrowRight') apply(split - step);
+                else if (e.key === 'Home')       apply(MIN);
+                else if (e.key === 'End')        apply(MAX);
+                else return;
+                e.preventDefault();
+            });
+
+            apply(split);
+        })();
+
         /* ─── SPA project navigation ─────────────────────────────── */
         const hero    = document.getElementById('hero');
         const thread  = document.getElementById('thread');
@@ -1568,7 +1898,7 @@
 
         const PANEL_MAP = {
             'book.html':       'proj-book',
-            'web.html':        'proj-web',
+            'green.html':      'proj-green',
             'branding.html':   'proj-branding',
             'typeface.html':   'proj-typeface',
             'raziel.html':     'proj-raziel',
