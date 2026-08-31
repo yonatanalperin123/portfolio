@@ -318,11 +318,10 @@
             padding-top: 1.25rem;
             border-top: 1px solid var(--muted);
             display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-            gap: .5rem 1.6rem;
+            flex-direction: column;
+            gap: .65rem;
         }
-        .currently-label { font-size: calc(.7rem + 1px); font-variation-settings: var(--fvs-light); letter-spacing: .14em; text-transform: uppercase; opacity: .3; flex-shrink: 0; }
+        .currently-label { font-size: calc(.65rem + 1px); font-variation-settings: var(--fvs-light); letter-spacing: .18em; text-transform: uppercase; opacity: .3; }
         .currently-items { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 0; }
         .currently-item { font-size: clamp(.85rem, 1.15vw, 1rem); opacity: .7; display: flex; align-items: baseline; gap: .3rem; }
         .currently-item + .currently-item::before { content: '·'; opacity: .35; margin-inline-end: .3rem; font-style: normal; }
@@ -353,7 +352,7 @@
         }
         #about-modal.open .modal-panel { transform: translateY(0); }
         .modal-close {
-            position: absolute; top: 1.5rem; left: 1.5rem;
+            position: absolute; top: .6rem; left: .6rem;
             background: none; border: none;
             color: var(--fg); font-size: 1.25rem;
             cursor: pointer; opacity: .5; transition: opacity .2s;
@@ -367,6 +366,9 @@
         .modal-main .currently-strip { border-top: 1px solid var(--muted); padding-top: 1.25rem; margin-top: 1.25rem; }
         .about-details { display: flex; flex-direction: column; gap: 0; padding-top: .5rem; }
         .about-contact { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+        .avail-row { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; }
+        .avail-row .about-contact { margin-top: 0; }
+        .avail-value { font-size: clamp(1.15rem, 1.8vw, 1.35rem); opacity: 1; }
         .contact-btn {
             color: var(--fg);
             text-decoration: none;
@@ -1036,14 +1038,13 @@
                             <div class="currently-items">
                                 <span class="currently-item"><span class="ci-label">משחק</span><span class="ci-sep">-</span><span class="ci-value">Heroes of Might and Magic 3</span></span>
                                 <span class="currently-item"><span class="ci-label">אוכל</span><span class="ci-sep">-</span><span class="ci-value"><a href="ramen.html" class="egg-link">כריך סלט ביצים</a></span></span>
-                                <span class="currently-item"><span class="ci-label">שומע</span><span class="ci-sep">-</span><span class="ci-value">Giant Steps, John Coltrane</span></span>
+                                <span class="currently-item"><span class="ci-label">שומע</span><span class="ci-sep">-</span><span class="ci-value">Giant Steps / John Coltrane</span></span>
                             </div>
                         </div>
                     </div>
                     <div class="about-details">
                         <div class="about-detail-item"><div class="about-detail-label">תוכנות</div><div class="about-detail-value">Adobe Suite · Figma · Blender · FontLab · Vibe code</div></div>
-                        <div class="about-detail-item"><div class="about-detail-label">זמינות</div><div class="about-detail-value">משרה מלאה ופרויקטים עצמאיים</div></div>
-                        <div class="about-detail-item"><div class="about-detail-label">קשר</div><div class="about-contact"><a href="mailto:yonatanalperin123@gmail.com" class="contact-btn">מייל</a><a href="https://www.linkedin.com/in/yonatan-alperin-8225b125b/" target="_blank" rel="noopener" class="contact-btn">LinkedIn</a></div></div>
+                        <div class="about-detail-item"><div class="about-detail-label">זמינות</div><div class="avail-row"><div class="about-detail-value avail-value">משרה מלאה ופרויקטים עצמאיים</div><div class="about-contact"><a href="mailto:yonatanalperin123@gmail.com" class="contact-btn">מייל</a><a href="tel:+972534323789" class="contact-btn">053-4323789</a><a href="https://www.linkedin.com/in/yonatan-alperin-8225b125b/" target="_blank" rel="noopener" class="contact-btn">LinkedIn</a></div></div></div>
                     </div>
                 </div>
             </div>
