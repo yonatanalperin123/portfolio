@@ -124,41 +124,6 @@
         }
         #thread.active { opacity: 1; }
 
-        /* ─── Nav (hidden on index) ─────────────────────────────── */
-        nav { display: none; }
-
-        .nav-logo {
-            font-size: clamp(1rem, 1.4vw, 1.25rem);
-            font-weight: 500;
-            letter-spacing: -.02em;
-            color: var(--fg);
-            text-decoration: none;
-        }
-        .nav-links { display: flex; gap: clamp(1.5rem, 3vw, 3rem); list-style: none; }
-        .nav-links a {
-            font-size: clamp(.8rem, 1vw, .95rem);
-            color: var(--fg);
-            text-decoration: none;
-            letter-spacing: .04em;
-            text-transform: uppercase;
-            opacity: .6;
-            transition: opacity .3s;
-        }
-        .nav-links a:hover { opacity: 1; }
-
-        #lang-btn {
-            font-size: clamp(.8rem, 1vw, .95rem);
-            color: var(--fg);
-            background: none;
-            border: none;
-            letter-spacing: .04em;
-            text-transform: uppercase;
-            opacity: .6;
-            transition: opacity .3s;
-            cursor: none;
-        }
-        #lang-btn:hover { opacity: 1; }
-
         /* ─── Hero ─────────────────────────────────────────────── */
         #hero {
             height: 100svh;
@@ -601,30 +566,6 @@
         .tl-3 { font-size: clamp(1.6rem, 4.5vw, 3.6rem); font-variation-settings: "wght" 700; opacity: 1; }
         .tl-4 { font-size: clamp(1.15rem, 2.4vw, 1.9rem); font-variation-settings: "wght" 1000; line-height: 1.5; opacity: 1; }
 
-        /* Sketchbook grid */
-
-        /* Sketchbook grid */
-        .sketch-grid { padding: clamp(3rem, 6vw, 8rem) clamp(1.5rem, 4vw, 4rem); columns: 2; column-gap: clamp(1rem, 2vw, 2rem); }
-        @media(max-width:600px) { .sketch-grid { columns: 1; } }
-        .sketch-item { break-inside: avoid; margin-bottom: clamp(1rem, 2vw, 2rem); border-radius: 4px; overflow: hidden; background: rgba(243, 226, 226, .06); }
-        .sketch-item img { width: 100%; height: auto; display: block; }
-        .sketch-item .placeholder { padding: 4rem 2rem; text-align: center; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; opacity: .2; }
-
-        /* ─── Coming-soon panel (final project teaser) ──────────── */
-        .coming-soon {
-            min-height: 100svh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            gap: clamp(1rem, 2.5vw, 1.8rem);
-            padding: clamp(2rem, 6vw, 6rem);
-        }
-        .cs-label { font-size: clamp(.7rem, .9vw, .85rem); font-variation-settings: var(--fvs-light); letter-spacing: .22em; text-transform: uppercase; opacity: .4; }
-        .cs-title { font-size: clamp(2.2rem, 7vw, 6rem); font-variation-settings: var(--fvs-bold); line-height: 1.12; letter-spacing: -.03em; max-width: 16ch; }
-        .cs-sub { font-size: clamp(1rem, 1.4vw, 1.3rem); opacity: .45; letter-spacing: .14em; }
-
         /* ─── Raziel panel ──────────────────────────────────────── */
         #proj-raziel .proj-title { letter-spacing: .04em; }
         #proj-raziel .tester-stage { font-family: 'Raziel Sans', serif; font-variation-settings: normal; }
@@ -663,31 +604,6 @@
         /* Transparent artwork sits directly on the page, with no tinted plate. */
         .proj-img-wrap.plain { background: none; border-radius: 0; }
 
-        .plate { display: flex; flex-direction: column; width: auto; max-width: min(520px, 100%); }
-        .plate .proj-img-wrap { width: 100%; }
-        .plate-caption {
-            font-size: .68rem;
-            font-variation-settings: var(--fvs-light);
-            letter-spacing: .12em;
-            text-transform: uppercase;
-            opacity: .3;
-            margin-top: .9rem;
-            line-height: 1.6;
-        }
-
-        .layers {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: clamp(1rem, 2.5vw, 2rem);
-            margin-top: clamp(1.5rem, 3vw, 2.5rem);
-        }
-        .layer { border-top: 1px solid var(--muted); padding-top: .9rem; }
-        .layer-n {
-            font-size: .62rem; letter-spacing: .18em; opacity: .3;
-            direction: ltr; text-align: start; display: block; margin-bottom: .5rem;
-        }
-        .layer-name { font-size: clamp(.95rem, 1.3vw, 1.1rem); opacity: .85; }
-
         .live-cta {
             padding: clamp(4rem, 8vw, 9rem) clamp(1.5rem, 4vw, 4rem);
             border-top: 1px solid var(--muted);
@@ -717,7 +633,6 @@
             body { cursor: auto; }
             #cursor { display: none; }
 
-            .nav-links a,
             .nav-back,
             .proj-next-link { opacity: 1; }
 
@@ -1008,14 +923,6 @@
         <!-- populated by JS -->
     </div>
 
-    <nav>
-        <a href="#" class="nav-logo" data-he="יונתן" data-en="Yonatan">יונתן</a>
-        <ul class="nav-links">
-            <li><button id="lang-btn">EN</button></li>
-            <li><button id="about-btn" data-he="אודות" data-en="About">אודות</button></li>
-        </ul>
-    </nav>
-
     <section id="hero">
         <div id="eye-grid"></div>
     </section>
@@ -1082,7 +989,7 @@
         <div class="proj-description">
             <div class="proj-desc-label reveal">על הפרויקט</div>
             <div class="proj-desc-text reveal" style="transition-delay:.1s">
-                <p>ספר זה הוא מקדש לתרבות המימז הישראלית. בספר נחקור את מקורות המימז, נגדיר מה הוא מים ומה הוא מים ישראלי, איך הם משפיעים על חיי היום יום שלנו - ממקפיינים פרסומיים של משרדי ממשלה ועד עמודי מימז איזוטריים.</p>
+                <p>ספר זה הוא מקדש לתרבות המימז הישראלית. בספר נחקור את מקורות המימז, נגדיר מה הוא מימ ומה הוא מימ ישראלי, איך הם משפיעים על חיי היום יום שלנו - מקמפיינים פרסומיים של משרדי ממשלה ועד עמודי מימז איזוטריים.</p>
                 <p>בנוסף, הספר מכיל ארכיב של מימז ישראליים ומגוירים - שמטרתו להראות לקורא את העושר התרבותי שנמצא במקומות חבויים מהעין הציבורית. מטרת הספר היא לפתוח צוהר לתרבות אינטרנט נישתית שלאט לאט הופכת לקונצנזוס ציבורי.</p>
             </div>
         </div>
@@ -1098,7 +1005,7 @@
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="green.html" class="proj-next-link"><span dir="ltr">Buffer Green Assistant</span> ←</a>
+            <a href="#green" class="proj-next-link"><span dir="ltr">Buffer Green Assistant</span> ←</a>
         </div>
         <footer>
             <span>© 2026 יונתן אלפרין</span>
@@ -1208,7 +1115,7 @@
 
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="branding.html" class="proj-next-link">השוקת ←</a>
+            <a href="#branding" class="proj-next-link">השוקת ←</a>
         </div>
         <footer>
             <span>© 2026 יונתן אלפרין</span>
@@ -1219,7 +1126,7 @@
     <!-- 03 ברנדינג -->
     <div id="proj-branding" class="proj-panel">
         <section class="proj-hero">
-            <div class="proj-hero-media"><img src="newbackforbrand.png" alt="" aria-hidden="true" draggable="false"></div>
+            <div class="proj-hero-media"><img src="newbackforbrand.jpg" alt="" aria-hidden="true" draggable="false"></div>
             <p class="proj-number reveal">03 / 05</p>
             <h1 class="proj-title reveal" style="transition-delay:.1s">השוקת</h1>
             <div class="proj-meta reveal" style="transition-delay:.2s">
@@ -1241,7 +1148,7 @@
             <div class="proj-desc-label reveal">על הפרויקט</div>
             <div class="proj-desc-text reveal" style="transition-delay:.1s">
                 <p>השוקת היא יותר מסתם דליקטסן - היא חגיגה של מלאכת יד מקומית וסקרנות קולינרית. ממוקמת בפרדס חנה, מרכז אומנותי זה מחבר בין חובבי אוכל לתוצרת איכותית, farm-to-table, עטופה בזהות מותגית שמרגישה אותנטית כמו המרכיבים עצמם.</p>
-                <p>יצרנו שפה ויזואלית השורשת בגוונים אדמתיים ואיורים בסגנון חיתוך עץ, המשקפים את מורשת גידול הבקר של הבעלים ואת התשוקה לשקיפות. מתוויות הצנצנות ועד פוסטרי הסדנאות - כל אלמנט עיצובי מזמין את הלקוחות להאט, לטעום את ההבדל, ולגלות את הסיפור מאחורי האוכל שלהם.</p>
+                <p>יצרנו שפה ויזואלית המושרשת בגוונים אדמתיים ואיורים בסגנון חיתוך עץ, המשקפים את מורשת גידול הבקר של הבעלים ואת התשוקה לשקיפות. מתוויות הצנצנות ועד פוסטרי הסדנאות - כל אלמנט עיצובי מזמין את הלקוחות להאט, לטעום את ההבדל, ולגלות את הסיפור מאחורי האוכל שלהם.</p>
             </div>
         </div>
         <div class="proj-images cols-1 reveal">
@@ -1265,7 +1172,7 @@
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="typeface.html" class="proj-next-link">נבו ←</a>
+            <a href="#typeface" class="proj-next-link">נבו ←</a>
         </div>
         <footer>
             <span>© 2026 יונתן אלפרין</span>
@@ -1346,7 +1253,7 @@
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="raziel.html" class="proj-next-link">רזיאל ←</a>
+            <a href="#raziel" class="proj-next-link">רזיאל ←</a>
         </div>
         <footer>
             <span>© 2026 יונתן אלפרין</span>
@@ -1487,7 +1394,7 @@
 
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
-            <a href="book.html" class="proj-next-link">ספר המימז ←</a>
+            <a href="#book" class="proj-next-link">ספר המימז ←</a>
         </div>
         <footer>
             <span>© 2026 יונתן אלפרין</span>
@@ -1525,12 +1432,12 @@
         const MAX_IRIS = 5;
 
         const PROJECTS = [
-            { cover: 'illustrationcovernew.png', href: 'raziel.html',     hue: 0,   sat: 3,   bri: 0.65, name: 'רזיאל'      },
-            { cover: 'buffersymbol.png',          href: 'green.html',      hue: 95,  sat: 2.5, name: 'UX/UI' },
-            { cover: 'brandingcovernew.jpg',      href: 'branding.html',   hue: 130, sat: 2.5, name: 'ברנדינג' },
-            { cover: 'fontcovernew.jpg',          href: 'typeface.html',   hue: 280, sat: 2.5, name: 'גופן'    },
-            { cover: 'bookcovernew.jpg',          href: 'book.html',       hue: 55,  sat: 4,   bri: 1.3, name: 'ספר'      },
-            { cover: 'face copynew.png',          href: '#about',          hue: 0,   sat: 0,   name: 'אודות'   },
+            { cover: 'illustrationcovernew.png', href: '#raziel',     hue: 0,   sat: 3,   bri: 0.65, name: 'רזיאל'      },
+            { cover: 'buffersymbol.png',          href: '#green',      hue: 95,  sat: 2.5, name: 'UX/UI' },
+            { cover: 'brandingcovernew.jpg',      href: '#branding',   hue: 130, sat: 2.5, name: 'ברנדינג' },
+            { cover: 'fontcovernew.jpg',          href: '#typeface',   hue: 280, sat: 2.5, name: 'גופן'    },
+            { cover: 'bookcovernew.jpg',          href: '#book',       hue: 55,  sat: 4,   bri: 1.3, name: 'ספר'      },
+            { cover: 'face copynew.png',          href: '#about',      hue: 0,   sat: 0,   name: 'אודות'   },
         ];
         const PROJ_POSITIONS = [
             [0.20, 0.22],
@@ -1827,7 +1734,7 @@
         /* Panel order, not PROJECTS order: rightmost link is project 01 and so
            on, with about last. PROJECTS itself must not be reordered — its
            indexes drive where each project's eye lands on the grid. */
-        const HERO_LINK_ORDER = ['book.html', 'green.html', 'branding.html', 'typeface.html', 'raziel.html', '#about'];
+        const HERO_LINK_ORDER = ['#book', '#green', '#branding', '#typeface', '#raziel', '#about'];
         (function buildHeroLinks() {
             const ordered = HERO_LINK_ORDER
                 .map(h => PROJECTS.find(p => p.href === h))
@@ -1982,27 +1889,6 @@
             requestAnimationFrame(loop);
         })();
 
-        /* ─── Language toggle ────────────────────────────────────── */
-        const html = document.documentElement;
-        const langBtn = document.getElementById('lang-btn');
-        let lang = 'he';
-
-        function applyLang(l) {
-            lang = l;
-            html.setAttribute('lang', l);
-            html.setAttribute('dir', l === 'he' ? 'rtl' : 'ltr');
-            langBtn.textContent = l === 'he' ? 'EN' : 'עב';
-            document.querySelectorAll('[data-he]').forEach(el => {
-                const val = el.dataset[l];
-                if (!val) return;
-                if (val.includes('<')) el.innerHTML = val;
-                else el.textContent = val;
-            });
-        }
-
-        langBtn.addEventListener('click', () => applyLang(lang === 'he' ? 'en' : 'he'));
-        document.getElementById('about-btn').addEventListener('click', openModal);
-
         /* ─── About modal ────────────────────────────────────────── */
         const aboutModal = document.getElementById('about-modal');
 
@@ -2020,7 +1906,12 @@
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape') {
                 if (aboutModal.classList.contains('open')) closeModal();
-                else if (activePanel) closeProject();
+                else if (activePanel) {
+                    /* Route through history like the back button, so the hash
+                       in the address bar clears along with the panel. */
+                    if (history.state && history.state.panel) history.back();
+                    else closeProject();
+                }
             }
         });
 
@@ -2087,17 +1978,17 @@
         const projNav = document.getElementById('proj-nav');
 
         const PANEL_MAP = {
-            'book.html':       'proj-book',
-            'green.html':      'proj-green',
-            'branding.html':   'proj-branding',
-            'typeface.html':   'proj-typeface',
-            'raziel.html':     'proj-raziel',
+            '#book':       'proj-book',
+            '#green':      'proj-green',
+            '#branding':   'proj-branding',
+            '#typeface':   'proj-typeface',
+            '#raziel':     'proj-raziel',
         };
 
         let revealObserver = null;
         let videoObserver  = null;
 
-        function openProject(href) {
+        function openProject(href, fromHistory) {
             const panelId = PANEL_MAP[href];
             if (!panelId) return;
             const panel = document.getElementById(panelId);
@@ -2148,16 +2039,23 @@
             /* One history entry per "a panel is open" state, so the system back
                gesture on mobile closes the panel instead of leaving the site.
                Moving between panels replaces the entry rather than stacking:
-               back always means home, never a tour of previous panels. */
-            if (history.state && history.state.panel) {
-                history.replaceState({ panel: href }, '');
-            } else {
-                history.pushState({ panel: href }, '');
+               back always means home, never a tour of previous panels. The hash
+               goes into the address bar so an open project is a shareable URL. */
+            if (!fromHistory) {
+                if (history.state && history.state.panel) {
+                    history.replaceState({ panel: href }, '', href);
+                } else {
+                    history.pushState({ panel: href }, '', href);
+                }
             }
         }
 
-        window.addEventListener('popstate', () => {
-            if (activePanel) closeProject();
+        window.addEventListener('popstate', e => {
+            if (e.state && e.state.panel && PANEL_MAP[e.state.panel]) {
+                openProject(e.state.panel, true);
+            } else if (activePanel) {
+                closeProject();
+            }
         });
 
         function closeProject() {
@@ -2252,6 +2150,21 @@
             });
 
             apply();
+        })();
+
+        /* ─── Deep links: open a panel from the URL hash ─────────── */
+        /* A shared link like index.html#green lands here. The hash is
+           cleared first so openProject can push its own entry, leaving
+           the hero underneath it: back goes home, not out of the site. */
+        (function openFromHash() {
+            const h = location.hash;
+            if (PANEL_MAP[h]) {
+                history.replaceState(null, '', location.pathname + location.search);
+                openProject(h);
+            } else if (h === '#about') {
+                history.replaceState(null, '', location.pathname + location.search);
+                openModal();
+            }
         })();
     </script>
 </body>
