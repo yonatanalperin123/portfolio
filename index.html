@@ -166,7 +166,7 @@
             font-variation-settings: var(--fvs-light);
             letter-spacing: .05em;
             white-space: nowrap;
-            opacity: .55;
+            opacity: .75;
             transition: opacity .25s var(--ease);
         }
         .hero-link:hover,
@@ -186,7 +186,7 @@
             font-variation-settings: var(--fvs-light);
             letter-spacing: .05em;
         }
-        /* On phones the quiet desktop treatment disappears: 15px at 55%
+        /* On phones the quiet desktop treatment disappears: 15px at 75%
            opacity scattered among eye tiles does not read as navigation. */
         @media (max-width: 700px) {
             .hero-link, #hero-measure { font-size: 1.1rem; }
@@ -198,8 +198,58 @@
             .proj-panel .proj-meta-item { flex: 1 1 100%; }
             .proj-panel .proj-meta-item.meta-pair { flex: 1 1 calc(50% - .75rem); }
         }
+        /* ─── Hero nameplate ────────────────────────────────────── */
+        /* The name lives in the grid the way the titles do: one large
+           cell in the top corner (RTL start), set in Nevo — the designer
+           signs the canvas in his own typeface. */
+        .hero-nameplate {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+        /* The inner wrapper shrinks to the name's width, so the justified
+           role line below stretches to exactly the same width. */
+        .np-inner {
+            width: max-content;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: .55rem;
+        }
+        .np-name {
+            font-family: 'Nevo', serif;
+            font-size: clamp(1.7rem, 2.6vw, 2.6rem);
+            font-variation-settings: "wght" 340;
+            line-height: 1.05;
+            letter-spacing: -.01em;
+            white-space: nowrap;
+        }
+        .np-role {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: clamp(.72rem, .95vw, .95rem);
+            font-variation-settings: var(--fvs-light);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .6;
+            white-space: nowrap;
+        }
+        .np-role .np-dot { opacity: .5; }
+        /* Offscreen ruler for the name width; carries .np-name so it always
+           measures in the exact font the nameplate renders in. */
+        #np-measure {
+            position: absolute;
+            visibility: hidden;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .hero-nameplate.wave-in { animation: eyeReveal .6s var(--ease) forwards; }
+
         /* cells hidden while loader is active */
-        #eye-grid[data-loading] .eye-unit { opacity: 0; }
+        #eye-grid[data-loading] .eye-unit,
+        #eye-grid[data-loading] .hero-nameplate { opacity: 0; }
 
         .eye-unit {
             position: relative;
@@ -1567,7 +1617,24 @@
                 ? Math.min(rows, Math.ceil(measured.length / 2))
                 : Math.min(rows, Math.ceil(spanSum / cols));
             const eyeRows = Math.max(0, rows - linkRows);
-            for (let i = 0; i < cols * eyeRows; i++) {
+            /* Nameplate goes in first, so it claims the top corner (the RTL
+               start). It spans enough columns for the name plus the same
+               inset the titles use — full width on narrow screens — and two
+               rows; the eyes that would have filled those cells are skipped. */
+            npMeasure.textContent = nameplate.querySelector('.np-name').textContent;
+            lastNpW = npMeasure.offsetWidth;
+            /* +0.35 cell of slack: offsetWidth rounds down and the name has
+               no room to spare — a short span puts eyes on top of the text. */
+            const npCols = (cols <= 6)
+                ? cols
+                : Math.min(cols, Math.ceil((lastNpW + eyeInset * 2) / cellStep + 0.35));
+            const npRows = Math.min(2, Math.max(1, eyeRows));
+            nameplate.style.gridColumn   = 'span ' + npCols;
+            nameplate.style.gridRow      = 'span ' + npRows;
+            nameplate.style.paddingRight = eyeInset + 'px';
+            eyeGrid.appendChild(nameplate);
+            const eyeCellCount = Math.max(0, cols * eyeRows - npCols * npRows);
+            for (let i = 0; i < eyeCellCount; i++) {
                 const u = document.createElement('div');
                 u.className = 'eye-unit';
                 u.innerHTML =
@@ -1630,7 +1697,7 @@
             setTimeout(() => {
                 scatterProjectEyes();
                 cacheEyeCenters();
-                if (isTouch) touchEntranceWave();
+                if (isTouch) entranceWave();
             }, 60);
         }
 
@@ -1651,7 +1718,11 @@
             });
         }
 
-        function touchEntranceWave() {
+        /* Blink the six project eyes open in a wave radiating from the grid
+           center. On touch it runs right after build; on desktop the loader
+           calls it as the curtain lifts, teaching "some eyes are doors"
+           without a word of explanation. */
+        function entranceWave() {
             const projEyes = [...eyeGrid.querySelectorAll('.proj-eye')];
             const gr  = eyeGrid.getBoundingClientRect();
             const gcx = gr.left + gr.width  / 2;
@@ -1709,7 +1780,8 @@
                 const wait = Math.max(0, MIN_MS - (performance.now() - startTs));
                 setTimeout(() => {
                     delete eyeGrid.dataset.loading;
-                    eyeGrid.querySelectorAll('.eye-unit').forEach(u => u.classList.add('wave-in'));
+                    eyeGrid.querySelectorAll('.eye-unit, .hero-nameplate').forEach(u => u.classList.add('wave-in'));
+                    entranceWave();
 
                     ldr.classList.add('ldr-fade');
                     setTimeout(() => ldr.remove(), 820);
@@ -1731,6 +1803,25 @@
         const heroMeasure = document.createElement('span');
         heroMeasure.id = 'hero-measure';
         document.body.appendChild(heroMeasure);
+
+        /* Nameplate: identity as a resident of the grid, not a layer above
+           it. Re-appended by every buildGrid like the title links are. */
+        const nameplate = document.createElement('div');
+        nameplate.className = 'hero-nameplate';
+        nameplate.innerHTML =
+            '<div class="np-inner">' +
+                '<span class="np-name">יונתן אלפרין</span>' +
+                '<span class="np-role">' +
+                    '<span dir="ltr">UX/UI</span><span class="np-dot">·</span>' +
+                    '<span>מיתוג</span><span class="np-dot">·</span>' +
+                    '<span>טיפוגרפיה</span>' +
+                '</span>' +
+            '</div>';
+        const npMeasure = document.createElement('span');
+        npMeasure.className = 'np-name';
+        npMeasure.id = 'np-measure';
+        document.body.appendChild(npMeasure);
+        let lastNpW = 0;
         /* Panel order, not PROJECTS order: rightmost link is project 01 and so
            on, with about last. PROJECTS itself must not be reordered — its
            indexes drive where each project's eye lands on the grid. */
@@ -1790,6 +1881,16 @@
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(buildGrid, 150);
         });
+        /* The first build can run before Nevo arrives, measuring the name in
+           the fallback serif; a span computed that way comes up short and the
+           eyes land on the text. Once the webfonts settle, re-measure and
+           rebuild only if the ruler actually moved. */
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                npMeasure.textContent = nameplate.querySelector('.np-name').textContent;
+                if (npMeasure.offsetWidth !== lastNpW) buildGrid();
+            });
+        }
 
         /* ─── Project preview ────────────────────────────────────── */
         const preview = document.getElementById('preview-container');
