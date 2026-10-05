@@ -75,6 +75,8 @@
             z-index: 9999;
             pointer-events: none;
             opacity: .05;
+            /* its own static layer, so motion beneath never repaints the noise */
+            will-change: transform;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
             background-size: 180px 180px;
         }
@@ -117,10 +119,16 @@
         #cursor.hidden { opacity: 0; }
 
         /* ─── Scroll thread — override proj.css for SPA ─────────── */
+        /* Full height, scaled from the top: scroll then drives a transform,
+           not a height, so it never forces a layout. */
         #thread {
             opacity: 0;
             z-index: 450;
-            transition: height .05s linear, opacity .3s var(--ease);
+            height: 100%;
+            transform: scaleY(0);
+            transform-origin: top;
+            will-change: transform;
+            transition: transform .05s linear, opacity .3s var(--ease);
         }
         #thread.active { opacity: 1; }
 
@@ -253,23 +261,16 @@
             white-space: nowrap;
             pointer-events: none;
         }
-        .hero-nameplate.wave-in { animation: eyeReveal .6s var(--ease) forwards; }
-
-        /* cells hidden while loader is active */
-        #eye-grid[data-loading] .eye-unit,
-        #eye-grid[data-loading] .hero-nameplate { opacity: 0; }
+        /* Grid hidden while the loader is active, then faded in as one layer:
+           animating each of the ~400 cells separately choked the first frames
+           of the intro. */
+        #eye-grid { transition: opacity .6s var(--ease); }
+        #eye-grid[data-loading] { opacity: 0; }
 
         .eye-unit {
             position: relative;
             overflow: hidden;
             transform: rotate(var(--rot, 0deg));
-        }
-        .eye-unit.wave-in {
-            animation: eyeReveal .6s var(--ease) forwards;
-        }
-        @keyframes eyeReveal {
-            from { opacity: 0; transform: rotate(var(--rot, 0deg)); }
-            to   { opacity: 1; transform: rotate(var(--rot, 0deg)); }
         }
         .eu-face, .eu-eye {
             position: absolute; inset: 0;
@@ -280,7 +281,10 @@
         }
         .eu-closed { opacity: 1; transition: opacity .35s var(--ease); filter: invert(1); }
         .eu-open   { opacity: 0; transition: opacity .35s var(--ease); }
-        .eu-eye    { opacity: 0; transition: opacity .35s var(--ease); will-change: transform; }
+        .eu-eye    { opacity: 0; transition: opacity .35s var(--ease); }
+        /* Only a visible iris moves, so only it earns its own layer; promoting
+           every iris kept ~400 idle layers alive on a desktop screen. */
+        .eye-unit.is-open .eu-eye { will-change: transform; }
         .eye-unit.is-open .eu-closed { opacity: 0; }
         .eye-unit.is-open .eu-open   { opacity: 1; }
         .eye-unit.is-open .eu-eye    { opacity: 1; }
@@ -728,7 +732,6 @@
         .lb-backdrop {
             position: absolute; inset: 0;
             background: rgba(17, 11, 9, .82);
-            backdrop-filter: blur(12px);
         }
 
         /* The stage is the window the picture lives in: the zoomed image is
@@ -856,6 +859,33 @@
         }
         .proj-feature .proj-img-wrap { width: auto; max-width: min(520px, 100%); }
         .proj-feature .proj-img-wrap img { width: 100%; }
+
+        /* Pause mark for click-to-pause videos: an outlined pause glyph in
+           the bottom-left corner, shown only while the viewer holds the
+           video. Playing shows nothing. */
+        .pause-mark {
+            position: absolute;
+            left: 36px;
+            bottom: 36px;
+            width: 32px;
+            height: 32px;
+            color: var(--fg);
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(.85);
+            transform-origin: bottom left;
+            transition: opacity .25s var(--ease), transform .25s var(--ease);
+        }
+        .pause-mark svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 4px rgba(17, 11, 9, .5));
+        }
+        .proj-img-wrap.is-held .pause-mark {
+            opacity: .85;
+            transform: scale(1);
+        }
 
         @media (max-width: 900px) {
             .proj-grid.g4 { grid-template-columns: repeat(3, 1fr); }
@@ -1186,7 +1216,7 @@
         </div>
         <div class="proj-images cols-1 reveal">
             <div class="proj-img-wrap">
-                <video autoplay muted loop playsinline preload="metadata" aria-label="דפדוף בספר המימז הישראלי">
+                <video class="tap-pause" autoplay muted loop playsinline preload="metadata" aria-label="דפדוף בספר המימז הישראלי">
                     <source src="book-flip.mp4" type="video/mp4">
                 </video>
             </div>
@@ -1901,19 +1931,37 @@
            center. On touch it runs right after build; on desktop the loader
            calls it as the curtain lifts, teaching "some eyes are doors"
            without a word of explanation. */
+        /* While true the eyes ignore the mouse: no proximity opening and no
+           iris tracking, so the intro wave plays undisturbed on desktop. */
+        let introHold = false;
+        /* After the hold lifts, tracking eases in instead of snapping on: the
+           opening radius grows from the cursor outward, so the nearest eyes
+           wake first, and the irises drift toward the mouse. */
+        const INTRO_RAMP_MS = 1400;
+        let introReleaseTs = -Infinity;
+
         function entranceWave() {
             const projEyes = [...eyeGrid.querySelectorAll('.proj-eye')];
             const gr  = eyeGrid.getBoundingClientRect();
             const gcx = gr.left + gr.width  / 2;
             const gcy = gr.top  + gr.height / 2;
+            let lastOpen = 0;
 
             projEyes.forEach(el => {
-                const r    = el.getBoundingClientRect();
-                const dist = Math.hypot((r.left + r.width / 2) - gcx, (r.top + r.height / 2) - gcy);
+                const r     = el.getBoundingClientRect();
+                const dist  = Math.hypot((r.left + r.width / 2) - gcx, (r.top + r.height / 2) - gcy);
+                const delay = 250 + dist * 1.4;
+                lastOpen = Math.max(lastOpen, delay);
                 el.classList.remove('is-open');
-                setTimeout(() => el.classList.add('is-open'), 250 + dist * 1.4);
+                setTimeout(() => el.classList.add('is-open'), delay);
             });
 
+            /* release once the last eye has finished its .35s open fade */
+            setTimeout(() => {
+                if (!introHold) return;
+                introHold = false;
+                introReleaseTs = performance.now();
+            }, lastOpen + 350);
         }
 
         /* ─── Page loader ────────────────────────────────────────── */
@@ -1926,6 +1974,7 @@
             if (!isDesk) { ldr.remove(); return; }
 
             eyeGrid.dataset.loading = '1';
+            introHold = true;
 
             // Iris tracks the mouse while loading
             const MAX_SHIFT = 6;
@@ -1959,7 +2008,6 @@
                 const wait = Math.max(0, MIN_MS - (performance.now() - startTs));
                 setTimeout(() => {
                     delete eyeGrid.dataset.loading;
-                    eyeGrid.querySelectorAll('.eye-unit, .hero-nameplate').forEach(u => u.classList.add('wave-in'));
                     entranceWave();
 
                     ldr.classList.add('ldr-fade');
@@ -2122,6 +2170,7 @@
 
         /* ─── rAF loop ───────────────────────────────────────────── */
         let pScale = 0.9;
+        const eyeLast = { x: NaN, y: NaN, ramp: NaN, hold: null, cache: null, panel: undefined };
         (function loop() {
             // Auto-roam on touch devices — clockwise circle, attracted to project eyes
             if (isTouch) {
@@ -2147,18 +2196,44 @@
 
 
 
-            // Calculate eye proximity
-            eyeCache.forEach(ec => {
-                if (ec.isProj || ec.isZone) return;
-                const d = Math.hypot(mouseX - ec.cx, mouseY - ec.cy);
-                const isOpen = d < OPEN_R;
-                if (ec.isOpen !== isOpen) {
-                    ec.el.classList.toggle('is-open', isOpen);
-                    ec.isOpen = isOpen;
-                }
-            });
+            const rampT     = Math.min(1, (performance.now() - introReleaseTs) / INTRO_RAMP_MS);
+            const introRamp = rampT < .5 ? 4 * rampT ** 3 : 1 - (-2 * rampT + 2) ** 3 / 2;
 
-            if (!isTouch) {
+            /* The eyes only need work when something they react to changed:
+               the mouse, the intro ramp, a rebuilt grid, or a panel closing.
+               While a panel covers the hero there is nothing to update. */
+            const eyesStale = mouseX !== eyeLast.x || mouseY !== eyeLast.y ||
+                              introRamp !== eyeLast.ramp || introHold !== eyeLast.hold ||
+                              eyeCache !== eyeLast.cache || activePanel !== eyeLast.panel;
+            if (eyesStale) {
+                eyeLast.x = mouseX; eyeLast.y = mouseY;
+                eyeLast.ramp = introRamp; eyeLast.hold = introHold;
+                eyeLast.cache = eyeCache; eyeLast.panel = activePanel;
+            }
+
+            if (eyesStale && !activePanel && !introHold) {
+                // Calculate eye proximity
+                eyeCache.forEach(ec => {
+                    if (ec.isProj || ec.isZone) return;
+                    const d = Math.hypot(mouseX - ec.cx, mouseY - ec.cy);
+                    const isOpen = d < OPEN_R * introRamp;
+                    if (ec.isOpen !== isOpen) {
+                        ec.el.classList.toggle('is-open', isOpen);
+                        ec.isOpen = isOpen;
+                    }
+                });
+
+                eyeCache.forEach(ec => {
+                    if (!ec.iris || !ec.el.classList.contains('is-open')) return;
+                    const angle = Math.atan2(mouseY - ec.cy, mouseX - ec.cx);
+                    const dist  = Math.min(Math.hypot(mouseX - ec.cx, mouseY - ec.cy) / 20, MAX_IRIS) * introRamp;
+                    ec.iris.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px)`;
+                });
+            }
+
+            /* Each follower eases toward its target and stops writing styles
+               once it has arrived, so an idle page does no work per frame. */
+            if (!isTouch && (Math.abs(mouseX - cx) > .05 || Math.abs(mouseY - cy) > .05)) {
                 cx += (mouseX - cx) * .45;
                 cy += (mouseY - cy) * .45;
                 cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
@@ -2166,23 +2241,21 @@
 
             stx = (mouseX / window.innerWidth)  * 100;
             sty = (mouseY / window.innerHeight) * 100;
-            slx += (stx - slx) * .04;
-            sly += (sty - sly) * .04;
-            spotlight.style.transform = `translate(${slx - 50}vw, ${sly - 50}vh)`;
-
-            if (!isTouch) {
-                px += (ptx - px) * .18;
-                py += (pty - py) * .18;
-                pScale += ((previewActive ? 1 : 0.9) - pScale) * .15;
-                preview.style.transform = `translate(${px}px, ${py}px) scale(${pScale.toFixed(4)})`;
+            if (!activePanel && (Math.abs(stx - slx) > .005 || Math.abs(sty - sly) > .005)) {
+                slx += (stx - slx) * .04;
+                sly += (sty - sly) * .04;
+                spotlight.style.transform = `translate(${slx - 50}vw, ${sly - 50}vh)`;
             }
 
-            if (!activePanel) eyeCache.forEach(ec => {
-                if (!ec.iris || !ec.el.classList.contains('is-open')) return;
-                const angle = Math.atan2(mouseY - ec.cy, mouseX - ec.cx);
-                const dist  = Math.min(Math.hypot(mouseX - ec.cx, mouseY - ec.cy) / 20, MAX_IRIS);
-                ec.iris.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px)`;
-            });
+            if (!isTouch) {
+                const ts = previewActive ? 1 : 0.9;
+                if (Math.abs(ptx - px) > .05 || Math.abs(pty - py) > .05 || Math.abs(ts - pScale) > .0005) {
+                    px += (ptx - px) * .18;
+                    py += (pty - py) * .18;
+                    pScale += (ts - pScale) * .15;
+                    preview.style.transform = `translate(${px}px, ${py}px) scale(${pScale.toFixed(4)})`;
+                }
+            }
 
             requestAnimationFrame(loop);
         })();
@@ -2353,6 +2426,32 @@
         lightbox.querySelector('.lb-backdrop').addEventListener('click', closeLightbox);
         /* The margin inside the stage is still "outside the picture". */
         lbStage.addEventListener('click', e => { if (e.target === lbStage) closeLightbox(); });
+
+        /* Click to freeze a video, click again to let it run. No cursor
+           change; a small pause mark at the left edge appears only while
+           the video is held. */
+        document.querySelectorAll('video.tap-pause').forEach(v => {
+            const wrap = v.parentElement;
+            const mark = document.createElement('span');
+            mark.className = 'pause-mark';
+            mark.setAttribute('aria-hidden', 'true');
+            mark.innerHTML =
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">' +
+                '<path d="M200,34H160a14,14,0,0,0-14,14V208a14,14,0,0,0,14,14h40a14,14,0,0,0,14-14V48A14,14,0,0,0,200,34Zm2,174a2,2,0,0,1-2,2H160a2,2,0,0,1-2-2V48a2,2,0,0,1,2-2h40a2,2,0,0,1,2,2ZM96,34H56A14,14,0,0,0,42,48V208a14,14,0,0,0,14,14H96a14,14,0,0,0,14-14V48A14,14,0,0,0,96,34Zm2,174a2,2,0,0,1-2,2H56a2,2,0,0,1-2-2V48a2,2,0,0,1,2-2H96a2,2,0,0,1,2,2Z"/>' +
+                '</svg>';
+            wrap.appendChild(mark);
+
+            v.addEventListener('click', () => {
+                if (v.paused) {
+                    delete v.dataset.held;
+                    const p = v.play(); if (p) p.catch(() => {});
+                } else {
+                    v.dataset.held = '1';
+                    v.pause();
+                }
+                wrap.classList.toggle('is-held', !!v.dataset.held);
+            });
+        });
 
         [lbClose, lbPrev, lbNext].forEach(b => {
             b.addEventListener('mouseenter', () => cursor.classList.add('big'));
@@ -2599,7 +2698,7 @@
 
             projNav.classList.add('active');
             thread.classList.add('active');
-            thread.style.height = '0%';
+            thread.style.transform = 'scaleY(0)';
 
             if (revealObserver) revealObserver.disconnect();
             revealObserver = new IntersectionObserver(
@@ -2617,12 +2716,19 @@
             videoObserver = new IntersectionObserver(
                 entries => entries.forEach(e => {
                     const v = e.target;
-                    if (e.isIntersecting) { const p = v.play(); if (p) p.catch(() => {}); }
+                    if (e.isIntersecting) {
+                        if (v.dataset.held) return;   // paused by the viewer's click
+                        const p = v.play(); if (p) p.catch(() => {});
+                    }
                     else v.pause();
                 }),
                 { threshold: .1, root: panel }
             );
-            panel.querySelectorAll('video').forEach(v => videoObserver.observe(v));
+            panel.querySelectorAll('video').forEach(v => {
+                delete v.dataset.held;   // every visit starts playing again
+                v.parentElement.classList.remove('is-held');
+                videoObserver.observe(v);
+            });
 
             /* One history entry per "a panel is open" state, so the system back
                gesture on mobile closes the panel instead of leaving the site.
@@ -2663,7 +2769,7 @@
             panel.addEventListener('scroll', () => {
                 if (panel !== activePanel) return;
                 const p = panel.scrollTop / (panel.scrollHeight - panel.clientHeight);
-                thread.style.height = (p * 100) + '%';
+                thread.style.transform = `scaleY(${(Math.min(1, Math.max(0, p)) || 0).toFixed(4)})`;
             }, { passive: true });
         });
 
