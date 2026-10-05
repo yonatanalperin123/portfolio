@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>יונתן אלפרין</title>
-    <link rel="icon" type="image/png" href="browsericon.png" />
+    <link rel="icon" type="image/png" href="assets/site/browsericon.png" />
     <link rel="preconnect" href="https://api.fontshare.com" />
     <link rel="preconnect" href="https://use.typekit.net" crossorigin />
     <link rel="preconnect" href="https://p.typekit.net" crossorigin />
@@ -18,7 +18,7 @@
         /* ─── Nevo — variable weight 1–1000 (1 = lightest/least heavy) ─ */
         @font-face {
             font-family: 'Nevo';
-            src: url('Nevo.woff2') format('woff2');
+            src: url('assets/fonts/Nevo.woff2') format('woff2');
             font-weight: 1 1000;
             font-style: normal;
             font-display: swap;
@@ -27,7 +27,7 @@
         /* ─── Raziel Sans — static, single weight, no digits ─────── */
         @font-face {
             font-family: 'Raziel Sans';
-            src: url('RazielSans.woff2') format('woff2');
+            src: url('assets/fonts/RazielSans.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
             font-display: swap;
@@ -1130,8 +1130,8 @@
     <div id="loader">
         <div class="loader-wrap">
             <div class="loader-eye-cell">
-                <img class="ldr-face" src="face copy.png" alt="" draggable="false">
-                <img class="ldr-iris" src="eye copy.png"  alt="" draggable="false">
+                <img class="ldr-face" src="assets/site/face copy.png" alt="" draggable="false">
+                <img class="ldr-iris" src="assets/site/eye copy.png"  alt="" draggable="false">
             </div>
             <p class="loader-text">עוד רגע ומתחילים</p>
         </div>
@@ -1155,7 +1155,7 @@
             <button class="modal-close nav-back" id="modal-close-btn">חזרה</button>
             <div class="modal-body">
                 <div class="modal-left">
-                    <img src="profile.jpg" alt="יונתן אלפרין" class="modal-img">
+                    <img src="assets/site/profile.jpg" alt="יונתן אלפרין" class="modal-img">
                 </div>
                 <div class="modal-right">
                     <div class="modal-main">
@@ -1189,7 +1189,7 @@
     <!-- 01 ספר -->
     <div id="proj-book" class="proj-panel">
         <section class="proj-hero">
-            <div class="proj-hero-media"><img src="%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-02.jpg" alt="" aria-hidden="true" draggable="false"></div>
+            <div class="proj-hero-media"><img src="assets/book/%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-02.jpg" alt="" aria-hidden="true" draggable="false"></div>
             <p class="proj-number reveal">01 / 05</p>
             <h1 class="proj-title reveal" style="transition-delay:.1s">ספר<br>המימז<br>הישראלי</h1>
             <div class="proj-meta reveal" style="transition-delay:.2s">
@@ -1217,19 +1217,19 @@
         <div class="proj-images cols-1 reveal">
             <div class="proj-img-wrap">
                 <video class="tap-pause" autoplay muted loop playsinline preload="metadata" aria-label="דפדוף בספר המימז הישראלי">
-                    <source src="book-flip.mp4" type="video/mp4">
+                    <source src="assets/book/book-flip.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
         <div class="proj-grid g2 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-02.jpg" alt="עטיפה קדמית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-01.jpg" alt="עטיפה אחורית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-03.jpg" alt="פרישה פנימית - כותרות"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-04.jpg" alt="עמוד פתיחה - תוכן"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-05.jpg" alt="פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-06.jpg" alt="פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-07.jpg" alt="פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-08.jpg" alt="פרישה פנימית - תוכן"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/book/%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-02.jpg" alt="עטיפה קדמית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/book/%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-01.jpg" alt="עטיפה אחורית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/book/%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-03.jpg" alt="פרישה פנימית - כותרות"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/book/%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-04.jpg" alt="עמוד פתיחה - תוכן"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/book/%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-05.jpg" alt="פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/book/%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-06.jpg" alt="פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/book/%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-07.jpg" alt="פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/book/%D7%9C%D7%94%D7%A2%D7%9C%D7%90%D7%94%D7%9C%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%92%D7%A8%D7%9D-08.jpg" alt="פרישה פנימית - תוכן"></div>
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
@@ -1244,7 +1244,7 @@
     <!-- 02 Buffer Green Assistant -->
     <div id="proj-green" class="proj-panel">
         <section class="proj-hero">
-            <div class="proj-hero-media"><video autoplay muted loop playsinline poster="green-hero-poster.jpg"><source src="green-hero.mp4" type="video/mp4"></video></div>
+            <div class="proj-hero-media"><video autoplay muted loop playsinline poster="assets/green/green-hero-poster.jpg"><source src="assets/green/green-hero.mp4" type="video/mp4"></video></div>
             <p class="proj-number reveal">02 / 05</p>
             <h1 class="proj-title reveal" style="transition-delay:.1s">Buffer Green Assistant</h1>
             <div class="proj-meta reveal" style="transition-delay:.2s">
@@ -1297,21 +1297,21 @@
         <div class="gw-figure reveal">
             <p class="gw-figure-text">כל טענה שסומנה מציעה שתי פעולות שסותרות זו את זו, לצרף מקור או להחליף ניסוח, מופרדות ב-or. הצ'קבוקס שהיה שם קודם וסטטוס אישור המקור ירדו. המשתמש בוחר נתיב אחד וזהו.</p>
             <div class="gw-figure-media">
-                <div class="proj-img-wrap gw-wide"><img loading="lazy" src="green-flow-1.jpg" alt="פאנל ה-Green Assistant מסמן את הצירוף eco-friendly ומציע שתי דרכי טיפול"></div>
+                <div class="proj-img-wrap gw-wide"><img loading="lazy" src="assets/green/green-flow-1.jpg" alt="פאנל ה-Green Assistant מסמן את הצירוף eco-friendly ומציע שתי דרכי טיפול"></div>
             </div>
         </div>
 
         <div class="gw-figure flip reveal" style="transition-delay:.04s">
             <p class="gw-figure-text">סיום הפלואו מציג מצב הצלחה סטטי ופעולה אחת שמחזירה לקומפוזר. בגרסאות קודמות עמד שם כפתור שהזמין להמשיך, ולא היה ברור אם נשארה עבודה.</p>
             <div class="gw-figure-media narrow">
-                <div class="proj-img-wrap"><img loading="lazy" src="green-flow-2.jpg" alt="מצב סיום: כל הקליימים טופלו, עם פעולה יחידה Done and Close"></div>
+                <div class="proj-img-wrap"><img loading="lazy" src="assets/green/green-flow-2.jpg" alt="מצב סיום: כל הקליימים טופלו, עם פעולה יחידה Done and Close"></div>
             </div>
         </div>
 
         <div class="gw-figure reveal">
             <p class="gw-figure-text">נתוני הקליימים קיבלו טאב משלהם ולא נדחסו לתוך ה-Overview הקיים. שם ממשיכים למדוד engagement, וכאן נמדדת האמינות, כך ששתי השאלות לא מתחרות על אותו מסך. גרף "claims per month" הוסר כי הפסיק להיקרא בקנה מידה גדול.</p>
             <div class="gw-figure-media">
-                <div class="proj-img-wrap"><img loading="lazy" src="green-flow-3.jpg" alt="טאב Credibility and Claims עם גרף Claim Coverage ומדד Vocabulary Maturity"></div>
+                <div class="proj-img-wrap"><img loading="lazy" src="assets/green/green-flow-3.jpg" alt="טאב Credibility and Claims עם גרף Claim Coverage ומדד Vocabulary Maturity"></div>
             </div>
         </div>
 
@@ -1328,9 +1328,9 @@
                     <span dir="ltr">Final design</span>
                 </div>
                 <div class="gw-compare" id="gw-compare">
-                    <img loading="lazy" src="green-after.jpg" alt="העיצוב הסופי: אותו רכיב עם עמודות מקובצות בפלטה של Buffer">
+                    <img loading="lazy" src="assets/green/green-after.jpg" alt="העיצוב הסופי: אותו רכיב עם עמודות מקובצות בפלטה של Buffer">
                     <div class="gw-compare-top" aria-hidden="true">
-                        <img loading="lazy" src="green-before.jpg" alt="">
+                        <img loading="lazy" src="assets/green/green-before.jpg" alt="">
                     </div>
                     <div class="gw-compare-handle" aria-hidden="true"><span class="gw-compare-grip"></span></div>
                     <button type="button" class="gw-compare-hit" role="slider"
@@ -1354,7 +1354,7 @@
     <!-- 03 ברנדינג -->
     <div id="proj-branding" class="proj-panel">
         <section class="proj-hero">
-            <div class="proj-hero-media"><img src="newbackforbrand.jpg" alt="" aria-hidden="true" draggable="false"></div>
+            <div class="proj-hero-media"><img src="assets/branding/newbackforbrand.jpg" alt="" aria-hidden="true" draggable="false"></div>
             <p class="proj-number reveal">03 / 05</p>
             <h1 class="proj-title reveal" style="transition-delay:.1s">השוקת</h1>
             <div class="proj-meta reveal" style="transition-delay:.2s">
@@ -1381,22 +1381,22 @@
         </div>
         <div class="proj-images cols-1 reveal">
             <div class="proj-img-wrap">
-                <img src="brandingcover.jpg" alt="השוקת - זהות מותגית">
+                <img src="assets/branding/brandingcover.jpg" alt="השוקת - זהות מותגית">
             </div>
         </div>
         <div class="proj-grid g3 feed reveal">
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-01.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-03.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-04.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-05.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-06.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-07.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-08.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-09.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-10.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-11.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-12.jpg" alt=""></div>
-            <div class="proj-img-wrap square"><img loading="lazy" src="פוסט%20אינסטגרם-13.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-01.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-03.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-04.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-05.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-06.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-07.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-08.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-09.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-10.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-11.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-12.jpg" alt=""></div>
+            <div class="proj-img-wrap square"><img loading="lazy" src="assets/branding/פוסט%20אינסטגרם-13.jpg" alt=""></div>
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
@@ -1411,7 +1411,7 @@
     <!-- 04 גופן -->
     <div id="proj-typeface" class="proj-panel">
         <section class="proj-hero">
-            <div class="proj-hero-media"><video autoplay muted loop playsinline><source src="fontberris.mp4" type="video/mp4"></video></div>
+            <div class="proj-hero-media"><video autoplay muted loop playsinline><source src="assets/typeface/fontberris.mp4" type="video/mp4"></video></div>
             <p class="proj-number reveal">04 / 05</p>
             <h1 class="proj-title reveal" style="transition-delay:.1s">נבו</h1>
             <div class="proj-meta reveal" style="transition-delay:.2s">
@@ -1476,8 +1476,8 @@
         </div>
 
         <div class="proj-grid g2 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="WhatsApp%20Image%202025-06-19%20at%2020.42.54%20(1).jpeg" alt="תהליך"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="WhatsApp%20Image%202025-06-21%20at%2023.36.01.jpeg" alt="תהליך"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/typeface/WhatsApp%20Image%202025-06-19%20at%2020.42.54%20(1).jpeg" alt="תהליך"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/typeface/WhatsApp%20Image%202025-06-21%20at%2023.36.01.jpeg" alt="תהליך"></div>
         </div>
         <div class="proj-next">
             <span class="proj-next-label">הפרויקט הבא</span>
@@ -1493,8 +1493,8 @@
     <div id="proj-raziel" class="proj-panel">
         <section class="proj-hero">
             <div class="proj-hero-media">
-                <video autoplay muted loop playsinline poster="amulet-weave-poster.jpg">
-                    <source src="amulet-weave.mp4" type="video/mp4">
+                <video autoplay muted loop playsinline poster="assets/raziel/amulet-weave-poster.jpg">
+                    <source src="assets/raziel/amulet-weave.mp4" type="video/mp4">
                 </video>
             </div>
             <p class="proj-number reveal">05 / 05</p>
@@ -1601,8 +1601,8 @@
         </div>
         <div class="proj-images cols-1 reveal" style="transition-delay:.04s">
             <div class="proj-img-wrap">
-                <video autoplay muted loop playsinline poster="site-walkthrough-poster.jpg">
-                    <source src="site-walkthrough.mp4" type="video/mp4">
+                <video autoplay muted loop playsinline poster="assets/raziel/site-walkthrough-poster.jpg">
+                    <source src="assets/raziel/site-walkthrough.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
@@ -1614,10 +1614,10 @@
             </div>
         </div>
         <div class="proj-grid g2 reveal">
-            <div class="proj-img-wrap"><img loading="lazy" src="book-1.jpg" alt="ספר הספסימן - סקיצות ידניות של האותיות"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book-2.jpg" alt="ספר הספסימן - היררכיית גדלים"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book-3.jpg" alt="ספר הספסימן - פרישה פנימית"></div>
-            <div class="proj-img-wrap"><img loading="lazy" src="book-4.jpg" alt="ספר הספסימן - סולם גדלים וטקסט רץ"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/raziel/book-1.jpg" alt="ספר הספסימן - סקיצות ידניות של האותיות"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/raziel/book-2.jpg" alt="ספר הספסימן - היררכיית גדלים"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/raziel/book-3.jpg" alt="ספר הספסימן - פרישה פנימית"></div>
+            <div class="proj-img-wrap"><img loading="lazy" src="assets/raziel/book-4.jpg" alt="ספר הספסימן - סולם גדלים וטקסט רץ"></div>
         </div>
 
         <div class="proj-next">
@@ -1678,12 +1678,12 @@
            in while the link is hovered. No alt — no swap (רזיאל already IS
            the project name, and about is about). */
         const PROJECTS = [
-            { cover: 'illustrationcovernew.png', href: '#raziel',     hue: 0,   sat: 3,   bri: 0.65, name: 'רזיאל'      },
-            { cover: 'buffersymbol.png',          href: '#green',      hue: 95,  sat: 2.5, name: 'UX/UI',   alt: 'Green Assist' },
-            { cover: 'brandingcovernew.jpg',      href: '#branding',   hue: 130, sat: 2.5, name: 'ברנדינג', alt: 'השוקת' },
-            { cover: 'fontcovernew.jpg',          href: '#typeface',   hue: 280, sat: 2.5, name: 'גופן',    alt: 'נבו' },
-            { cover: 'bookcovernew.jpg',          href: '#book',       hue: 55,  sat: 4,   bri: 1.3, name: 'ספר', alt: 'ספר המימז' },
-            { cover: 'face copynew.png',          href: '#about',      hue: 0,   sat: 0,   name: 'אודות'   },
+            { cover: 'assets/covers/illustrationcovernew.png', href: '#raziel',     hue: 0,   sat: 3,   bri: 0.65, name: 'רזיאל'      },
+            { cover: 'assets/covers/buffersymbol.png',          href: '#green',      hue: 95,  sat: 2.5, name: 'UX/UI',   alt: 'Green Assist' },
+            { cover: 'assets/covers/brandingcovernew.jpg',      href: '#branding',   hue: 130, sat: 2.5, name: 'ברנדינג', alt: 'השוקת' },
+            { cover: 'assets/covers/fontcovernew.jpg',          href: '#typeface',   hue: 280, sat: 2.5, name: 'גופן',    alt: 'נבו' },
+            { cover: 'assets/covers/bookcovernew.jpg',          href: '#book',       hue: 55,  sat: 4,   bri: 1.3, name: 'ספר', alt: 'ספר המימז' },
+            { cover: 'assets/covers/face copynew.png',          href: '#about',      hue: 0,   sat: 0,   name: 'אודות'   },
         ];
         const PROJ_POSITIONS = [
             [0.20, 0.22],
@@ -1847,9 +1847,9 @@
                 const u = document.createElement('div');
                 u.className = 'eye-unit';
                 u.innerHTML =
-                    '<img class="eu-face eu-closed" src="closed face copy.png" alt="" draggable="false">' +
-                    '<img class="eu-face eu-open"   src="face copy.png"        alt="" draggable="false">' +
-                    '<img class="eu-eye"            src="eye copy.png"         alt="" aria-hidden="true" draggable="false">';
+                    '<img class="eu-face eu-closed" src="assets/site/closed face copy.png" alt="" draggable="false">' +
+                    '<img class="eu-face eu-open"   src="assets/site/face copy.png"        alt="" draggable="false">' +
+                    '<img class="eu-eye"            src="assets/site/eye copy.png"         alt="" aria-hidden="true" draggable="false">';
                 const rot = ((Math.random() - 0.5) * 10).toFixed(2);
                 u.style.setProperty('--rot', rot + 'deg');
                 eyeGrid.appendChild(u);
@@ -1862,9 +1862,9 @@
                 const u = document.createElement('div');
                 u.className = 'eye-unit';
                 u.innerHTML =
-                    '<img class="eu-face eu-closed" src="closed face copy.png" alt="" draggable="false">' +
-                    '<img class="eu-face eu-open"   src="face copy.png"        alt="" draggable="false">' +
-                    '<img class="eu-eye"            src="eye copy.png"         alt="" aria-hidden="true" draggable="false">';
+                    '<img class="eu-face eu-closed" src="assets/site/closed face copy.png" alt="" draggable="false">' +
+                    '<img class="eu-face eu-open"   src="assets/site/face copy.png"        alt="" draggable="false">' +
+                    '<img class="eu-eye"            src="assets/site/eye copy.png"         alt="" aria-hidden="true" draggable="false">';
                 u.style.setProperty('--rot', ((Math.random() - 0.5) * 10).toFixed(2) + 'deg');
                 return u;
             };
@@ -1996,7 +1996,7 @@
 
             // Track loaded images
             const IMAGES = [
-                'face copy.png', 'closed face copy.png', 'eye copy.png', 'profile%20pick.jpg',
+                'assets/site/face copy.png', 'assets/site/closed face copy.png', 'assets/site/eye copy.png', 'assets/site/profile%20pick.jpg',
                 ...PROJECTS.map(p => p.cover),
             ];
             const TOTAL   = IMAGES.length;

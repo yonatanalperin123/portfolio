@@ -1,0 +1,9 @@
+# Work files that are not part of the published site
+_archive/
+_tools/
+awesome-ux-skills/
+.superpowers/
+.claude/
+docs/
+_*.html
+graphify-out/
