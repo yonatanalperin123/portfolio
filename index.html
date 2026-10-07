@@ -39,6 +39,7 @@
         :root {
             --bg: #110B09;
             --fg: #EFE3DC;
+            --eye-closed: rgba(239, 227, 220, .28);
             --accent: #EFE3DC;
             --muted: rgba(239, 227, 220, .2);
             --font: "narkiss-yair-variable", 'Sentient', Georgia, serif;
@@ -279,7 +280,15 @@
             object-position: center 20%;
             user-select: none;
         }
-        .eu-closed { opacity: 1; transition: opacity .35s var(--ease); filter: invert(1); }
+        /* The closed-eye line art is used only as a shape: the mask cuts it out
+           of a flat fill, so its color comes from --eye-closed, not a filter. */
+        .eu-closed {
+            background: var(--eye-closed);
+            -webkit-mask: url("assets/site/closed%20face%20copy.png") center 20% / cover no-repeat;
+                    mask: url("assets/site/closed%20face%20copy.png") center 20% / cover no-repeat;
+            opacity: 1;
+            transition: opacity .35s var(--ease);
+        }
         .eu-open   { opacity: 0; transition: opacity .35s var(--ease); }
         .eu-eye    { opacity: 0; transition: opacity .35s var(--ease); }
         /* Only a visible iris moves, so only it earns its own layer; promoting
@@ -1847,7 +1856,7 @@
                 const u = document.createElement('div');
                 u.className = 'eye-unit';
                 u.innerHTML =
-                    '<img class="eu-face eu-closed" src="assets/site/closed face copy.png" alt="" draggable="false">' +
+                    '<div class="eu-face eu-closed"></div>' +
                     '<img class="eu-face eu-open"   src="assets/site/face copy.png"        alt="" draggable="false">' +
                     '<img class="eu-eye"            src="assets/site/eye copy.png"         alt="" aria-hidden="true" draggable="false">';
                 const rot = ((Math.random() - 0.5) * 10).toFixed(2);
@@ -1862,7 +1871,7 @@
                 const u = document.createElement('div');
                 u.className = 'eye-unit';
                 u.innerHTML =
-                    '<img class="eu-face eu-closed" src="assets/site/closed face copy.png" alt="" draggable="false">' +
+                    '<div class="eu-face eu-closed"></div>' +
                     '<img class="eu-face eu-open"   src="assets/site/face copy.png"        alt="" draggable="false">' +
                     '<img class="eu-eye"            src="assets/site/eye copy.png"         alt="" aria-hidden="true" draggable="false">';
                 u.style.setProperty('--rot', ((Math.random() - 0.5) * 10).toFixed(2) + 'deg');
